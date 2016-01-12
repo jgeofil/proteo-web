@@ -1,6 +1,8 @@
 # proteo-web
 
-## Prerequisites
+## Installation
+
+### Prerequisites
 
 - [Git](https://git-scm.com/)
 - [Node.js and npm](nodejs.org) Node ^4.2.3, npm ^2.14.7
@@ -8,7 +10,7 @@
 - [Grunt](http://gruntjs.com/) (`npm install --global grunt-cli`)
 - [MongoDB](https://www.mongodb.org/) - Keep a running daemon with `mongod`
 
-## Developing
+### Developing
 
 1. Run `npm install` to install server dependencies.
 
@@ -18,10 +20,24 @@
 
 4. Run `grunt serve` to start the development server. It should automatically open the client in your browser when ready.
 
-## Build & development
+### Build & development
 
 Run `grunt build` for building and `grunt serve` for preview.
 
-## Testing
+### Testing
 
 Running `npm test` will run the unit tests with karma.
+
+## API
+
+### Datasets
+
+`GET /api/data` Returns JSON list of available datasets.
+
+### ORFs
+
+`GET /api/data/[dataset name]/orf` Returns JSON list of available ORFs in selected dataset.
+
+### Analysis
+
+`GET /api/data/[dataset name]/orf/[orf name]/analysis` Returns JSON list of available analysis results for selected ORF.
