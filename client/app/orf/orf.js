@@ -1,9 +1,9 @@
 'use strict';
 
 angular.module('proteoWebApp')
-  .config(function ($routeProvider) {
+  .config(function($routeProvider) {
     $routeProvider
-      .when('/proj/:projectName/seq/:sequenceName/orf/:orfName', {
+      .when('/dataset', {
         templateUrl: 'app/orf/orf.html',
         controller: 'OrfCtrl'
       });
