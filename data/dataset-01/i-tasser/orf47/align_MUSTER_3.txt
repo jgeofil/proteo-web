@@ -1,0 +1,6 @@
+>P1;target
+sequence:target: : : : : : : :
+MNKEHILAQKEVLTPIEYEHYVKHLFDIGEITKELYIELSSDL--*
+>P1;3zwlE
+structure:3zwlE: : : : : : : :
+--RDLILHQRELL--KQWTEYREKIGQEME--KSMNFKIFDVQPE*

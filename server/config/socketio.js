@@ -17,6 +17,7 @@ function onConnect(socket) {
   });
 
   // Insert sockets below
+  //require('../api/data/data.socket').register(socket);
 
 }
 

@@ -1,0 +1,5 @@
+tr|D3WAD2|D3WAD2_9CAUD Tail tape measure protein OS=Lactococcus lactis phage p2 PE=4 SV=1 ORF=14	39
+tr|D3WAD6|D3WAD6_9CAUD Holin OS=Lactococcus lactis phage p2 PE=4 SV=1 ORF=19	87
+tr|B6UL31|B6UL31_9CAUD Putative uncharacterized protein OS=Lactococcus lactis phage p2 PE=4 SV=1 ORF=27	85
+tr|B6UL27|B6UL27_9CAUD Putative uncharacterized protein OS=Lactococcus lactis phage p2 PE=4 SV=2 ORF=31	63
+tr|D3WAF6|D3WAF6_9CAUD Putative uncharacterized protein OS=Lactococcus lactis phage p2 PE=4 SV=1 ORF=49	58

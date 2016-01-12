@@ -1,0 +1,6 @@
+>P1;target
+sequence:target: : : : : : : :
+---MNKEHILAQKEVLTPIEYEHYVKHLFDIGEITKELYIELSSD--L-*
+>P1;1fs1A
+structure:1fs1A: : : : : : : :
+WDSLPDELLLGIFSCLCL-------PELLKVSGVCKRWY-RLASDESLW*

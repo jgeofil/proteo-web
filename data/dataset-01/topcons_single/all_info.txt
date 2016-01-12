@@ -1,0 +1,381 @@
+NAME     tr|D3WAC0|D3WAC0_9CAUD Terminase small subunit 
+NAME     OS=Lactococcus lactis phage p2 PE=4 SV=1 ORF=1 
+ISTM     NO 
+
+NAME     tr|D3WAC1|D3WAC1_9CAUD Terminase large subunit 
+NAME     OS=Lactococcus lactis phage p2 PE=4 SV=1 ORF=2 
+ISTM     NO 
+
+NAME     tr|D3WAC2|D3WAC2_9CAUD HNH endonuclease OS=Lactococcus 
+NAME     lactis phage p2 PE=4 SV=1 ORF=3 
+ISTM     NO 
+
+NAME     tr|D3WAC3|D3WAC3_9CAUD Portal protein OS=Lactococcus lactis 
+NAME     phage p2 PE=4 SV=1 ORF=4 
+ISTM     NO 
+
+NAME     tr|D3WAC4|D3WAC4_9CAUD Prohead protease OS=Lactococcus 
+NAME     lactis phage p2 PE=4 SV=1 ORF=5 
+ISTM     NO 
+
+NAME     tr|D3WAC5|D3WAC5_9CAUD Capsid protein OS=Lactococcus lactis 
+NAME     phage p2 PE=4 SV=1 ORF=6 
+ISTM     NO 
+
+NAME     tr|D3WAC6|D3WAC6_9CAUD Structural protein OS=Lactococcus 
+NAME     lactis phage p2 PE=4 SV=1 ORF=7 
+ISTM     NO 
+
+NAME     tr|D3WAC7|D3WAC7_9CAUD Structural protein OS=Lactococcus 
+NAME     lactis phage p2 PE=4 SV=1 ORF=8 
+ISTM     NO 
+
+NAME     tr|D3WAC8|D3WAC8_9CAUD Structural protein OS=Lactococcus 
+NAME     lactis phage p2 PE=4 SV=1 ORF=9 
+ISTM     NO 
+
+NAME     tr|D3WAC9|D3WAC9_9CAUD Structural protein OS=Lactococcus 
+NAME     lactis phage p2 PE=4 SV=1 ORF=10 
+ISTM     NO 
+
+NAME     tr|Q9MCC1|Q9MCC1_9CAUD Major tail protein OS=Lactococcus 
+NAME     lactis phage p2 PE=4 SV=1 ORF=11 
+ISTM     NO 
+
+NAME     tr|D3WAD0|D3WAD0_9CAUD Chaperone OS=Lactococcus lactis 
+NAME     phage p2 PE=4 SV=1 ORF=12 
+ISTM     NO 
+
+NAME     tr|D3WAD1|D3WAD1_9CAUD Putative uncharacterized protein 
+NAME     OS=Lactococcus lactis phage p2 PE=4 SV=1 ORF=13 
+ISTM     NO 
+
+NAME     tr|D3WAD2|D3WAD2_9CAUD Tail tape measure protein 
+NAME     OS=Lactococcus lactis phage p2 PE=4 SV=1 ORF=14 
+ISTM     YES 
+NTER     IN 
+NRTM     11 
+POSI     1. 494-514, 2. 542-562, 3. 577-597, 4. 628-648, 5. 660-680, 
+POSI     6. 700-720, 7. 729-749, 8. 759-779, 9. 791-811, 10. 
+POSI     817-837, 11. 842-862 
+MTHD     topcons-single 
+TOPO     iiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii 
+TOPO     iiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii
+TOPO     iiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii
+TOPO     iiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii
+TOPO     iiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii
+TOPO     iiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii
+TOPO     iiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii
+TOPO     iiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii
+TOPO     iiiiiiiiiiiiiMMMMMMMMMMMMMMMMMMMMMoooooooooooooooooooooooooo
+TOPO     oMMMMMMMMMMMMMMMMMMMMMiiiiiiiiiiiiiiMMMMMMMMMMMMMMMMMMMMMooo
+TOPO     oooooooooooooooooooooooooooMMMMMMMMMMMMMMMMMMMMMiiiiiiiiiiiM
+TOPO     MMMMMMMMMMMMMMMMMMMMoooooooooooooooooooMMMMMMMMMMMMMMMMMMMMM
+TOPO     iiiiiiiiMMMMMMMMMMMMMMMMMMMMMoooooooooMMMMMMMMMMMMMMMMMMMMMi
+TOPO     iiiiiiiiiiMMMMMMMMMMMMMMMMMMMMMoooooMMMMMMMMMMMMMMMMMMMMMiii
+TOPO     iMMMMMMMMMMMMMMMMMMMMMoooooooooooooooooooooooooooooooooooooo
+TOPO     oooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo
+TOPO     ooooooooooooooooooooooooooooooooooooooo
+RLTP     444444444444444444444444444444444444444444444444444444444444 
+RLTP     444444444444444444444444444444444444444444444444444444444444
+RLTP     444444444444444444444444444444444444444444444444444444444444
+RLTP     444444444444444444444444444444444444444444444444444444444444
+RLTP     444444444444444444444444444444444444444444444444444444444444
+RLTP     444444444444444444444444444444444444444444444444444444444444
+RLTP     444444444444444444444444444444444444444444444444444444444444
+RLTP     444445555555566666666666666666666666666666666666666667777777
+RLTP     788888888999999888887777666665555444444444444445555666677788
+RLTP     888888888877777666555444444444333333333444445555555566666666
+RLTP     666666666666666666666777777777777777666555554444444555555666
+RLTP     666677777777888888888889999999999999999999999998888887777777
+RLTP     766666666666666665555555555555555555566666666666666666666666
+RLTP     666666666666666666665555555544455555455555555566666666666666
+RLTP     656555555554444444444444443333333333333333333334444444444444
+RLTP     444444444444444444444444444444444444444444444444444444444444
+RLTP     444444444444444444
+RLTY     39.29 
+MTHD     scampi-single 
+TOPO     iiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii 
+TOPO     iiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii
+TOPO     iiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii
+TOPO     iiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii
+TOPO     iiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii
+TOPO     iiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii
+TOPO     iiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii
+TOPO     iiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii
+TOPO     iiiiiiiiiiiiiMMMMMMMMMMMMMMMMMMMMooooooooooooooooooooooooooo
+TOPO     oMMMMMMMMMMMMMMMMMMMMiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii
+TOPO     iiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiMMMMMMMMMMMMMMMMMMMMoooooo
+TOPO     ooooooooooooooooooooooooooooooooooooooooMMMMMMMMMMMMMMMMMMMM
+TOPO     iiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii
+TOPO     iiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii
+TOPO     iiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii
+TOPO     iiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii
+TOPO     iiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii
+MTHD     stmhmm 
+TOPO     iiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii 
+TOPO     iiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii
+TOPO     iiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii
+TOPO     iiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii
+TOPO     iiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii
+TOPO     iiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii
+TOPO     iiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii
+TOPO     iiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii
+TOPO     iiiiiiiiiiiiiMMMMMMMMMMMMMMMMMMMMMoooooMMMMMMMMMMMMMMMMMMMMM
+TOPO     iiMMMMMMMMMMMMMMMMMMMMMooooooooooooooooooooooooooooooooooooo
+TOPO     ooooooooooooooooooooooooooooooooooMMMMMMMMMMMMMMMMMMMMMiiiii
+TOPO     iiiMMMMMMMMMMMMMMMMMMMMMoooooooooooooooMMMMMMMMMMMMMMMMMMMMM
+TOPO     iiiiiMMMMMMMMMMMMMMMMMMMMMMMMMMMMoooooMMMMMMMMMMMMMMMMMMMMMi
+TOPO     iiiiiiiMMMMMMMMMMMMMMMMMMMMMooooooooMMMMMMMMMMMMMMMMMMMMMiii
+TOPO     iiMMMMMMMMMMMMMMMMMMMMooooooooooooooooooooMMMMMMMMMMMMMMMMMM
+TOPO     MMMiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii
+TOPO     iiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii
+MTHD     hmmtop 
+TOPO     oooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo 
+TOPO     oooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo
+TOPO     oooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo
+TOPO     oooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo
+TOPO     oooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo
+TOPO     oooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo
+TOPO     oooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo
+TOPO     oooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo
+TOPO     ooooooooooooMMMMMMMMMMMMMMMMMMMMMMMMiiiiiiMMMMMMMMMMMMMMMMMM
+TOPO     ooooMMMMMMMMMMMMMMMMMMMMiiiiiiiiMMMMMMMMMMMMMMMMMMMMMMMMMooo
+TOPO     oooooooooooooooooooooooooooMMMMMMMMMMMMMMMMMMMMiiiiiiiiMMMMM
+TOPO     MMMMMMMMMMMMMMMMMMMMooooooooooooooooooooMMMMMMMMMMMMMMMMMMMM
+TOPO     iiiiiiMMMMMMMMMMMMMMMMMMMMMMMMMooooMMMMMMMMMMMMMMMMMMMMMMMMM
+TOPO     iiiiiiMMMMMMMMMMMMMMMMMMMMMMMMMooooooooooooooooooooMMMMMMMMM
+TOPO     MMMMMMMMMMMMMMMiiiiiiiiiiiiMMMMMMMMMMMMMMMMMMMMMMMMooooooooo
+TOPO     oooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo
+TOPO     ooooooooooooooooooooooooooooooooooooooo
+MTHD     memsat 
+TOPO     oooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo 
+TOPO     oooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo
+TOPO     oooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo
+TOPO     oooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo
+TOPO     oooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo
+TOPO     oooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo
+TOPO     oooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo
+TOPO     oooMMMMMMMMMMMMMMMMMMiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii
+TOPO     iiiiiiiiiiiiiMMMMMMMMMMMMMMMMMMMMMMMMoooooooooooooooooooMMMM
+TOPO     MMMMMMMMMMMMMMMMMMMMMiiiiiiiiiiiiiiiiiiiiiiMMMMMMMMMMMMMMMMM
+TOPO     oooooooooooooooooooooooooooMMMMMMMMMMMMMMMMMMMMiiiiiiiiMMMMM
+TOPO     MMMMMMMMMMMMMMMMMMMMooooooooooooooooooooMMMMMMMMMMMMMMMMMMMM
+TOPO     iiiiiiMMMMMMMMMMMMMMMMMMMMMMMooooooooooooooooMMMMMMMMMMMMMMM
+TOPO     MMMMMiiiiiiMMMMMMMMMMMMMMMMMMMMooooooMMMMMMMMMMMMMMMMMMMiiii
+TOPO     iiMMMMMMMMMMMMMMMMMMMMoooooooooooooooooooooooooooooooooooooo
+TOPO     oooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo
+TOPO     ooooooooooooooooooooooooooooooooooooooo
+
+NAME     tr|D3WAD3|D3WAD3_9CAUD Baseplate protein OS=Lactococcus 
+NAME     lactis phage p2 PE=4 SV=1 ORF=15 
+ISTM     NO 
+
+NAME     tr|D3WAD4|D3WAD4_9CAUD Baseplate protein OS=Lactococcus 
+NAME     lactis phage p2 PE=4 SV=1 ORF=16 
+ISTM     NO 
+
+NAME     tr|D3WAD5|D3WAD5_9CAUD Putative uncharacterized protein 
+NAME     OS=Lactococcus lactis phage p2 PE=4 SV=1 ORF=17 
+ISTM     NO 
+
+NAME     tr|Q71AW2|Q71AW2_9CAUD Putative receptor binding protein 
+NAME     OS=Lactococcus lactis phage p2 GN=rbp PE=1 SV=1 ORF=18 
+ISTM     NO 
+
+NAME     tr|D3WAD6|D3WAD6_9CAUD Holin OS=Lactococcus lactis phage p2 
+NAME     PE=4 SV=1 ORF=19 
+ISTM     YES 
+NTER     OUT 
+NRTM     3 
+POSI     1. 2-22, 2. 35-55, 3. 70-90 
+MTHD     topcons-single 
+TOPO     oMMMMMMMMMMMMMMMMMMMMMiiiiiiiiiiiiMMMMMMMMMMMMMMMMMMMMMooooo 
+TOPO     oooooooooMMMMMMMMMMMMMMMMMMMMMiiiiiiiiiiiiiiiiiiiiiiiiiii
+RLTP     888889999999999999999999999999999988888888888888888888888888 
+RLTP     888888888888888888888888888888889999
+RLTY     86.90 
+MTHD     scampi-single 
+TOPO     oMMMMMMMMMMMMMMMMMMMMiiiiiiiiiiiiiMMMMMMMMMMMMMMMMMMMMoooooo 
+TOPO     ooooooooooMMMMMMMMMMMMMMMMMMMMiiiiiiiiiiiiiiiiiiiiiiiiiii
+MTHD     stmhmm 
+TOPO     ooMMMMMMMMMMMMMMMMMMMMiiiiiiiiiiiiMMMMMMMMMMMMMMMMMMMMoooooo 
+TOPO     ooooooooooooooMMMMMMMMMMMMMMMMMMMMiiiiiiiiiiiiiiiiiiiiiii
+MTHD     hmmtop 
+TOPO     ooooMMMMMMMMMMMMMMMMMiiiiiiiiiiiiiiMMMMMMMMMMMMMMMMMMooooooo 
+TOPO     oooooooooMMMMMMMMMMMMMMMMMMMMiiiiiiiiiiiiiiiiiiiiiiiiiiii
+MTHD     memsat 
+TOPO     ooooooMMMMMMMMMMMMMMMMMiiiiiiiiiiiMMMMMMMMMMMMMMMMMMMMoooooo 
+TOPO     oooooooooMMMMMMMMMMMMMMMMMMMMMMMMMiiiiiiiiiiiiiiiiiiiiiii
+
+NAME     tr|D3WAD7|D3WAD7_9CAUD Endolysin OS=Lactococcus lactis 
+NAME     phage p2 PE=4 SV=1 ORF=20 
+ISTM     NO 
+
+NAME     tr|D3WAD8|D3WAD8_9CAUD Putative uncharacterized protein 
+NAME     OS=Lactococcus lactis phage p2 PE=4 SV=1 ORF=21 
+ISTM     NO 
+
+NAME     tr|D3WAD9|D3WAD9_9CAUD Putative uncharacterized protein 
+NAME     OS=Lactococcus lactis phage p2 PE=4 SV=1 ORF=22 
+ISTM     NO 
+
+NAME     tr|D3WAE0|D3WAE0_9CAUD Putative uncharacterized protein 
+NAME     OS=Lactococcus lactis phage p2 PE=4 SV=1 ORF=23 
+ISTM     NO 
+
+NAME     tr|D3WAE1|D3WAE1_9CAUD Putative uncharacterized protein 
+NAME     OS=Lactococcus lactis phage p2 PE=4 SV=1 ORF=24 
+ISTM     NO 
+
+NAME     tr|D3WAE2|D3WAE2_9CAUD Putative uncharacterized protein 
+NAME     OS=Lactococcus lactis phage p2 PE=4 SV=1 ORF=25 
+ISTM     NO 
+
+NAME     tr|B6UL32|B6UL32_9CAUD SaV OS=Lactococcus lactis phage p2 
+NAME     PE=4 SV=1 ORF=26 
+ISTM     NO 
+
+NAME     tr|B6UL31|B6UL31_9CAUD Putative uncharacterized protein 
+NAME     OS=Lactococcus lactis phage p2 PE=4 SV=1 ORF=27 
+ISTM     YES 
+NTER     IN 
+NRTM     1 
+POSI     1. 12-32 
+MTHD     topcons-single 
+TOPO     iiiiiiiiiiiMMMMMMMMMMMMMMMMMMMMMooooooo 
+RLTP     777777778889999888 
+RLTY     84.52 
+MTHD     scampi-single 
+TOPO     iiiiiiiiiiiiiMMMMMMMMMMMMMMMMMMMMoooooo 
+MTHD     stmhmm 
+TOPO     iiiiiiiiMMMMMMMMMMMMMMMMMMMMMMMMMMMMooo 
+MTHD     hmmtop 
+TOPO     iiiiiiiMMMMMMMMMMMMMMMMMMMMMMMMMooooooo 
+MTHD     memsat 
+TOPO     iiiiiiiMMMMMMMMMMMMMMMMMMMMMMMMMooooooo 
+
+NAME     tr|B6UL30|B6UL30_9CAUD Putative uncharacterized protein 
+NAME     OS=Lactococcus lactis phage p2 PE=4 SV=1 ORF=28 
+ISTM     NO 
+
+NAME     tr|B6UL29|B6UL29_9CAUD Putative uncharacterized protein 
+NAME     OS=Lactococcus lactis phage p2 PE=4 SV=1 ORF=29 
+ISTM     NO 
+
+NAME     tr|B6UL28|B6UL28_9CAUD Putative uncharacterized protein 
+NAME     OS=Lactococcus lactis phage p2 PE=4 SV=1 ORF=30 
+ISTM     NO 
+
+NAME     tr|B6UL27|B6UL27_9CAUD Putative uncharacterized protein 
+NAME     OS=Lactococcus lactis phage p2 PE=4 SV=2 ORF=31 
+ISTM     YES 
+NTER     IN 
+NRTM     2 
+POSI     1. 60-80, 2. 82-102 
+MTHD     topcons-single 
+TOPO     iiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiM 
+TOPO     MMMMMMMMMMMMMMMMMMMMoMMMMMMMMMMMMMMMMMMMMMiii
+RLTP     666666666666666666666666666666666666666666666665555566666666 
+RLTP     667777888889998888877777
+RLTY     63.10 
+MTHD     scampi-single 
+TOPO     iiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiM 
+TOPO     MMMMMMMMMMMMMMMMMMMooMMMMMMMMMMMMMMMMMMMMiiii
+MTHD     stmhmm 
+TOPO     iiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiM 
+TOPO     MMMMMMMMMMMMMMMMMMMMooMMMMMMMMMMMMMMMMMMMMiii
+MTHD     hmmtop 
+TOPO     oooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo 
+TOPO     oooooooooMMMMMMMMMMMMMMMMMMMMMMMMMiiiiiiiiiii
+MTHD     memsat 
+TOPO     iiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii 
+TOPO     iiiiiiiiiiiMMMMMMMMMMMMMMMMMMMMMMMMMooooooooo
+
+NAME     tr|D3WAE3|D3WAE3_9CAUD Putative uncharacterized protein 
+NAME     OS=Lactococcus lactis phage p2 PE=4 SV=1 ORF=32 
+ISTM     NO 
+
+NAME     tr|D3WAE4|D3WAE4_9CAUD Putative uncharacterized protein 
+NAME     OS=Lactococcus lactis phage p2 PE=4 SV=1 ORF=33 
+ISTM     NO 
+
+NAME     tr|Q6JM09|Q6JM09_9CAUD SSB protein OS=Lactococcus lactis 
+NAME     phage p2 PE=4 SV=2 ORF=34 
+ISTM     NO 
+
+NAME     tr|Q6JM10|Q6JM10_9CAUD Sak3 OS=Lactococcus lactis phage p2 
+NAME     PE=4 SV=1 ORF=35 
+ISTM     NO 
+
+NAME     tr|Q6JM11|Q6JM11_9CAUD Putative uncharacterized protein 
+NAME     OS=Lactococcus lactis phage p2 PE=4 SV=2 ORF=36 
+ISTM     NO 
+
+NAME     tr|Q6JM12|Q6JM12_9CAUD Putative uncharacterized protein 
+NAME     OS=Lactococcus lactis phage p2 PE=4 SV=1 ORF=37 
+ISTM     NO 
+
+NAME     tr|D3WAE5|D3WAE5_9CAUD Putative uncharacterized protein 
+NAME     OS=Lactococcus lactis phage p2 PE=4 SV=1 ORF=38 
+ISTM     NO 
+
+NAME     tr|D3WAE6|D3WAE6_9CAUD Putative uncharacterized protein 
+NAME     OS=Lactococcus lactis phage p2 PE=4 SV=1 ORF=39 
+ISTM     NO 
+
+NAME     tr|D3WAE7|D3WAE7_9CAUD Putative uncharacterized protein 
+NAME     OS=Lactococcus lactis phage p2 PE=4 SV=1 ORF=40 
+ISTM     NO 
+
+NAME     tr|D3WAE8|D3WAE8_9CAUD Putative uncharacterized protein 
+NAME     OS=Lactococcus lactis phage p2 PE=4 SV=1 ORF=41 
+ISTM     NO 
+
+NAME     tr|D3WAE9|D3WAE9_9CAUD Putative uncharacterized protein 
+NAME     OS=Lactococcus lactis phage p2 PE=4 SV=1 ORF=42 
+ISTM     NO 
+
+NAME     tr|D3WAF0|D3WAF0_9CAUD DNA polymerase subunit 
+NAME     OS=Lactococcus lactis phage p2 PE=4 SV=1 ORF=43 
+ISTM     NO 
+
+NAME     tr|D3WAF1|D3WAF1_9CAUD Putative uncharacterized protein 
+NAME     OS=Lactococcus lactis phage p2 PE=4 SV=1 ORF=44 
+ISTM     NO 
+
+NAME     tr|D3WAF2|D3WAF2_9CAUD HNH endonuclease OS=Lactococcus 
+NAME     lactis phage p2 PE=4 SV=1 ORF=45 
+ISTM     NO 
+
+NAME     tr|D3WAF3|D3WAF3_9CAUD Putative uncharacterized protein 
+NAME     OS=Lactococcus lactis phage p2 PE=4 SV=1 ORF=46 
+ISTM     NO 
+
+NAME     tr|D3WAF4|D3WAF4_9CAUD Putative uncharacterized protein 
+NAME     OS=Lactococcus lactis phage p2 PE=4 SV=1 ORF=47 
+ISTM     NO 
+
+NAME     tr|D3WAF5|D3WAF5_9CAUD Holliday junction endonuclease 
+NAME     OS=Lactococcus lactis phage p2 PE=4 SV=1 ORF=48 
+ISTM     NO 
+
+NAME     tr|D3WAF6|D3WAF6_9CAUD Putative uncharacterized protein 
+NAME     OS=Lactococcus lactis phage p2 PE=4 SV=1 ORF=49 
+ISTM     YES 
+NTER     IN 
+NRTM     2 
+POSI     1. 3-23, 2. 34-54 
+MTHD     topcons-single 
+TOPO     iiMMMMMMMMMMMMMMMMMMMMMooooooooooMMMMMMMMMMMMMMMMMMMMMi 
+RLTP     6666666665555555556666667777888888 
+RLTY     58.33 
+MTHD     scampi-single 
+TOPO     oMMMMMMMMMMMMMMMMMMMMiiiiiiiiiMMMMMMMMMMMMMMMMMMMMooooo 
+MTHD     stmhmm 
+TOPO     iiMMMMMMMMMMMMMMMMMMMMMooooooooooMMMMMMMMMMMMMMMMMMMMMi 
+MTHD     hmmtop 
+TOPO     iiiiiMMMMMMMMMMMMMMMMMMooooooooMMMMMMMMMMMMMMMMMMMMMMMi 
+MTHD     memsat 
+TOPO     iiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiMMMMMMMMMMMMMMMMMMoooooo 
+
