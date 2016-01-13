@@ -3,9 +3,18 @@
 <div class="container">
   <div clas="row">
     <div class="col-md-12">
-
+      <h3>DISOPRED3</h3>
       <div id="sequence-viewer"></div>
-
+    </div>
+  </div>
+  <div clas="row">
+    <div class="col-md-12">
+      <h3>I-Tasser</h3>
+    </div>
+  </div>
+  <div clas="row">
+    <div ng-repeat="model in itasserModels" class="col-md-4">
+      <div id="gldiv-{{model}}" class="prot"></div>
     </div>
   </div>
 </div>

@@ -9,8 +9,6 @@ angular.module('proteoWebApp')
     $http.get('/api/data/' + $routeParams.datasetName + '/orf/' +
       $routeParams.orfName + '/analysis/disopred3')
     .then(function(data){
-
-      console.log(data.data)
       //Protein sequence
       var diso3seq = new Sequence(data.data.seq);
       diso3seq.render('#sequence-viewer', {
@@ -19,7 +17,7 @@ angular.module('proteoWebApp')
         'charsPerLine': 200,
         'toolbar': false,
         'search': false,
-        'title' : 'DISOPRED3',
+        //'title' : false,
         //'sequenceMaxHeight': '300px',
         'badge': false
       });
@@ -44,6 +42,36 @@ angular.module('proteoWebApp')
         {name: 'Protein binding', color: 'white', underscore: true},
       ];
       diso3seq.addLegend(exempleLegend);
+    });
+
+    //**************************************************************************
+    // ITASSER
+    //**************************************************************************
+    $http.get('/api/data/' + $routeParams.datasetName + '/orf/' +
+      $routeParams.orfName + '/analysis/itasser/models')
+    .then(function(data){
+      $scope.itasserModels = data.data;
+
+      $scope.itasserModels.forEach(function(model){
+        $http.get('/api/data/' + $routeParams.datasetName + '/orf/' +
+          $routeParams.orfName + '/analysis/itasser/models/'+model)
+        .then(function(data){
+
+          // Assume there exists an HTML div with id "gldiv"
+          var element = $('#gldiv-'+model);
+
+          // Viewer config - properties 'defaultcolors' and 'callback'
+          var config = {defaultcolors: $3Dmol.rasmolElementColors };
+          // Create GLViewer within 'gldiv'
+          var myviewer = $3Dmol.createViewer(element, config);
+          //'data' is a string containing molecule data in pdb format
+          myviewer.addModel(String(data.data), 'pdb');
+          myviewer.setBackgroundColor(0xffffff);
+          myviewer.setStyle({}, {stick:{}});
+          myviewer.zoomTo();
+          myviewer.render();
+        });
+      });
 
     });
   });
