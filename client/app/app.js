@@ -9,7 +9,9 @@ angular.module('proteoWebApp', [
   'ngSanitize',
   'ngRoute',
   'btford.socket-io',
-  'validation.match'
+  'validation.match',
+  'ui.bootstrap',
+  'ngAnimate'
 ])
   .config(function($routeProvider, $locationProvider) {
     $routeProvider

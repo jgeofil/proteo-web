@@ -1,22 +1,41 @@
 <navbar></navbar>
 
 <div class="container">
-  <div clas="row">
-    <div class="col-md-12">
-      <h3>DISOPRED3</h3>
+
+  <uib-accordion close-others="false">
+    <uib-accordion-group is-open="true">
+      <uib-accordion-heading>
+        DISOPRED3
+      </uib-accordion-heading>
       <div id="sequence-viewer"></div>
-    </div>
-  </div>
-  <div clas="row">
-    <div class="col-md-12">
-      <h3>I-Tasser</h3>
-    </div>
-  </div>
-  <div clas="row">
-    <div ng-repeat="model in itasserModels" class="col-md-4">
-      <div id="gldiv-{{model}}" class="prot"></div>
-    </div>
-  </div>
+    </uib-accordion-group>
+
+    <uib-accordion-group is-open="false" is-disabled="true">
+      <uib-accordion-heading>
+        TOPCONS
+      </uib-accordion-heading>
+    </uib-accordion-group>
+
+    <uib-accordion-group is-open="false" is-disabled="true">
+      <uib-accordion-heading>
+        TMHMM
+      </uib-accordion-heading>
+    </uib-accordion-group>
+
+    <uib-accordion-group is-open="true">
+      <uib-accordion-heading>
+        I-Tasser
+      </uib-accordion-heading>
+      <div clas="row">
+        <div ng-repeat="model in itasserModels" class="col-md-4">
+          <h5>{{model}}</h5>
+          <div id="gldiv-{{model}}" class="prot"></div>
+        </div>
+      </div>
+    </uib-accordion-group>
+
+  </uib-accordion>
+
 </div>
 
 <footer></footer>

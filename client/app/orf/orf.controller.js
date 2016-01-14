@@ -67,7 +67,7 @@ angular.module('proteoWebApp')
           //'data' is a string containing molecule data in pdb format
           myviewer.addModel(String(data.data), 'pdb');
           myviewer.setBackgroundColor(0xffffff);
-          myviewer.setStyle({}, {stick:{}});
+          myviewer.setStyle({}, {cartoon: {color: 'spectrum'}});
           myviewer.zoomTo();
           myviewer.render();
         });
