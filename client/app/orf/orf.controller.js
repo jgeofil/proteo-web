@@ -1,5 +1,6 @@
 'use strict';
-
+//TODO: include D3 in a more Angular way
+/* jshint undef: false*/
 angular.module('proteoWebApp')
   .controller('OrfCtrl', function ($scope, $http, $routeParams) {
 
@@ -24,12 +25,12 @@ angular.module('proteoWebApp')
 
       var coverage = [];
 
-      data.data.bind.symbol.forEach(function(sym, i){
-        var style = {start: i, end: i+1, color: 'black', underscore: false};
-        if(sym === '^'){
+      data.data.data.forEach(function(d){
+        var style = {start: d.pos-1, end: d.pos, color: 'black', underscore: false};
+        if(d.bind.symbol === '^'){
           style.underscore = true;
         }
-        if(data.data.diso.symbol[i] === '*'){
+        if(d.diso.symbol === '*'){
           style.color = 'red';
         }
         coverage.push(style);
@@ -42,6 +43,52 @@ angular.module('proteoWebApp')
         {name: 'Protein binding', color: 'white', underscore: true},
       ];
       diso3seq.addLegend(exempleLegend);
+
+      var margin = {top: 20, right: 20, bottom: 30, left: 50},
+          width = 600 - margin.left - margin.right,
+          height = 200 - margin.top - margin.bottom;
+
+      var x = d3.scale.linear()
+          .range([0, width]);
+
+      var y = d3.scale.linear()
+          .range([height,0]);
+
+      var xAxis = d3.svg.axis()
+          .scale(x)
+          .orient('bottom');
+
+      var yAxis = d3.svg.axis()
+          .scale(y)
+          .orient('left')
+          .ticks(5);
+
+
+      var line = d3.svg.line()
+          .x(function(d) { return x(d.pos); })
+          .y(function(d) { return y(d.diso.value); });
+
+      var svg = d3.select('#diso-graph').append('svg')
+          .attr('width', width + margin.left + margin.right)
+          .attr('height', height + margin.top + margin.bottom)
+        .append('g')
+          .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
+
+      x.domain(d3.extent(data.data.data, function(d) { return d.pos; }));
+      y.domain(d3.extent(data.data.data, function(d) { return d.diso.value===null?0:d.diso.value; }));
+
+      svg.append('g')
+          .attr('class', 'x axis')
+          .attr('transform', 'translate(0,' + height + ')')
+          .call(xAxis);
+
+      svg.append('g')
+          .attr('class', 'y axis')
+          .call(yAxis);
+
+      svg.append('path')
+          .attr('class', 'line')
+          .attr('d', line(data.data.data));
     });
 
     //**************************************************************************

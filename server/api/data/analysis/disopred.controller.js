@@ -44,7 +44,25 @@ export function disopred3(req, res){
       });
     }
   ], function (err, result) {
-    res.status(200).json(result);
+    var formatted = [];
+    var seqList = result.seq.split('');
+
+    result.diso.values.forEach(function(d,i){
+      formatted.push({
+        pos: i+1,
+        amino: seqList[i],
+        bind:{
+          value: result.bind.values[i],
+          symbol: result.bind.symbol[i]
+        },
+        diso:{
+          value: result.diso.values[i],
+          symbol: result.diso.symbol[i]
+        }
+      })
+    });
+
+    res.status(200).json({seq: result.seq, data: formatted});
   });
 
 }
