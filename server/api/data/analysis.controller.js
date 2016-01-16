@@ -7,7 +7,7 @@ var path = require('path');
 var fs = require('fs');
 
 //TODO: Modifier pour process.env.DATAPATH
-var dataPath = path.join(__dirname, '/../../../data/');
+var dataPath = path.join(__dirname, '/../../data/');
 
 
 // Gets a list of available analysis

@@ -11,7 +11,7 @@ var asy = require('async');
 var glob = require("glob");
 
 //TODO: Modifier pour process.env.DATAPATH
-var dataPath = path.join(__dirname, '/../../../../data/');
+var dataPath = path.join(__dirname, '/../../../data/');
 
 
 // Get JSON formatted list of all available models for the analysis

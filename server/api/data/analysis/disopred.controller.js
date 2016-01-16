@@ -10,7 +10,7 @@ var lineReader = require('readline');
 var asy = require('async');
 
 //TODO: Modifier pour process.env.DATAPATH
-var dataPath = path.join(__dirname, '/../../../../data/');
+var dataPath = path.join(__dirname, '/../../../data/');
 
 
 // Get JSON formatted DISOPRED3 output
@@ -44,25 +44,30 @@ export function disopred3(req, res){
       });
     }
   ], function (err, result) {
+
     var formatted = [];
-    var seqList = result.seq.split('');
+    if(result && ! err){
+      var seqList = result.seq.split('');
 
-    result.diso.values.forEach(function(d,i){
-      formatted.push({
-        pos: i+1,
-        amino: seqList[i],
-        bind:{
-          value: result.bind.values[i],
-          symbol: result.bind.symbol[i]
-        },
-        diso:{
-          value: result.diso.values[i],
-          symbol: result.diso.symbol[i]
-        }
-      })
-    });
+      result.diso.values.forEach(function(d,i){
+        formatted.push({
+          pos: i+1,
+          amino: seqList[i],
+          bind:{
+            value: result.bind.values[i],
+            symbol: result.bind.symbol[i]
+          },
+          diso:{
+            value: result.diso.values[i],
+            symbol: result.diso.symbol[i]
+          }
+        })
+      });
+      res.status(200).json({seq: result.seq, data: formatted});
+    }else{
+      res.status(404).send("Not found");
+    }
 
-    res.status(200).json({seq: result.seq, data: formatted});
   });
 
 }
