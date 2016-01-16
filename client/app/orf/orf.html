@@ -8,7 +8,8 @@
         DISOPRED3
       </uib-accordion-heading>
       <div id="sequence-viewer"></div>
-      <div id="diso-graph" height="200" width="300"></div>
+    
+      <graph-line ng-if="disoGraphData" graph-data="disoGraphData" graph-height="200"></graph-line>
 
     </uib-accordion-group>
 
