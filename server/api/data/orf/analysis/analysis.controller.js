@@ -2,7 +2,7 @@
 
 import _ from 'lodash';
 
-var util = require('./util');
+var util = require('./../../util');
 var path = require('path');
 var fs = require('fs');
 

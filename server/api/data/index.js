@@ -7,6 +7,6 @@ var router = express.Router();
 
 router.get('/', controller.index);
 
-router.use('/:dataId/orf', require('./orf.index.js'));
+router.use('/:dataId/orf', require('./orf/orf.index.js'));
 
 module.exports = router;

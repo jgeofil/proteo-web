@@ -10,7 +10,7 @@ var lineReader = require('readline');
 var asy = require('async');
 
 //TODO: Modifier pour process.env.DATAPATH
-var dataPath = path.join(__dirname, '/../../../data/');
+var dataPath = path.join(__dirname, '/../../../../data/');
 
 
 // Get JSON formatted DISOPRED3 output

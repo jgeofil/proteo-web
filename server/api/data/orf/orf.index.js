@@ -7,6 +7,6 @@ var router = express.Router({mergeParams: true});
 
 router.get('/', controller.index);
 
-router.use('/:orfId/analysis', require('./analysis.index.js'));
+router.use('/:orfId/analysis', require('./analysis/analysis.index.js'));
 
 module.exports = router;
