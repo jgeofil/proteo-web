@@ -5,20 +5,20 @@
 #            Ordered amino acids are marked with dots (.)
     1 M - 0.22
     2 N .   NA
-    3 K .   NA
-    4 E ^   NA
-    5 H ^   NA
-    6 I ^   NA
-    7 L ^   NA
-    8 A .   NA
+    3 K .   0.22
+    4 E ^   0.67
+    5 H ^   0.79
+    6 I ^   0.55
+    7 L ^   0.78
+    8 A .   0.23
     9 Q .   NA
    10 K .   NA
-   11 E .   NA
-   12 V ^   NA
-   13 L .   NA
-   14 T ^   NA
-   15 P ^   NA
-   16 I .   NA
+   11 E .   0.55
+   12 V ^   0.68
+   13 L .   0.23
+   14 T ^   0.78
+   15 P ^   0.75
+   16 I .   0.45
    17 E .   NA
    18 Y .   NA
    19 E .   NA

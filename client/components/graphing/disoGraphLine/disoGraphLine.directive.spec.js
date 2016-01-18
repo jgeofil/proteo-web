@@ -1,10 +1,10 @@
 'use strict';
 
-describe('Directive: graphLine', function () {
+describe('Directive: disoGraphLine', function () {
 
   // load the directive's module and view
   beforeEach(module('proteoWebApp'));
-  beforeEach(module('app/graphLine/graphLine.html'));
+  beforeEach(module('app/disoGraphLine/disoGraphLine.html'));
 
   var element, scope;
 
@@ -16,6 +16,6 @@ describe('Directive: graphLine', function () {
     element = angular.element('<graph-line></graph-line>');
     element = $compile(element)(scope);
     scope.$apply();
-    expect(element.text()).toBe('this is the graphLine directive');
+    expect(element.text()).toBe('this is the disoGraphLine directive');
   }));
 });

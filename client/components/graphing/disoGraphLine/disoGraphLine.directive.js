@@ -2,9 +2,9 @@
 //TODO: include D3 in a more Angular way
 /* jshint undef: false*/
 angular.module('proteoWebApp')
-  .directive('graphLine', function () {
+  .directive('disodisoGraphLine', function () {
     return {
-      templateUrl: 'components/graphing/graphLine/graphLine.html',
+      templateUrl: 'components/graphing/disoGraphLine/disoGraphLine.html',
       restrict: 'E',
       scope:{
         graphData: '=',
@@ -42,7 +42,15 @@ angular.module('proteoWebApp')
           .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
 
         x.domain(d3.extent(scope.graphData, function(d) { return d.pos; }));
-        y.domain(d3.extent(scope.graphData, function(d) { return d.diso.value===null?0:d.diso.value; }));
+        y.domain([0,1]);
+        //y.domain(d3.extent(scope.graphData, function(d) { return d.diso.value===null?0:d.diso.value; }));
+
+        svg.append('rect')
+         .attr('x', 0)
+         .attr('y', y(0.5))
+         .attr('width', width)
+         .attr('height', y(0)-y(0.5))
+         .style('fill', '#EEE');
 
         svg.append('g')
           .attr('class', 'x axis')
@@ -70,7 +78,10 @@ angular.module('proteoWebApp')
 
         svg.append('path')
           .attr('class', 'line')
-          .attr('d', line(scope.graphData));
+          .attr('d', line(scope.graphData))
+          .style('stroke-width', 1)    // set the stroke width
+          .style('stroke', 'red') ;
+
       }
     };
   });
