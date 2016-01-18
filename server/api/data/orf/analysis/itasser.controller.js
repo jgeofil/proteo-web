@@ -75,7 +75,7 @@ export function getPredictions(req, res){
 
         data.ss = lines.map(function(line){
           return {
-            pos: line[0],
+            pos: Number(line[0]),
             amino: line[1],
             symbol: line[2],
             confidence: {

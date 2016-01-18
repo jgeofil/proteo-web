@@ -30,6 +30,9 @@
       <uib-accordion-heading>
         I-Tasser
       </uib-accordion-heading>
+
+      <itasser-ss-graph ng-if="itasserSsGraphData" graph-data-ss="itasserSsGraphData.ss" graph-height="200"></itasser-ss-graph>
+
       <div clas="row">
         <div ng-repeat="model in itasserModels" class="col-md-4">
           <h5>{{model}}</h5>

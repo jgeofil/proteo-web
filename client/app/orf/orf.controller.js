@@ -82,7 +82,7 @@ angular.module('proteoWebApp')
   $http.get('/api/data/' + $routeParams.datasetName + '/orf/' +
   $routeParams.orfName + '/analysis/itasser/predictions')
   .then(function(response){
-    console.log(response);
+    $scope.itasserSsGraphData = response.data;
 
   });
 });

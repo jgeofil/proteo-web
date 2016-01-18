@@ -2,7 +2,7 @@
 //TODO: include D3 in a more Angular way
 /* jshint undef: false*/
 angular.module('proteoWebApp')
-  .directive('disodisoGraphLine', function () {
+  .directive('disoGraphLine', function () {
     return {
       templateUrl: 'components/graphing/disoGraphLine/disoGraphLine.html',
       restrict: 'E',
@@ -34,6 +34,10 @@ angular.module('proteoWebApp')
         var line = d3.svg.line()
           .x(function(d) { return x(d.pos); })
           .y(function(d) { return y(d.diso.value); });
+
+        var bindLine = d3.svg.line()
+          .x(function(d) { return x(d.pos); })
+          .y(function(d) { return y(d.bind.value); });
 
         var svg = d3.select('#diso-graph').append('svg')
           .attr('width', width + margin.left + margin.right)
@@ -81,6 +85,12 @@ angular.module('proteoWebApp')
           .attr('d', line(scope.graphData))
           .style('stroke-width', 1)    // set the stroke width
           .style('stroke', 'red') ;
+
+          svg.append('path')
+            .attr('class', 'line')
+            .attr('d', bindLine(scope.graphData))
+            .style('stroke-width', 1)    // set the stroke width
+            .style('stroke', 'blue') ;
 
       }
     };
