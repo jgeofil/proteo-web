@@ -36,11 +36,22 @@ angular.module('proteoWebApp')
           .x(function(d) { return x(d.pos); })
           .y(function(d) { return yCon(Math.max(d.confidence.coil,d.confidence.beta,d.confidence.helix)); });
 
+        var tip = d3.tip()
+          .attr('class', 'd3-tip')
+          .offset([-10, 0])
+          .html(function(d) {
+            return "<span style='color:red'>" + d.amino + "</span>";
+          });
+
+
+
         var svg = d3.select('#itasser-ss-graph').append('svg')
           .attr('width', width + margin.left + margin.right)
           .attr('height', height + margin.top + margin.bottom)
           .append('g')
           .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
+
+        svg.call(tip);
 
         x.domain(d3.extent(scope.graphDataSs, function(d) { return d.pos; }));
         yCon.domain([0,1]);
@@ -73,7 +84,9 @@ angular.module('proteoWebApp')
               default:
                 return 'none';
             }
-          });
+          })
+          .on('mouseover', tip.show)
+          .on('mouseout', tip.hide);
 
         svg.append('g')
           .attr('class', 'x axis')
