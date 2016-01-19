@@ -31,7 +31,13 @@
         I-Tasser
       </uib-accordion-heading>
 
-      <itasser-ss-graph ng-if="itasserSsGraphData" graph-data-ss="itasserSsGraphData.ss" graph-height="200"></itasser-ss-graph>
+      <h4>Predicted secondary structure</h4>
+      <hr>
+
+      <itasser-ss-graph ng-if="itasserSsGraphData" graph-data-ss="itasserSsGraphData.ss" graph-height="150"></itasser-ss-graph>
+
+      <h4>Top final models predicted</h4>
+      <hr>
 
       <div clas="row">
         <div ng-repeat="model in itasserModels" class="col-md-4">

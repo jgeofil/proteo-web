@@ -25,7 +25,7 @@ angular.module('proteoWebApp')
           .orient('bottom');
 
         var yCon = d3.scale.linear()
-          .range([height-20,height-70]);
+          .range([height-20,height-90]);
 
         var yConAxis = d3.svg.axis()
           .scale(yCon)
@@ -40,7 +40,7 @@ angular.module('proteoWebApp')
           .attr('class', 'd3-tip')
           .offset([-10, 0])
           .html(function(d) {
-            return "<span style='color:red'>" + d.amino + "</span>";
+            return "<span style='color:white'>" + d.amino +"-"+ d.pos+ "</span>";
           });
 
 
@@ -62,27 +62,25 @@ angular.module('proteoWebApp')
           .attr('y1', height -10)
           .attr('y2', height -10)
           .style('stroke', 'black')
-          .style('stroke-width', 1)  ;
+          .style('stroke-width', 1);
 
         var step = x(0)-x(1);
 
         svg.selectAll('rect')
           .data(scope.graphDataSs)
           .enter().append('svg:rect')
-          .attr('x', function(d) { return x(d.pos)-(step/2); })
+          .attr('x', function(d) { return x(d.pos-1)-(step/2); })
           .attr('y', height -15)
-          .attr('width', function(d) { return x(d.pos+1)-x(d.pos); })
+          .attr('width', function(d) { return x(d.pos)-x(d.pos-1); })
           .attr('height', 10)
-          .style('fill', function(d){
+          .attr('class', function(d){
             switch(d.symbol){
               case 'H':
-                return 'red';
-              case 'S':
-                return 'blue';
+                return 'itasser-helix';
               case 'E':
-                return 'yellow';
+                return 'itasser-beta';
               default:
-                return 'none';
+                return 'itasser-coil';
             }
           })
           .on('mouseover', tip.show)
@@ -115,7 +113,7 @@ angular.module('proteoWebApp')
             .attr('class', 'y label')
             .attr('text-anchor', 'middle')
             .attr('y', -40)
-            .attr('x', -50)
+            .attr('x', -70)
             .attr('transform', 'rotate(-90)')
             .text('confidence');
 
@@ -124,6 +122,45 @@ angular.module('proteoWebApp')
             .attr('d', conLine(scope.graphDataSs))
             .style('stroke-width', 1)    // set the stroke width
             .style('stroke', 'red') ;
+
+          var legend = svg.append('g')
+        	  .attr('class', 'legend')
+        	  .attr('x', 20)
+        	  .attr('y', height+25)
+        	  .attr('height', 100)
+        	  .attr('width', 100);
+
+        	legend.selectAll('g')
+            .data([
+              {
+                name: 'Helix',
+                color: 'red'
+              },
+              {
+                name: 'Beta',
+                color: 'blue'
+              },
+            ])
+            .enter()
+            .append('g')
+            .each(function(d, i) {
+              var g = d3.select(this);
+              g.append('rect')
+                .attr('x', 20+100*i)
+                .attr('y', height+25)
+                .attr('width', 10)
+                .attr('height', 10)
+                .style('fill', d.color);
+
+              g.append('text')
+                .attr('x', 20+100*i+15)
+                .attr('y', height+35)
+                .attr('height',30)
+                .attr('width',100)
+                .style('fill', d.color)
+                .text(d.name);
+
+            });
 
       }
     };
