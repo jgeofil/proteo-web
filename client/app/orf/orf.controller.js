@@ -84,5 +84,7 @@ angular.module('proteoWebApp')
   .then(function(response){
     $scope.itasserSsGraphData = response.data;
 
+    $scope.itasserAlignGraphData = response.data.align;
+
   });
 });

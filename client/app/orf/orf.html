@@ -36,13 +36,17 @@
 
       <itasser-ss-graph ng-if="itasserSsGraphData" graph-data-ss="itasserSsGraphData.ss" graph-height="150"></itasser-ss-graph>
 
+      <h4>Top 5 threading templates </h4>
+      <hr>
+      <itasser-align-graph ng-if="itasserAlignGraphData" graph-data="itasserAlignGraphData" seq-count="5"></itasser-align-graph>
+
       <h4>Top final models predicted</h4>
       <hr>
 
       <div clas="row">
         <div ng-repeat="model in itasserModels" class="col-md-4">
           <h5>{{model}}</h5>
-          <div id="gldiv-{{model}}" class="prot"></div>
+          <div id="gldiv-{{model}}" class="prot itasser-model-box"></div>
         </div>
       </div>
     </uib-accordion-group>

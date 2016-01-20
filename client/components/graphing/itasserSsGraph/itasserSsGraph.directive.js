@@ -11,11 +11,11 @@ angular.module('proteoWebApp')
         graphHeight: '='
       },
       link: function (scope, element, attrs) {
-        console.log(scope.graphDataSs)
+        var seqln = scope.graphDataSs.length; //Length of the sequence alignement
 
-        var margin = {top: 20, right: 20, bottom: 50, left: 60},
-          width = element.parent().width() - margin.left - margin.right,
-          height = scope.graphHeight - margin.top - margin.bottom;
+        var margin = {top: 30, right: 20, bottom: 60, left: 90};
+        var width = (seqln*15) - margin.left - margin.right;
+        var height = scope.graphHeight;
 
         var x = d3.scale.linear()
           .range([0, width]);
@@ -25,7 +25,7 @@ angular.module('proteoWebApp')
           .orient('bottom');
 
         var yCon = d3.scale.linear()
-          .range([height-20,height-90]);
+          .range([height-20,0]);
 
         var yConAxis = d3.svg.axis()
           .scale(yCon)
@@ -42,8 +42,6 @@ angular.module('proteoWebApp')
           .html(function(d) {
             return "<span style='color:white'>" + d.amino +"-"+ d.pos+ "</span>";
           });
-
-
 
         var svg = d3.select('#itasser-ss-graph').append('svg')
           .attr('width', width + margin.left + margin.right)
@@ -113,7 +111,7 @@ angular.module('proteoWebApp')
             .attr('class', 'y label')
             .attr('text-anchor', 'middle')
             .attr('y', -40)
-            .attr('x', -70)
+            .attr('x', 10-height/2)
             .attr('transform', 'rotate(-90)')
             .text('confidence');
 
