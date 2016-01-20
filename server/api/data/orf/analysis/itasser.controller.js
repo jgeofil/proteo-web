@@ -5,7 +5,7 @@ import _ from 'lodash';
 //var util = require('./util');
 var path = require('path');
 var fs = require('fs');
-var lineReader = require('readline');
+var lineReader = require('linebyline');
 var asy = require('async');
 var glob = require("glob");
 
@@ -51,18 +51,23 @@ export function getPredictions(req, res){
   var subPath = path.join(dataPath, req.params.dataId, req.params.orfId, 'i-tasser');
 
   var ssFilePath = path.join(subPath, 'seq.ss');
+  var alignFilePath = path.join(subPath, 'coverage');
 
   asy.waterfall([
     //**************************************************************************
     // Read secondary sequence file
     function(callback) {
 
-      var rl = getLineReader(ssFilePath);
+      var rl = lineReader(ssFilePath);
+
       var lines = [];
       var data = {};
       var first = true;
 
       rl
+      .on('error', function (err) {
+        return callback(err, data);
+      })
       .on('line', function (line) {
         if(!first){ // ignore first line
           lines.push(line.split(' ').filter(function(el) {return el.length !== 0}));
@@ -89,10 +94,58 @@ export function getPredictions(req, res){
       });
       //TODO: on error...
     },
+
     //**************************************************************************
-    // Read other file
+    // Read alignement file
     function(data, callback) {
-      callback(null, data);
+      var rl = lineReader(alignFilePath);
+
+      var lines = [];
+      var pos = 0;
+      data.align = {};
+      data.align.coverage = [];
+
+      rl
+      .on('error', function (err) {
+        return callback(err, data);
+      })
+      .on('line', function (line) {
+        switch(pos){
+          // Ignore header line
+          case 0:
+            if(line.substring(0,3) === 'Rnk'){ pos+=1; }
+            break;
+          // Retrieve secondary structure line
+          case 1:
+            data.align.ss = line.split(' ')
+                              .filter(function(el) {return el.length !== 0})[0]
+            pos+=1;
+            break;
+          // Retrieve sequence line
+          case 2:
+            data.align.seq = line.split(' ')
+                              .filter(function(el) {return el.length !== 0})[0]
+            pos+=1;
+            break;
+          // Retrieve all other alignement lines
+          default:
+            var colArray = line.split(' ')
+                            .filter(function(el) {return el.length !== 0});
+            if(colArray.length > 5){
+              data.align.coverage.push({
+                rank: Number(colArray[0]),
+                pdbid: colArray[1],
+                zz0: Number(colArray[2]),
+                method: Number(colArray[3].replace(':', '')),
+                cov: colArray[4]
+              });
+            }
+            break;
+        }
+      })
+      .on('close', function (){
+        callback(null, data);
+      });
     }
   ], function (err, result) {
 

@@ -4,7 +4,11 @@ angular.module('proteoWebApp')
   .directive('itasserAlignGraph', function () {
     return {
       templateUrl: 'components/graphing/itasserAlignGraph/itasserAlignGraph.html',
-      restrict: 'EA',
+      restrict: 'E',
+      scope:{
+        graphData: '=',
+        graphHeight: '='
+      },
       link: function (scope, element, attrs) {
       }
     };

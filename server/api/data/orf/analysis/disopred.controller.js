@@ -6,7 +6,7 @@ import _ from 'lodash';
 var path = require('path');
 var fs = require('fs');
 var fasta = require('bionode-fasta');
-var lineReader = require('readline');
+var lineReader = require('linebyline');
 var asy = require('async');
 
 //TODO: Modifier pour process.env.DATAPATH
@@ -73,14 +73,15 @@ export function disopred3(req, res){
 }
 
 var readDisoFile = function(path, callback){
-  var rl = lineReader.createInterface({
-    input: fs.createReadStream(path)
-  });
+  var rl = lineReader(path);
 
   var lines = [];
   var data = {};
 
   rl
+  .on('error', function (err) {
+    return callback(err, data);
+  })
   .on('line', function (line) {
     if(line[0]!== '#'){
       lines.push(line.split(' ').filter(function(el) {return el.length !== 0}));
