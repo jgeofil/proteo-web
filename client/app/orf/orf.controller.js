@@ -2,7 +2,20 @@
 //TODO: include D3 in a more Angular way
 /* jshint undef: false*/
 angular.module('proteoWebApp')
-.controller('OrfCtrl', function ($scope, $http, $routeParams) {
+.controller('OrfCtrl', function ($scope, $http, $routeParams, $rootScope) {
+
+  //**************************************************************************
+  // Scrolling controls
+  //**************************************************************************
+
+  $scope.posX = 0;
+
+  $scope.moveX = function (pixels) {
+    $scope.posX = $scope.posX + pixels;
+  };
+  //$scope.$evalAsync(function () {
+  //  $scope.$broadcast('content.changed', 1000);
+//  });
 
   //**************************************************************************
   // DISOPRED3

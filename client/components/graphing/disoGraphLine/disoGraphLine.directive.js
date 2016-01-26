@@ -67,13 +67,6 @@ angular.module('proteoWebApp')
           .call(yAxis);
 
         svg.append('text')
-          .attr('class', 'x label')
-          .attr('text-anchor', 'middle')
-          .attr('x', width/2)
-          .attr('y', height + 35)
-          .text('position');
-
-        svg.append('text')
           .attr('class', 'y label')
           .attr('text-anchor', 'middle')
           .attr('y', -40)

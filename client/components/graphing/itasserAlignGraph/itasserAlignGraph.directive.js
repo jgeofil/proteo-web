@@ -92,14 +92,6 @@ angular.module('proteoWebApp')
           .attr('transform', 'translate(0,' + (height+5) + ')')
           .call(xAxis);
 
-        // Draw x label
-        svg.append('text')
-          .attr('class', 'x label')
-          .attr('text-anchor', 'middle')
-          .attr('x', width/2)
-          .attr('y', height + 35)
-          .text('position');
-
 
       }
     };

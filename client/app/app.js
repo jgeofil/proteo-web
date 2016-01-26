@@ -11,7 +11,8 @@ angular.module('proteoWebApp', [
   'btford.socket-io',
   'validation.match',
   'ui.bootstrap',
-  'ngAnimate'
+  'ngAnimate',
+  'ngScrollable'
 ])
   .config(function($routeProvider, $locationProvider) {
     $routeProvider
