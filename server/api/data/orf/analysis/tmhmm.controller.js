@@ -85,10 +85,10 @@ export function getTmhmm(req, res){
         // List of strings to object
         data.prob = lines.map(function(line){
           return {
-            pos: line[0],
+            pos: Number(line[0]),
             amino: line[1],
             inside: Number(line[2]),
-            membr: Number(line[3]),
+            membrane: Number(line[3]),
             outside: Number(line[4])
           }
         });

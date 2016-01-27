@@ -13,7 +13,7 @@ angular.module('proteoWebApp')
       link: function (scope, element, attrs) {
         var seqln = scope.graphDataSs.length; //Length of the sequence alignement
 
-        var margin = {top: 30, right: 20, bottom: 60, left: 90};
+        var margin = {top: 10, right: 20, bottom: 60, left: 90};
         var width = (seqln*15) - margin.left - margin.right;
         var height = scope.graphHeight;
 

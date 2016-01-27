@@ -106,7 +106,6 @@ angular.module('proteoWebApp')
   $http.get('/api/data/' + $routeParams.datasetName + '/orf/' +
   $routeParams.orfName + '/analysis/tmhmm')
   .then(function(data){
-    $scope.tmhmm = data.data;
-
+    $scope.tmhmmGraphData = data.data;
   });
 });

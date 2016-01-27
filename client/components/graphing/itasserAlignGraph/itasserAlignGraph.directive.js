@@ -19,7 +19,7 @@ angular.module('proteoWebApp')
           d.cov = d.cov.split(''); //Split alignement sequences
         });
 
-        var margin = {top: 50, right: 20, bottom: 70, left: 90};
+        var margin = {top: 10, right: 20, bottom: 70, left: 90};
         var width = (seqln*15) - margin.right - margin.left;
         var height = (scope.seqCount*18);
 
