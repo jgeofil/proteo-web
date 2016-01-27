@@ -60,24 +60,32 @@ Returns list of available datasets.
 
 ### ORFs
 
-`GET /api/data/[dataset name]/orf` 
+`GET /api/data/[dataset name]/orf`
+
 Returns list of available ORFs in selected dataset.
 
 ### Analysis
 
 `GET /api/data/[dataset name]/orf/[orf name]/analysis` 
+
 Returns list of available analysis results for selected ORF.
 
 #### Disopred 3
 
 `GET /api/data/[dataset name]/orf/[orf name]/analysis/disopred3/` 
+
 Returns JSON formatted disopred output
 
 #### I-Tasser
 
 `GET /api/data/[dataset name]/orf/[orf name]/analysis/itasser/models` 
+
 Returns list of available model files
+
 `GET /api/data/[dataset name]/orf/[orf name]/analysis/itasser/models/[modelName]` 
+
 Returns PDB file of selected model
+
 `GET /api/data/[dataset name]/orf/[orf name]/analysis/itasser/predictions` 
+
 Returns JSON formatted i-tasser output
