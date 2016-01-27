@@ -55,22 +55,29 @@ Running `npm test` will run the unit tests with karma.
 
 ### Datasets
 
-`GET /api/data` Returns list of available datasets.
+`GET /api/data` 
+Returns list of available datasets.
 
 ### ORFs
 
-`GET /api/data/[dataset name]/orf` Returns list of available ORFs in selected dataset.
+`GET /api/data/[dataset name]/orf` 
+Returns list of available ORFs in selected dataset.
 
 ### Analysis
 
-`GET /api/data/[dataset name]/orf/[orf name]/analysis` Returns list of available analysis results for selected ORF.
+`GET /api/data/[dataset name]/orf/[orf name]/analysis` 
+Returns list of available analysis results for selected ORF.
 
 #### Disopred 3
 
-`GET /api/data/[dataset name]/orf/[orf name]/analysis/disopred3/` Returns JSON formatted disopred output
+`GET /api/data/[dataset name]/orf/[orf name]/analysis/disopred3/` 
+Returns JSON formatted disopred output
 
 #### I-Tasser
 
-`GET /api/data/[dataset name]/orf/[orf name]/analysis/itasser/models` Returns list of available model files
-`GET /api/data/[dataset name]/orf/[orf name]/analysis/itasser/models/[modelName]` Returns PDB file of selected model
-`GET /api/data/[dataset name]/orf/[orf name]/analysis/itasser/predictions` Returns JSON formatted i-tasser output
+`GET /api/data/[dataset name]/orf/[orf name]/analysis/itasser/models` 
+Returns list of available model files
+`GET /api/data/[dataset name]/orf/[orf name]/analysis/itasser/models/[modelName]` 
+Returns PDB file of selected model
+`GET /api/data/[dataset name]/orf/[orf name]/analysis/itasser/predictions` 
+Returns JSON formatted i-tasser output
