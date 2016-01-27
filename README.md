@@ -55,7 +55,8 @@ Running `npm test` will run the unit tests with karma.
 
 ### Datasets
 
-`GET /api/data` 
+`GET /api/data`
+
 Returns list of available datasets.
 
 ### ORFs
