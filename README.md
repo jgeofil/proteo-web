@@ -28,16 +28,65 @@ Run `grunt build` for building and `grunt serve` for preview.
 
 Running `npm test` will run the unit tests with karma.
 
+## Data
+
+### Structure
+
+    .
+    ├── [dataset name 1]                        # Dataset folder, name is arbitrary but must be unique  
+    │   ├── [orf name 1]                        # ORF folder, name is arbitrary but must be unique
+    │   │   ├── disopred3                       # Disopred 3 analysis folder
+    │   │   │   ├── [orf name 1].seq            # Sequence file
+    │   │   │   ├── [orf name 1].seq.diso       # Disorder file
+    │   │   │   └── [orf name 1].seq.pbdat      # Protein binding file
+    │   │   └── i-tasser                        # I-tasser analysis folder  
+    │   │       ├── cscore                      # CScore file
+    │   │       ├── seq.ss                      # Secondary sequence file
+    │   │       ├── coverage                    # Alignment file
+    │   │       ├── model[number 1].pdb         # Model PDB file
+    │   │       ├── model[number 2].pdb         
+    │   │       └── ...                         # etc. more models
+    │   ├── [orf name 2]        
+    │   └── ...                                 # etc. more ORFs
+    ├── [dataset name 2]
+    └── ...                                     # etc. more datasets
+
 ## API
 
 ### Datasets
 
-`GET /api/data` Returns JSON list of available datasets.
+`GET /api/data`
+
+Returns list of available datasets.
 
 ### ORFs
 
-`GET /api/data/[dataset name]/orf` Returns JSON list of available ORFs in selected dataset.
+`GET /api/data/[dataset name]/orf`
+
+Returns list of available ORFs in selected dataset.
 
 ### Analysis
 
-`GET /api/data/[dataset name]/orf/[orf name]/analysis` Returns JSON list of available analysis results for selected ORF.
+`GET /api/data/[dataset name]/orf/[orf name]/analysis` 
+
+Returns list of available analysis results for selected ORF.
+
+#### Disopred 3
+
+`GET /api/data/[dataset name]/orf/[orf name]/analysis/disopred3/` 
+
+Returns JSON formatted disopred output
+
+#### I-Tasser
+
+`GET /api/data/[dataset name]/orf/[orf name]/analysis/itasser/models` 
+
+Returns list of available model files
+
+`GET /api/data/[dataset name]/orf/[orf name]/analysis/itasser/models/[modelName]` 
+
+Returns PDB file of selected model
+
+`GET /api/data/[dataset name]/orf/[orf name]/analysis/itasser/predictions` 
+
+Returns JSON formatted i-tasser output
