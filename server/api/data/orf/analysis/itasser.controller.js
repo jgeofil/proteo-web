@@ -21,20 +21,88 @@ function getLineReader(path){
 // Get JSON formatted list of all available models for the analysis
 export function listModels(req, res){
   var subPath = path.join(dataPath, req.params.dataId, req.params.orfId, 'i-tasser');
+  var cscorePath = path.join(subPath, 'cscore');
 
-  glob("model*.pdb", {cwd: subPath}, function (err, files) {
-    if(err) {
-      res.status(500).send(err);
+  asy.waterfall([
+    //**************************************************************************
+    // List all available model files
+    function(callback) {
+
+      glob("model*.pdb", {cwd: subPath}, function (err, files) {
+        if(err) {
+          return callback(err, null);
+        }
+        if(!files || files.length < 0){
+          return callback('No files available...', null);
+        }
+        files = files.map(function(str){
+          return {
+            name: str.split('.')[0]
+          }
+        });
+        callback(null, files);
+      });
+    },
+
+    //**************************************************************************
+    // Read cscore file
+    function(data, callback) {
+      var rl = lineReader(cscorePath);
+
+      var lines = [];
+      var pos = 0;
+
+      rl
+      .on('error', function (err) {
+        return callback(err, data);
+      })
+      .on('line', function (line) {
+        switch(pos){
+          // Ignore header line
+          case 0:
+            if(line.substring(0,3) === '---'){ pos+=1; }
+            break;
+          default:
+            var colArray = line.split(' ')
+                            .filter(function(el) {return el.length !== 0});
+            var len = colArray.length;
+            if(len > 3){
+              data.forEach(function(model){
+                if(model.name === colArray[0]){
+                  model.cscore = Number(colArray[1]);
+                  if(len === 4){
+                    model.decoys = Number(colArray[2]);
+                    model.density = Number(colArray[3]);
+                  }else if(len === 6){
+                    model.tm = colArray[2];
+                    model.rmsd = colArray[3];
+                    model.decoys = Number(colArray[4]);
+                    model.density = Number(colArray[5]);
+                  }
+                }
+              })
+            }
+            break;
+        }
+      })
+      .on('close', function (){
+        callback(null, data);
+      });
+
     }
-    if(!files || files.length < 0){
+  ], function (err, result) {
+
+    if(result && ! err){
+      res.status(200).json(result);
+    }else{
       res.status(404).send("Not found");
     }
-    files = files.map(function(str){return str.split('.')[0];});
-    res.status(200).json(files);
+
   });
+
 }
 
-// Get JSON formatted list of all available models for the analysis
+// Get PDB format models
 export function getModel(req, res){
   var subPath = path.join(dataPath, req.params.dataId, req.params.orfId, 'i-tasser', req.params.modelName+'.pdb');
 
