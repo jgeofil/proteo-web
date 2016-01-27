@@ -32,24 +32,24 @@ Running `npm test` will run the unit tests with karma.
 
 ### Structure
 
-root
-├── [dataset name 1]                        # Dataset folder, name is arbitrary but must be unique
-│   ├── [orf name 1]                        # ORF folder, name is arbitrary but must be unique
-│   │   ├── disopred3                       # Disopred 3 analysis folder
-│   │   │   ├── [orf name 1].seq            # Sequence file
-│   │   │   ├── [orf name 1].seq.diso       # Disorder file
-│   │   │   └── [orf name 1].seq.pbdat      # Protein binding file
-│   │   └── i-tasser                        # I-tasser analysis folder
-│   │   │   ├── cscore                      # CScore file
-│   │   │   ├── seq.ss                      # Secondary sequence file
-│   │   │   ├── coverage                    # Alignment file
-│   │   │   ├── model[number 1].pdb         # Model PDB file
-│   │   │   ├── model[number 2].pdb         
-│   │   │   └── ...                         # etc. more models
-│   ├── [orf name 2]        
-│   └── ...                                 # etc. more ORFs
-├── [dataset name 2]
-└── ...                                     # etc. more datasets
+  .
+  ├── [dataset name 1]                        # Dataset folder, name is arbitrary but must be unique
+  │   ├── [orf name 1]                        # ORF folder, name is arbitrary but must be unique
+  │   │   ├── disopred3                       # Disopred 3 analysis folder
+  │   │   │   ├── [orf name 1].seq            # Sequence file
+  │   │   │   ├── [orf name 1].seq.diso       # Disorder file
+  │   │   │   └── [orf name 1].seq.pbdat      # Protein binding file
+  │   │   └── i-tasser                        # I-tasser analysis folder  
+  │   │   │   ├── cscore                      # CScore file
+  │   │   │   ├── seq.ss                      # Secondary sequence file
+  │   │   │   ├── coverage                    # Alignment file
+  │   │   │   ├── model[number 1].pdb         # Model PDB file
+  │   │   │   ├── model[number 2].pdb         
+  │   │   │   └── ...                         # etc. more models
+  │   ├── [orf name 2]        
+  │   └── ...                                 # etc. more ORFs
+  ├── [dataset name 2]
+  └── ...                                     # etc. more datasets
 
 ## API
 
