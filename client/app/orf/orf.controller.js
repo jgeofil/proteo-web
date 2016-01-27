@@ -89,7 +89,6 @@ angular.module('proteoWebApp')
         myviewer.render();
       });
     });
-
   });
 
   $http.get('/api/data/' + $routeParams.datasetName + '/orf/' +
@@ -98,6 +97,16 @@ angular.module('proteoWebApp')
     $scope.itasserSsGraphData = response.data;
 
     $scope.itasserAlignGraphData = response.data.align;
+
+  });
+
+  //**************************************************************************
+  // TMHMM
+  //**************************************************************************
+  $http.get('/api/data/' + $routeParams.datasetName + '/orf/' +
+  $routeParams.orfName + '/analysis/tmhmm')
+  .then(function(data){
+    $scope.tmhmm = data.data;
 
   });
 });

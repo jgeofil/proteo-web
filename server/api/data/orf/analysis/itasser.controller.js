@@ -114,7 +114,7 @@ export function getModel(req, res){
   });
 }
 
-// Get JSON formatted output
+// Get secondary sequence
 export function getPredictions(req, res){
   var subPath = path.join(dataPath, req.params.dataId, req.params.orfId, 'i-tasser');
 
