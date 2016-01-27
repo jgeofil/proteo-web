@@ -71,11 +71,11 @@ angular.module('proteoWebApp')
 
     $scope.itasserModels.forEach(function(model){
       $http.get('/api/data/' + $routeParams.datasetName + '/orf/' +
-      $routeParams.orfName + '/analysis/itasser/models/'+model)
+      $routeParams.orfName + '/analysis/itasser/models/'+model.name)
       .then(function(data){
 
         // Assume there exists an HTML div with id 'gldiv'
-        var element = $('#gldiv-'+model);
+        var element = $('#gldiv-'+model.name);
 
         // Viewer config - properties 'defaultcolors' and 'callback'
         var config = {defaultcolors: $3Dmol.rasmolElementColors };

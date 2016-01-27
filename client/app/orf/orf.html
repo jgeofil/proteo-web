@@ -37,8 +37,14 @@
 
       <div clas="row">
         <div ng-repeat="model in itasserModels" class="col-md-4">
-          <h5>{{model}}</h5>
-          <div id="gldiv-{{model}}" class="prot itasser-model-box"></div>
+
+          <div id="gldiv-{{model.name}}" class="prot itasser-model-box"></div>
+          <h5>{{model.name}}</h5>
+          <h4>
+            <small>CScore: {{model.cscore}}</small><br>
+            <small ng-if="model.tm">TM-Score: {{model.tm}}</small><br>
+            <small ng-if="model.rmsd">RMSD: {{model.rmsd}}</small><br>
+          </h4>
         </div>
       </div>
     </div>
