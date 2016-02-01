@@ -4,7 +4,23 @@
 <div class="container">
   <div class="row">
     <div class="col-lg-12">
-      <h1><a href="/orf/dataset-01/orf47">ORF47 example</a></h1>
+
+      <p ng-click="resetData()" ng-show="dataSelect">
+        ORFs for {{dataSelect}}
+      </p>
+
+      <div ng-show="!dataSelect">
+              <h4 ng-repeat="set in dataSets"
+                  ng-click="getOrfs(set)"><a>{{set}}</a></h4>
+      </div>
+      <div ng-show="dataSelect">
+              <h4 ng-repeat="orf in orfSets"><a href="/orf/{{dataSelect}}/{{orf}}">{{orf}}</a></h4>
+      </div>
+
+      <p ng-click="resetData()" ng-show="dataSelect">
+        <a>Return</a>
+      </p>
+
     </div>
   </div>
 </div>
