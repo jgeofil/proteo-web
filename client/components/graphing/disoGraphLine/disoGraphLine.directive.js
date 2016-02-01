@@ -47,7 +47,6 @@ angular.module('proteoWebApp')
 
         x.domain(d3.extent(scope.graphData, function(d) { return d.pos; }));
         y.domain([0,1]);
-        //y.domain(d3.extent(scope.graphData, function(d) { return d.diso.value===null?0:d.diso.value; }));
 
         svg.append('rect')
          .attr('x', 0)
@@ -55,6 +54,9 @@ angular.module('proteoWebApp')
          .attr('width', width)
          .attr('height', y(0)-y(0.5))
          .style('fill', '#EEE');
+
+       var focus = svg.append('g')
+         .style('display', 'none');
 
         svg.append('g')
           .attr('class', 'x axis')
@@ -79,11 +81,77 @@ angular.module('proteoWebApp')
           .style('stroke-width', 1)    // set the stroke width
           .style('stroke', 'red') ;
 
-          svg.append('path')
-            .attr('class', 'line')
-            .attr('d', bindLine(scope.graphData))
-            .style('stroke-width', 1)    // set the stroke width
-            .style('stroke', 'blue') ;
+        svg.append('path')
+          .attr('class', 'line')
+          .attr('d', bindLine(scope.graphData))
+          .style('stroke-width', 1)    // set the stroke width
+          .style('stroke', 'blue') ;
+
+
+        var tip = d3.tip()
+          .attr('class', 'd3-tip')
+          .offset([0, 0])
+          .direction('e')
+          .html(function(d) {
+            return "<span style='color:white'>" +"-"+ "</span>";
+          });
+        svg.call(tip);
+
+        // append the circle at the intersection
+        focus.append('line')
+          .attr('class', 'tip')
+          .attr('x1', x(1))
+          .attr('x2', x(1))
+          .attr('y1', y(0))
+          .attr('y2', y(1))
+          .style('fill', 'none')
+          .style('stroke', 'black')
+          .style('stroke-width', '1')
+          .on('mouseover', tip.show)
+          .on('mouseout', tip.hide);
+
+        focus.append('circle')
+            .attr('class', 'diso')
+            .style('fill', 'none')
+            .style('stroke', 'red')
+            .attr('r', 2);
+        focus.append('circle')
+            .attr('class', 'bind')
+            .style('fill', 'none')
+            .style('stroke', 'blue')
+            .attr('r', 2);
+
+        var bisect = d3.bisector(function(d) { return d.pos; }).left;
+
+        var mousemove = function() {
+            var x0 = x.invert(d3.mouse(this)[0]),
+                i = bisect(scope.graphData, x0, 1),
+                d0 = scope.graphData[i - 1],
+                d1 = scope.graphData[i],
+                d = x0 - d0.pos > d1.pos - x0 ? d1 : d0;
+            //TODO: this is unecessarily complicated, positions are integers
+
+            focus.select('circle.diso')
+                .attr('transform',
+                      'translate(' + x(d.pos) + ',' +
+                                     y(d.diso.value) + ')');
+           focus.select('circle.bind')
+               .attr('transform',
+                     'translate(' + x(d.pos) + ',' +
+                                    y(d.bind.value) + ')');
+            focus.select('line.tip')
+                .attr('transform',
+                      'translate(' + x(d.pos) + ')');
+        };
+        // append the rectangle to capture mouse
+        svg.append('rect')
+            .attr('width', width)
+            .attr('height', height)
+            .style('fill', 'none')
+            .style('pointer-events', 'all')
+            .on('mouseover', function() { focus.style('display', null);})
+            .on('mouseout', function() { focus.style('display', 'none');})
+            .on('mousemove', mousemove);
 
       }
     };
