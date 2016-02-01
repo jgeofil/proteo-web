@@ -6,15 +6,14 @@ angular.module('proteoWebApp')
     return {
       templateUrl: 'components/graphing/tmhmmGraph/tmhmmGraph.html',
       restrict: 'EA',      scope:{
-          graphData: '=',
-          graphHeight: '='
+          graphData: '='
         },
         link: function (scope, element, attrs) {
           var seqln = scope.graphData.prob.length-1; //Length of the sequence alignement
 
-          var margin = {top: 10, right: 20, bottom: 60, left: 90};
+          var margin = {top: 20, right: 20, bottom: 35, left: 90};
           var width = (seqln*15) - margin.left - margin.right;
-          var height = scope.graphHeight;
+          var height = 100;
 
           var x = d3.scale.linear().range([0, width]);
           var xAxis = d3.svg.axis().scale(x).orient('bottom');

@@ -7,15 +7,14 @@ angular.module('proteoWebApp')
       templateUrl: 'components/graphing/itasserSsGraph/itasserSsGraph.html',
       restrict: 'E',
       scope:{
-        graphDataSs: '=',
-        graphHeight: '='
+        graphDataSs: '='
       },
       link: function (scope, element, attrs) {
         var seqln = scope.graphDataSs.length; //Length of the sequence alignement
 
-        var margin = {top: 10, right: 20, bottom: 60, left: 90};
+        var margin = {top: 10, right: 20, bottom: 35, left: 90};
         var width = (seqln*15) - margin.left - margin.right;
-        var height = scope.graphHeight;
+        var height = 120 - margin.top - margin.bottom;
 
         var x = d3.scale.linear()
           .range([0, width]);

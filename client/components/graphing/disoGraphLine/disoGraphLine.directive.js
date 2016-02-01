@@ -7,15 +7,14 @@ angular.module('proteoWebApp')
       templateUrl: 'components/graphing/disoGraphLine/disoGraphLine.html',
       restrict: 'E',
       scope:{
-        graphData: '=',
-        graphHeight: '='
+        graphData: '='
       },
       link: function (scope, element, attrs) {
         var seqln = scope.graphData.length; //Length of the sequence alignement
 
-        var margin = {top: 10, right: 20, bottom: 50, left: 90};
+        var margin = {top: 10, right: 20, bottom: 25, left: 90};
         var width = (seqln*15) - margin.left - margin.right;
-        var height = (scope.graphHeight) - margin.top - margin.bottom;
+        var height = 100 - margin.top - margin.bottom;
 
         var x = d3.scale.linear()
           .range([0, width]);
@@ -30,7 +29,7 @@ angular.module('proteoWebApp')
         var yAxis = d3.svg.axis()
           .scale(y)
           .orient('left')
-          .ticks(5);
+          .ticks(3);
 
         var line = d3.svg.line()
           .x(function(d) { return x(d.pos); })

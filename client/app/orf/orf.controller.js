@@ -5,17 +5,38 @@ angular.module('proteoWebApp')
 .controller('OrfCtrl', function ($scope, $http, $routeParams, $rootScope) {
 
   //**************************************************************************
+  // State
+  //**************************************************************************
+  $scope.state = {
+    disopred:{
+      isOpen: true,
+      toggle: function (){this.isOpen = !this.isOpen;},
+      isPresent: false
+    },
+    itasser:{
+      isOpen: true,
+      toggle: function (){this.isOpen = !this.isOpen;},
+      isPresent: false
+    },
+    tmhmm:{
+      isOpen: true,
+      toggle: function (){this.isOpen = !this.isOpen;},
+      isPresent: false
+    },
+    topcons:{
+      isOpen: true,
+      toggle: function (){this.isOpen = !this.isOpen;},
+      isPresent: false
+    }
+  };
+
+  //**************************************************************************
   // Scrolling controls
   //**************************************************************************
-
   $scope.posX = 0;
-
   $scope.moveX = function (pixels) {
     $scope.posX = $scope.posX + pixels;
   };
-  //$scope.$evalAsync(function () {
-  //  $scope.$broadcast('content.changed', 1000);
-//  });
 
   //**************************************************************************
   // DISOPRED3
@@ -25,6 +46,7 @@ angular.module('proteoWebApp')
   .then(function(data){
     var inDat = data.data.data;
     $scope.disoGraphData = inDat;
+    $scope.state.disopred.isPresent = true;
     //Protein sequence
     var diso3seq = new Sequence(data.data.seq);
     diso3seq.render('#sequence-viewer', {
@@ -68,6 +90,7 @@ angular.module('proteoWebApp')
   $routeParams.orfName + '/analysis/itasser/models')
   .then(function(data){
     $scope.itasserModels = data.data;
+    $scope.state.itasser.isPresent = true;
 
     $scope.itasserModels.forEach(function(model){
       $http.get('/api/data/' + $routeParams.datasetName + '/orf/' +
@@ -107,5 +130,6 @@ angular.module('proteoWebApp')
   $routeParams.orfName + '/analysis/tmhmm')
   .then(function(data){
     $scope.tmhmmGraphData = data.data;
+    $scope.state.tmhmm.isPresent = true;
   });
 });
