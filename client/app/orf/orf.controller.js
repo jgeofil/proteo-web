@@ -31,6 +31,23 @@ angular.module('proteoWebApp')
   };
 
   //**************************************************************************
+  // Model Modal
+  //**************************************************************************
+  $scope.spawnModelModal = function(pdb){
+    var modalInstance = $uibModal.open({
+    animation: true,
+    templateUrl: 'modelModal.html',
+    controller: 'ModelModalCtrl',
+    size: 'lg',
+    resolve: {
+      items: function () {
+        return $scope.items;
+      }
+    }
+    });
+  };
+
+  //**************************************************************************
   // Scrolling controls
   //**************************************************************************
   $scope.posX = 0;
@@ -134,4 +151,23 @@ angular.module('proteoWebApp')
     $scope.tmhmmGraphData = data.data;
     $scope.state.tmhmm.isPresent = true;
   });
+})
+
+//**************************************************************************
+// Modal window controller
+//**************************************************************************
+.controller('ModelModalCtrl', function ($scope, $uibModalInstance, items) {
+
+  $scope.items = items;
+  $scope.selected = {
+    item: $scope.items
+  };
+
+  $scope.ok = function () {
+    $uibModalInstance.close($scope.selected.item);
+  };
+
+  $scope.cancel = function () {
+    $uibModalInstance.dismiss('cancel');
+  };
 });
