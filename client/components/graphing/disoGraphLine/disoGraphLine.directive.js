@@ -53,7 +53,7 @@ angular.module('proteoWebApp')
          .attr('y', y(0.5))
          .attr('width', width)
          .attr('height', y(0)-y(0.5))
-         .style('fill', '#EEE');
+         .style('fill', 'rgba(0, 0, 0, 0.03)');
 
        var focus = svg.append('g')
          .style('display', 'none');
@@ -103,18 +103,34 @@ angular.module('proteoWebApp')
           .attr('x1', x(1))
           .attr('x2', x(1))
           .attr('y1', y(0))
-          .attr('y2', y(1))
+          .attr('y2', y(0.9))
           .style('fill', 'none')
+          .style('stroke-dasharray', ('3, 3'))
           .style('stroke', 'black')
-          .style('stroke-width', '1')
-          .on('mouseover', tip.show)
-          .on('mouseout', tip.hide);
+          .style('stroke-width', '1');
+
+        focus.append('rect')
+          .attr('class', 'diso-tip')
+          .attr('x', -10)
+          .attr('y', -10)
+          .attr('rx', 2)
+          .attr('ry', 2)
+          .attr('width', 20)
+          .attr('height', 20);
+
+        focus.append('text')
+          .attr('class', 'diso-tip-text')
+          .attr('x', -0)
+          .attr('y', 0)
+          .attr('dy', 5)
+          .text('A');
 
         focus.append('circle')
             .attr('class', 'diso')
             .style('fill', 'none')
             .style('stroke', 'red')
             .attr('r', 2);
+
         focus.append('circle')
             .attr('class', 'bind')
             .style('fill', 'none')
@@ -135,13 +151,20 @@ angular.module('proteoWebApp')
                 .attr('transform',
                       'translate(' + x(d.pos) + ',' +
                                      y(d.diso.value) + ')');
-           focus.select('circle.bind')
-               .attr('transform',
-                     'translate(' + x(d.pos) + ',' +
-                                    y(d.bind.value) + ')');
-            focus.select('line.tip')
-                .attr('transform',
-                      'translate(' + x(d.pos) + ')');
+          focus.select('circle.bind')
+            .attr('transform','translate(' + x(d.pos) + ',' + y(d.bind.value) + ')');
+
+          focus.select('rect.diso-tip')
+            .attr('transform', 'translate(' + x(d.pos) + ')');
+
+          focus.select('text.diso-tip-text')
+            .text(d.amino)
+            .attr('transform', 'translate(' + x(d.pos) + ')');
+
+          console.log(d)
+
+          focus.select('line.tip')
+            .attr('transform', 'translate(' + x(d.pos) + ')');
         };
         // append the rectangle to capture mouse
         svg.append('rect')
