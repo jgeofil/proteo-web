@@ -47,6 +47,8 @@ angular.module('proteoWebApp')
     var inDat = data.data.data;
     $scope.disoGraphData = inDat;
     $scope.state.disopred.isPresent = true;
+
+/**
     //Protein sequence
     var diso3seq = new Sequence(data.data.seq);
     diso3seq.render('#sequence-viewer', {
@@ -59,7 +61,7 @@ angular.module('proteoWebApp')
       //'sequenceMaxHeight': '300px',
       'badge': false
     });
-
+**/
     var coverage = [];
 
     inDat.forEach(function(d){
