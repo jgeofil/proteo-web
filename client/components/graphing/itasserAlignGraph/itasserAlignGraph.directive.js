@@ -44,7 +44,7 @@ angular.module('proteoWebApp')
           .attr('class', 'd3-tip')
           .offset([-10, 0])
           .html(function(d) {
-            return "<span style='color:white'> Z/Z0: " + d.zz0 + "</span>";
+            return "<span style='color:white'> Z/Z0: " + d.zz0 + "<br>"+d.method+"</span>";
           });
         svg.call(tip);
 

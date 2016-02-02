@@ -161,8 +161,6 @@ angular.module('proteoWebApp')
             .text(d.amino)
             .attr('transform', 'translate(' + x(d.pos) + ')');
 
-          console.log(d)
-
           focus.select('line.tip')
             .attr('transform', 'translate(' + x(d.pos) + ')');
         };

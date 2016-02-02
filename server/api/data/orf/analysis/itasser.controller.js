@@ -170,6 +170,7 @@ export function getPredictions(req, res){
 
       var lines = [];
       var pos = 0;
+      var method;
       data.align = {};
       data.align.coverage = [];
 
@@ -181,6 +182,12 @@ export function getPredictions(req, res){
         switch(pos){
           // Ignore header line
           case 0:
+            if(line.substring(0,2) === 'M:'){
+              method = line.substring(3).split(', ')
+              method = method.map(function(met){
+                return met.substring(2)
+              });
+            }
             if(line.substring(0,3) === 'Rnk'){ pos+=1; }
             break;
           // Retrieve secondary structure line
@@ -204,7 +211,7 @@ export function getPredictions(req, res){
                 rank: Number(colArray[0]),
                 pdbid: colArray[1],
                 zz0: Number(colArray[2]),
-                method: Number(colArray[3].replace(':', '')),
+                method: method[Number(colArray[3].replace(':', ''))-1],
                 cov: colArray[4]
               });
             }
