@@ -2,7 +2,7 @@
 //TODO: include D3 in a more Angular way
 /* jshint undef: false*/
 angular.module('proteoWebApp')
-.controller('OrfCtrl', function ($scope, $http, $routeParams, $rootScope) {
+.controller('OrfCtrl', function ($scope, $http, $routeParams, $rootScope, $uibModal) {
 
   //**************************************************************************
   // State
@@ -61,7 +61,7 @@ angular.module('proteoWebApp')
       //'sequenceMaxHeight': '300px',
       'badge': false
     });
-**/
+
     var coverage = [];
 
     inDat.forEach(function(d){
@@ -82,7 +82,7 @@ angular.module('proteoWebApp')
       {name: 'Protein binding', color: 'white', underscore: true},
     ];
     diso3seq.addLegend(exempleLegend);
-
+**/
   });
 
   //**************************************************************************

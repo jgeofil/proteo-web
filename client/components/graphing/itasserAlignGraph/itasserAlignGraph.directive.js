@@ -14,6 +14,7 @@ angular.module('proteoWebApp')
       },
       link: function (scope, element, attrs) {
         var seqln = scope.graphData.seq.length; //Length of the sequence alignement
+        console.log(scope.graphData)
         var data = scope.graphData.coverage.slice(0, scope.seqCount); //Keep only necessary alignements
         data.forEach(function(d){
           d.cov = d.cov.split(''); //Split alignement sequences
@@ -21,7 +22,7 @@ angular.module('proteoWebApp')
 
         var margin = {top: 40, right: 20, bottom:30, left: 90};
         var width = (seqln*15) - margin.right - margin.left;
-        var height = (scope.seqCount*18);
+        var height = (scope.seqCount*11);
 
         var x = d3.scale.linear().range([0, width]);
         var xAxis = d3.svg.axis().scale(x).orient('bottom');
@@ -63,7 +64,7 @@ angular.module('proteoWebApp')
           .attr('class', 'itasser-align-info')
           .attr('text-anchor', 'start')
           .attr('x', -80)
-          .attr('y', function(d,i){return i*20;})
+          .attr('y', function(d,i){return i*12;})
           .text(function(d){return d.rank +' '+ d.pdbid;})
           .on('mouseover', tip.show)
           .on('mouseout', tip.hide);
@@ -72,20 +73,38 @@ angular.module('proteoWebApp')
         var sequences = body.selectAll('g')
           .data(data).enter()
           .append('g')
-          .attr('transform', function(d,i){return 'translate(0,' + (i*20) + ')';});
+          .attr('transform', function(d,i){return 'translate(0,' + i*12 + ')';});
+
+        var step = x(0)-x(1);
 
         // Append sequences to containers
-        sequences.selectAll('g')
+        sequences.selectAll('rect')
           .data(function(d){
             return d.cov;
-          }).enter()
+          }).enter().append('svg:rect')
+          .attr('x', function(d,i) { return x(i)-(step/2); })
+          .attr('y', -6)
+          .attr('width', function(d,i) { return x(i)-x(i-1); })
+          .attr('height', 8)
+          .attr('class', function(d){
+            switch(d){
+              case '=':
+                return 'itasser-align-equal';
+              case '-':
+                return 'itasser-align-dash';
+              default:
+                return 'itasser-align';
+            }
+          });
+
+          /**
           .append('text')
             .attr('class', 'itasser-sequence-amino')
             .attr('text-anchor', 'middle')
             .attr('x', function(d,i){return x(i+1);})
             .attr('y',  0)
             .text(function(d){return d;});
-
+          **/
         // Draw x axis line
         svg.append('g')
           .attr('class', 'x axis')
