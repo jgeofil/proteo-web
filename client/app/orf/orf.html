@@ -119,7 +119,7 @@
           <h5>
             {{model.name}}
             <span class="glyphicon glyphicon-plus itasser-model-glyph pull-right"
-                  ng-click="spawnModelModal()"></span> 
+                  ng-click="spawnModelModal(model.data)"></span>
           </h5>
           <h4>
             <small>CScore: {{model.cscore}}</small><br>
@@ -138,14 +138,7 @@
 
 
 <script type="text/ng-template" id="modelModal.html">
-    <div class="modal-header">
-        <h3 class="modal-title">Im a modal!</h3>
-    </div>
     <div class="modal-body">
-
-    </div>
-    <div class="modal-footer">
-        <button class="btn btn-primary" type="button" ng-click="ok()">OK</button>
-        <button class="btn btn-warning" type="button" ng-click="cancel()">Cancel</button>
+      <molecular-model mm-pdb="pdb" class="large-mm-model"></molecular-model>
     </div>
 </script>

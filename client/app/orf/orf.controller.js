@@ -40,11 +40,12 @@ angular.module('proteoWebApp')
     controller: 'ModelModalCtrl',
     size: 'lg',
     resolve: {
-      items: function () {
-        return $scope.items;
+      pdb: function () {
+        return pdb;
       }
     }
     });
+
   };
 
   //**************************************************************************
@@ -65,41 +66,6 @@ angular.module('proteoWebApp')
     $scope.disoGraphData = inDat;
     $scope.state.disopred.isPresent = true;
 
-/**
-    //Protein sequence
-    var diso3seq = new Sequence(data.data.seq);
-    diso3seq.render('#sequence-viewer', {
-      'showLineNumbers': true,
-      'wrapAminoAcids': true,
-      'charsPerLine': 200,
-      'toolbar': false,
-      'search': false,
-      //'title' : false,
-      //'sequenceMaxHeight': '300px',
-      'badge': false
-    });
-
-    var coverage = [];
-
-    inDat.forEach(function(d){
-      var style = {start: d.pos-1, end: d.pos, color: 'black', underscore: false};
-      if(d.bind.symbol === '^'){
-        style.underscore = true;
-      }
-      if(d.diso.symbol === '*'){
-        style.color = 'red';
-      }
-      coverage.push(style);
-    });
-    diso3seq.coverage(coverage);
-
-    // Add legend
-    var exempleLegend = [
-      {name: 'Disordered', color: 'red', underscore: false},
-      {name: 'Protein binding', color: 'white', underscore: true},
-    ];
-    diso3seq.addLegend(exempleLegend);
-**/
   });
 
   //**************************************************************************
@@ -116,6 +82,7 @@ angular.module('proteoWebApp')
       $routeParams.orfName + '/analysis/itasser/models/'+model.name)
       .then(function(data){
 
+        model.data = data.data;
         // Assume there exists an HTML div with id 'gldiv'
         var element = $('#gldiv-'+model.name);
 
@@ -124,11 +91,13 @@ angular.module('proteoWebApp')
         // Create GLViewer within 'gldiv'
         var myviewer = $3Dmol.createViewer(element, config);
         //'data' is a string containing molecule data in pdb format
-        myviewer.addModel(String(data.data), 'pdb');
+        myviewer.addModel(String(model.data), 'pdb');
         myviewer.setBackgroundColor(0xffffff);
         myviewer.setStyle({}, {cartoon: {color: 'spectrum'}});
         myviewer.zoomTo();
         myviewer.render();
+
+
       });
     });
   });
@@ -156,15 +125,12 @@ angular.module('proteoWebApp')
 //**************************************************************************
 // Modal window controller
 //**************************************************************************
-.controller('ModelModalCtrl', function ($scope, $uibModalInstance, items) {
+.controller('ModelModalCtrl', function ($scope, $uibModalInstance, pdb) {
 
-  $scope.items = items;
-  $scope.selected = {
-    item: $scope.items
-  };
+  $scope.pdb = pdb;
 
   $scope.ok = function () {
-    $uibModalInstance.close($scope.selected.item);
+    $uibModalInstance.close();
   };
 
   $scope.cancel = function () {
