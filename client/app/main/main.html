@@ -6,20 +6,24 @@
     <div class="col-lg-12">
 
       <p ng-click="resetData()" ng-show="dataSelect">
-        ORFs for {{dataSelect}}
+        <a>Return  </a> {{dataSelect}}
       </p>
 
       <div ng-show="!dataSelect">
-              <h4 ng-repeat="set in dataSets"
-                  ng-click="getOrfs(set)"><a>{{set}}</a></h4>
-      </div>
-      <div ng-show="dataSelect">
-              <h4 ng-repeat="orf in orfSets"><a href="/orf/{{dataSelect}}/{{orf}}">{{orf}}</a></h4>
+          <table ng-table="tableParams" class="table table-condensed table-bordered table-striped" show-filter="true">
+            <tr ng-repeat="row in $data">
+              <td ng-click="getOrfs(row.name)" data-title="'Name'" filter="{name: 'text'}" sortable="'name'"><a>{{row.name}}</a></td>
+            </tr>
+          </table>
       </div>
 
-      <p ng-click="resetData()" ng-show="dataSelect">
-        <a>Return</a>
-      </p>
+      <div ng-show="dataSelect">
+        <table ng-table="tableParamsOrf" class="table table-condensed table-bordered table-striped" show-filter="true">
+          <tr ng-repeat="row in $data">
+            <td data-title="'Name'" filter="{name: 'text'}" sortable="'name'"><a href="/orf/{{dataSelect}}/{{row.name}}">{{row.name}}</a></td>
+          </tr>
+        </table>
+      </div>
 
     </div>
   </div>
