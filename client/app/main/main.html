@@ -24,6 +24,8 @@
         <table ng-table="tableParamsOrf" class="table table-condensed table-bordered table-striped" show-filter="true">
           <tr ng-repeat="row in $data">
             <td data-title="'Name'" filter="{name: 'text'}" sortable="'name'"><a href="/orf/{{dataSelect}}/{{row.name}}">{{row.name}}</a></td>
+            <td data-title="'Start'" filter="{start: 'text'}" sortable="'start'">{{row.start}}</td>
+            <td data-title="'End'" filter="{end: 'text'}" sortable="'end'">{{row.end}}</td>
           </tr>
         </table>
       </div>
