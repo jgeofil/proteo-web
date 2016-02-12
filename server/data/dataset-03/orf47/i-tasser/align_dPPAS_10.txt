@@ -1,0 +1,6 @@
+>P1;target
+sequence:target: : : : : : : :
+--MNKEHILAQKEVLTPIEYEHYVKHLFDIGEITKELYIELSSDL*
+>P1;4gdoA
+structure:4gdoA: : : : : : : :
+SHMRAEERERLAEVEAALEKQRQLAEAHAQAKAQAEREAKEL---*

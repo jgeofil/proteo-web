@@ -1,0 +1,6 @@
+>P1;target
+sequence:target: : : : : : : :
+MNKEHILAQKEVLTPIEYEHYVKHLFDIGEITKELYIELSSDL--*
+>P1;3hjlA2
+structure:3hjlA2: : : : : : : :
+L--EGTAVAAELLNTLDKETRELILQSIGQEDPLLEERIREKMFT*

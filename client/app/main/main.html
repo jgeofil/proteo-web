@@ -13,6 +13,9 @@
           <table ng-table="tableParams" class="table table-condensed table-bordered table-striped" show-filter="true">
             <tr ng-repeat="row in $data">
               <td ng-click="getOrfs(row.name)" data-title="'Name'" filter="{name: 'text'}" sortable="'name'"><a>{{row.name}}</a></td>
+              <td data-title="'Organism'" filter="{organism: 'text'}" sortable="'organism'">{{row.organism}}</td>
+              <td data-title="'ORFs'" filter="{quantity: 'number'}" sortable="'quantity'">{{row.quantity}}</td>
+              <td data-title="'Date Created'" filter="{dateCreated: 'text'}" sortable="'dateCreated'">{{row.dateCreated}}</td>
             </tr>
           </table>
       </div>

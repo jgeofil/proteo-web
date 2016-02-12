@@ -10,7 +10,7 @@ var asy = require('async');
 **/
 // Get all sub-directories in directory
 export function getSubDirs(dir, cb) {
-
+  //TODO:waterfall no longer needed
   asy.waterfall([
     //**************************************************************************
     //
@@ -21,7 +21,7 @@ export function getSubDirs(dir, cb) {
         var checkDirectory = function (i,l){
           return function(err, stat) {
             if(stat.isDirectory()) {
-                dirs.push({name:files[i]});
+                dirs.push(files[i]);
             }
             if(i + 1 === l) { // last record
               callback(err,dirs);
@@ -40,23 +40,6 @@ export function getSubDirs(dir, cb) {
           return callback('Not found!', []);
         }
       });
-    },
-
-    //**************************************************************************
-    //
-    function(data, callback) {
-      /**
-      readMultipleFiles(['one.txt', 'another.txt'], (err, bufs) => {
-        if (err) {
-          throw err;
-        }
-
-        bufs; //=> [<Buffer ... >, <Buffer ... >]
-      });
-      **/
-
-      callback(null,data);
-
     }
   ], function (err, result) {
     cb(result, err);

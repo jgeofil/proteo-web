@@ -1,0 +1,102 @@
+Rank Template Align_length Coverage Z-score Seq_id Type Program Norm_Z-score
+Top threading results for LOMETS:
+   1    3qwoC           43    1.000   5.957  0.233 High  MUSTER     1.03
+   2   1r71B1           43    1.000   8.420  0.163  Low   dPPAS     0.91
+   3    3e21A           32    0.744  11.177  0.438 High  wdPPAS     1.24
+   4    3qwoC           42    0.976   6.041  0.262 High wMUSTER     1.01
+   5    3e21A           32    0.744   8.295  0.438 High   wPPAS     1.11
+   6    3e21A           32    0.744  12.424  0.438 High  dPPAS2     1.18
+   7    3e21A           32    0.744   7.550  0.438 High    PPAS     1.08
+   8    3qwoC           42    0.976   8.910  0.238 High Env-PPAS     1.11
+   9    3e21A           32    0.744   5.883  0.438 High  MUSTER     1.01
+  10    1ov9B           42    0.976   8.182  0.214  Low   dPPAS     0.88
+
+Top threading results for separated programs:
+   1   1r71B1           43    1.000   8.420  0.163  Low   dPPAS     0.91
+   2    1ov9B           42    0.976   8.182  0.214  Low   dPPAS     0.88
+   3   1dd4A1           43    1.000   8.143  0.256  Low   dPPAS     0.88
+   4   3zey41           43    1.000   7.668  0.186  Low   dPPAS     0.82
+   5    3e21A           33    0.767   7.602  0.394  Low   dPPAS     0.82
+   6    4j8cA           42    0.976   7.260  0.095  Low   dPPAS     0.78
+   7    3qwoC           42    0.976   7.115  0.238  Low   dPPAS     0.77
+   8    3j47P           34    0.790   7.035  0.206  Low   dPPAS     0.76
+   9   1eixC1           43    1.000   6.970  0.163  Low   dPPAS     0.75
+  10    4gdoA           40    0.930   6.877  0.150  Low   dPPAS     0.74
+
+   1    3qwoC           43    1.000   5.957  0.233 High  MUSTER     1.03
+   2    3e21A           32    0.744   5.883  0.437 High  MUSTER     1.01
+   3    3zwlE           37    0.860   5.146  0.216  Low  MUSTER     0.89
+   4    4j8cA           42    0.976   5.130  0.095  Low  MUSTER     0.88
+   5   3zey41           40    0.930   5.085  0.250  Low  MUSTER     0.88
+   6   1b04B1           42    0.976   5.023  0.190  Low  MUSTER     0.87
+   7   4amsA3           39    0.906   4.978  0.231  Low  MUSTER     0.86
+   8   1r71B1           42    0.976   4.960  0.167  Low  MUSTER     0.86
+   9    1ov9B           39    0.906   4.919  0.231  Low  MUSTER     0.85
+  10   3hjlA2           41    0.953   4.914  0.195  Low  MUSTER     0.85
+
+   1    3e21A           32    0.744  11.177  0.437 High  wdPPAS     1.24
+   2    3qwoC           42    0.976   7.896  0.238  Low  wdPPAS     0.88
+   3   4amsA3           39    0.906   7.391  0.256  Low  wdPPAS     0.82
+   4   1r71B1           42    0.976   7.280  0.167  Low  wdPPAS     0.81
+   5    2vxdA           42    0.976   7.199  0.262  Low  wdPPAS     0.80
+   6   1dd4A1           42    0.976   7.068  0.286  Low  wdPPAS     0.79
+   7    4fjoD           26    0.604   6.816  0.346  Low  wdPPAS     0.76
+   8    3zwlE           34    0.790   6.725  0.265  Low  wdPPAS     0.75
+   9    4j8cA           42    0.976   6.543  0.095  Low  wdPPAS     0.73
+  10    1ss1A           42    0.976   6.402  0.262  Low  wdPPAS     0.71
+
+   1    3e21A           32    0.744   8.295  0.437 High   wPPAS     1.11
+   2    3qwoC           42    0.976   6.111  0.262  Low   wPPAS     0.81
+   3   4amsA3           39    0.906   5.995  0.231  Low   wPPAS     0.80
+   4    1eesB           33    0.767   5.579  0.394  Low   wPPAS     0.74
+   5    3zwlE           34    0.790   5.551  0.265  Low   wPPAS     0.74
+   6   3veaB2           38    0.883   5.389  0.342  Low   wPPAS     0.72
+   7    2ov2J           26    0.604   5.352  0.346  Low   wPPAS     0.71
+   8    2odbB           26    0.604   5.343  0.346  Low   wPPAS     0.71
+   9    2dt7A           31    0.720   5.319  0.258  Low   wPPAS     0.71
+  10   1b04B1           39    0.906   5.157  0.205  Low   wPPAS     0.69
+
+   1    3qwoC           42    0.976   6.041  0.262 High wMUSTER     1.01
+   2    3e21A           31    0.720   5.455  0.419  Low wMUSTER     0.91
+   3   4amsA3           39    0.906   5.369  0.231  Low wMUSTER     0.89
+   4   3zey41           40    0.930   5.260  0.250  Low wMUSTER     0.88
+   5   2jntA1           40    0.930   5.078  0.325  Low wMUSTER     0.85
+   6    3zwlE           34    0.790   5.024  0.265  Low wMUSTER     0.84
+   7   2yinA1           43    1.000   4.998  0.163  Low wMUSTER     0.83
+   8   2vkjA1           40    0.930   4.867  0.375  Low wMUSTER     0.81
+   9    2vxdA           42    0.976   4.861  0.262  Low wMUSTER     0.81
+  10   1r71B1           42    0.976   4.843  0.143  Low wMUSTER     0.81
+
+   1    3e21A           32    0.744  12.424  0.437 High  dPPAS2     1.18
+   2    3qwoC           42    0.976   9.252  0.238  Low  dPPAS2     0.88
+   3   1r71B1           43    1.000   9.109  0.163  Low  dPPAS2     0.87
+   4   1dd4A1           43    1.000   8.649  0.256  Low  dPPAS2     0.82
+   5   2xv9A1           39    0.906   8.459  0.282  Low  dPPAS2     0.81
+   6   4amsA3           39    0.906   8.221  0.256  Low  dPPAS2     0.78
+   7    1ov9B           41    0.953   8.110  0.220  Low  dPPAS2     0.77
+   8   1ulyA1           41    0.953   7.999  0.317  Low  dPPAS2     0.76
+   9    2wp0C           34    0.790   7.809  0.324  Low  dPPAS2     0.74
+  10   1eixC1           41    0.953   7.777  0.220  Low  dPPAS2     0.74
+
+   1    3e21A           32    0.744   7.550  0.437 High    PPAS     1.08
+   2    3qwoC           42    0.976   6.738  0.238  Low    PPAS     0.96
+   3   4amsA3           39    0.906   6.068  0.256  Low    PPAS     0.87
+   4    2dt7A           33    0.767   5.874  0.212  Low    PPAS     0.84
+   5   1dd4A1           42    0.976   5.799  0.286  Low    PPAS     0.83
+   6   1b04B1           40    0.930   5.713  0.175  Low    PPAS     0.82
+   7    3zwlE           34    0.790   5.656  0.265  Low    PPAS     0.81
+   8   3zey41           43    1.000   5.650  0.186  Low    PPAS     0.81
+   9   1r71B1           42    0.976   5.610  0.167  Low    PPAS     0.80
+  10    4j8cA           42    0.976   5.536  0.095  Low    PPAS     0.79
+
+   1    3qwoC           42    0.976   8.910  0.238 High Env-PPAS     1.11
+   2    3e21A           39    0.906   8.699  0.256 High Env-PPAS     1.09
+   3    1fs1A           35    0.813   8.509  0.286 High Env-PPAS     1.06
+   4   2ggzA1           43    1.000   8.151  0.186 High Env-PPAS     1.02
+   5    1ti5A           39    0.906   7.677  0.231  Low Env-PPAS     0.96
+   6   1r71B1           43    1.000   7.656  0.163  Low Env-PPAS     0.96
+   7    1hcrA           41    0.953   7.445  0.220  Low Env-PPAS     0.93
+   8   1z6cA2           34    0.790   7.403  0.294  Low Env-PPAS     0.93
+   9    1v92A           40    0.930   7.255  0.250  Low Env-PPAS     0.91
+  10    4j8cA           42    0.976   7.192  0.095  Low Env-PPAS     0.90
+
