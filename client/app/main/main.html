@@ -12,10 +12,10 @@
       <div ng-show="!dataSelect">
           <table ng-table="tableParams" class="table table-condensed table-bordered table-striped" show-filter="true">
             <tr ng-repeat="row in $data">
-              <td ng-click="getOrfs(row.name)" data-title="'Name'" filter="{name: 'text'}" sortable="'name'"><a>{{row.name}}</a></td>
-              <td data-title="'Organism'" filter="{organism: 'text'}" sortable="'organism'">{{row.organism}}</td>
-              <td data-title="'ORFs'" filter="{quantity: 'number'}" sortable="'quantity'">{{row.quantity}}</td>
-              <td data-title="'Date Created'" filter="{dateCreated: 'text'}" sortable="'dateCreated'">{{row.dateCreated}}</td>
+              <td ng-click="getOrfs(row.name)" data-title="'Name'" filter="{name: 'text'}" sortable="'name'" class="col-lg-7"><a>{{row.name}}</a></td>
+              <td data-title="'Organism'" filter="{organism: 'text'}" sortable="'organism'" class="col-lg-2">{{row.organism}}</td>
+              <td data-title="'ORFs'" filter="{quantity: 'number'}" sortable="'quantity'" class="col-lg-1">{{row.quantity}}</td>
+              <td data-title="'Date Created'" filter="{dateCreated: 'text'}" sortable="'dateCreated'" class="col-lg-2">{{row.dateCreated}}</td>
             </tr>
           </table>
       </div>
@@ -23,9 +23,27 @@
       <div ng-show="dataSelect">
         <table ng-table="tableParamsOrf" class="table table-condensed table-bordered table-striped" show-filter="true">
           <tr ng-repeat="row in $data">
-            <td data-title="'Name'" filter="{name: 'text'}" sortable="'name'"><a href="/orf/{{dataSelect}}/{{row.name}}">{{row.name}}</a></td>
-            <td data-title="'Start'" filter="{start: 'text'}" sortable="'start'">{{row.start}}</td>
-            <td data-title="'End'" filter="{end: 'text'}" sortable="'end'">{{row.end}}</td>
+            <td data-title="'Name'" filter="{name: 'text'}" sortable="'name'" class="col-lg-7">
+              <a href="/orf/{{dataSelect}}/{{row.name}}">{{row.name}}</a>
+            </td>
+            <td data-title="'Disopred'" sortable="'disopred'" class="col-lg-1 text-center">
+              <span class="glyphicon present-icon"
+                    ng-class="{'glyphicon-ok text-success': row.disopred, 'glyphicon-remove text-warning': !row.disopred}"></span>
+            </td>
+            <td data-title="'I-Tasser'" sortable="'itasser'" class="col-lg-1 text-center">
+              <span class="glyphicon present-icon"
+                    ng-class="{'glyphicon-ok text-success': row.itasser, 'glyphicon-remove text-warning': !row.itasser}"></span>
+            </td>
+            <td data-title="'TMHMM'"sortable="'tmhmm'" class="col-lg-1 text-center">
+              <span class="glyphicon present-icon"
+                    ng-class="{'glyphicon-ok text-success': row.tmhmm, 'glyphicon-remove text-warning': !row.tmhmm}"></span>
+            </td>
+            <td data-title="'Start'" filter="{start: 'text'}" sortable="'start'" class="col-lg-1 text-center">
+              {{row.start}}
+            </td>
+            <td data-title="'End'" filter="{end: 'text'}" sortable="'end'" class="col-lg-1 text-center">
+              {{row.end}}
+            </td>
           </tr>
         </table>
       </div>

@@ -1,6 +1,0 @@
->P1;target
-sequence:target: : : : : : : :
----MNKEHILAQKEVLTPIEYEHYVKHLFDIG----EITKELYIELSSDL*
->P1;1ti5A
-structure:1ti5A: : : : : : : :
-RTCMIKKEGWGK--CLIDTTCAHSCKNRGYIGGNCKGMTRTCYCLVNC--*

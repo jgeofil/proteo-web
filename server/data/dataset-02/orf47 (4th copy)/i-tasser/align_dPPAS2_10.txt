@@ -1,6 +1,0 @@
->P1;target
-sequence:target: : : : : : : :
-------------MNKEHILAQKEVLTP------IEYEHYVKHLFDIGEITKEL--YIELSSDL*
->P1;1eixC1
-structure:1eixC1: : : : : : : :
-VTNSPVVVALDYHNRDDALAFVDKIDPRDCRLKVGKEMFTLFGPQFVRELQQRGFDIFL--DL*

@@ -1,6 +1,0 @@
->P1;target
-sequence:target: : : : : : : :
--MNKEHILAQKEV-----LTPIEYEHYVKHLFDIGEITKELYIE---LSSDL--*
->P1;3qwoC
-structure:3qwoC: : : : : : : :
-SYNDEKKLASNEIANLPNLNEEQRSAFLSSINDDPSQSANLLAEAKKLN-DAQA*

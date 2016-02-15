@@ -1,6 +1,0 @@
->P1;target
-sequence:target: : : : : : : :
----MNKEHILAQKEVLTPIEYEHYVKHLFDIGEI---TKE-LYIELSSDL-*
->P1;2vkjA1
-structure:2vkjA1: : : : : : : :
-GSHMNLAVKLTRMEK-TLKAYELYIFSDYENFE-NYVKKEGLKIE-GMELL*

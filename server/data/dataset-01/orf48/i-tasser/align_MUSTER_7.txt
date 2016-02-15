@@ -1,6 +1,0 @@
->P1;target
-sequence:target: : : : : : : :
-----------MNKEHILAQ-KEVLTP---IEYEHYV-KHLFDIGEITKELYIELSSDL*
->P1;4amsA3
-structure:4amsA3: : : : : : : :
-CGTDERFKISTGSSKELSNIQSLLPDNEKNEFQLVLQKKLFFLNELIWDHY-KLR---*

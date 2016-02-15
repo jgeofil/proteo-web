@@ -1,8 +1,0 @@
->P1;target
-sequence:target: : : : : : : :
--MNKEHILAQKEV--LTPIEYEHYVKHLFDIGEITKELYIELSSDL----------------------------
---------------------*
->P1;2wp0C
-structure:2wp0C: : : : : : : :
-NIEKEILALVKQNPKVSLIEYENYFSQL---------KYNPNASKSDIAFFYAPNQVLCTTITAKYGALLKEIL
-SQNKGMHLAHSVDVRIEVAP*

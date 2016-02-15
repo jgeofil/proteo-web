@@ -35,25 +35,54 @@ function updateData(){
     var subs = getDirectories(path.join(dataPath, dir))
     var metaLoc = path.join(dataPath, dir, 'meta.json');
 
+    var file = {};
     try{
-      var file = JSON.parse(fs.readFileSync(metaLoc));
-      file.name = dir;
-      file.quantity = subs.length;
-      dataCache.push(file)
+      file = JSON.parse(fs.readFileSync(metaLoc));
     }catch(er){
       console.log(er)
     }
+    file.name = dir;
+    file.quantity = subs.length;
+    dataCache.push(file)
 
     var orfs = [];
     subs.forEach(function(sub){
+      var subPath = path.join(dataPath, dir, sub);
+      var metaLoc = path.join(subPath,'meta.json');
+      var file = {};
       try{
-        var metaLoc = path.join(dataPath, dir, sub ,'meta.json');
-        var file = JSON.parse(fs.readFileSync(metaLoc));
-        file.name = sub;
-        orfs.push(file)
+        file = JSON.parse(fs.readFileSync(metaLoc));
       }catch(er){
         console.log(er)
       }
+
+
+      //TODO: read all dirs at once
+      try {
+        fs.accessSync(path.join(subPath,'disopred3'), fs.F_OK);
+        file.disopred = true;
+      } catch (e) {
+          // It isn't accessible
+      }
+
+      try {
+        fs.accessSync(path.join(subPath,'i-tasser'), fs.F_OK);
+        file.itasser = true;
+      } catch (e) {
+          // It isn't accessible
+      }
+
+      try {
+        fs.accessSync(path.join(subPath,'tmhmm'), fs.F_OK);
+        file.tmhmm = true;
+      } catch (e) {
+          // It isn't accessible
+      }
+
+
+      file.name = sub;
+      orfs.push(file)
+
     })
     orfCache[dir] = orfs;
   });

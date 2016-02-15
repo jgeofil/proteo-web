@@ -1,6 +1,0 @@
->P1;target
-sequence:target: : : : : : : :
-MNKEHILAQKEV--L-TPIEYEHYVKHLFDIGEITK----ELYIELSSDL*
->P1;2dt7A
-structure:2dt7A: : : : : : : :
----------GELNAISGPNEFAEFYNRLKQIKEFHRKHPNEICVPMS---*
