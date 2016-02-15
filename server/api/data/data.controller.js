@@ -1,16 +1,16 @@
 'use strict';
 
 import _ from 'lodash';
+import config from '../../config/environment';
 
 var util = require('./util');
-
 var fs = require('fs');
 var path = require('path');
 var readMultipleFiles = require('read-multiple-files');
 var asy = require('async');
 
-//TODO: Modifier pour process.env.DATAPATH
-var dataPath = path.join(__dirname, '/../../data/');
+// Location of data folder
+var dataPath = config.data;
 
 var dataCache = [];
 var orfCache = {};

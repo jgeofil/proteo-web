@@ -1,6 +1,7 @@
 'use strict';
 
 import _ from 'lodash';
+import config from '../../../config/environment';
 
 //var util = require('./util');
 var path = require('path');
@@ -9,8 +10,8 @@ var fasta = require('bionode-fasta');
 var lineReader = require('linebyline');
 var asy = require('async');
 
-//TODO: Modifier pour process.env.DATAPATH
-var dataPath = path.join(__dirname, '/../../../data/');
+// Location of data folder
+var dataPath = config.data;
 
 
 // Get JSON formatted DISOPRED3 output

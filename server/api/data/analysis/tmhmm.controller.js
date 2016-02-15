@@ -1,6 +1,7 @@
 'use strict';
 
 import _ from 'lodash';
+import config from '../../../config/environment';
 
 //var util = require('./util');
 var path = require('path');
@@ -9,8 +10,8 @@ var lineReader = require('linebyline');
 var asy = require('async');
 var glob = require("glob");
 
-//TODO: Modifier pour process.env.DATAPATH
-var dataPath = path.join(__dirname, '/../../../data/');
+// Location of data folder
+var dataPath = config.data;
 
 function getLineReader(path){
   return lineReader.createInterface({

@@ -27,6 +27,9 @@ var all = {
   // Should we populate the DB with sample data?
   seedDB: false,
 
+  // Data location
+  data: process.env.DATA_LOC || path.normalize(__dirname + '/../../data/'),
+
   // Secret for session, you will want to change this and make it an environment variable
   secrets: {
     session: 'proteo-web-secret'
