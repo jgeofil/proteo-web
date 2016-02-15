@@ -1,0 +1,59 @@
+Your setting for I-TASSER is:
+-pkgdir   =/opt/I-TASSER3.0
+-libdir   =/opt/I-TASSER3.0/ITLIB
+-seqname  =p2_orf47
+-datadir  =/home/smg/projects/p2/i-tasser-2/orf47
+-usrname  =smg
+-runstyle =serial
+-homoflag =real
+-idcut    =1
+-ntemp    =20
+-nmodel   =5
+-LBS      =false
+-EC       =false
+-GO       =false
+
+1. make seq.txt and rmsinp
+2.1 run Psi-blast
+2.3 Predict solvent accessibility...
+2.4 run pairmod
+2.4.1 Use all templates
+2.4.2 running pair ................
+        30000     6379375 total lib str & residues 
+ number of observations   21.24456       117843.6    
+pair done
+3.1 do threading
+/home/smg/projects/p2/i-tasser-2/orf47/init.PPAS exists
+/home/smg/projects/p2/i-tasser-2/orf47/init.dPPAS exists
+/home/smg/projects/p2/i-tasser-2/orf47/init.dPPAS2 exists
+/home/smg/projects/p2/i-tasser-2/orf47/init.Env-PPAS exists
+/home/smg/projects/p2/i-tasser-2/orf47/init.MUSTER exists
+/home/smg/projects/p2/i-tasser-2/orf47/init.wPPAS exists
+/home/smg/projects/p2/i-tasser-2/orf47/init.wdPPAS exists
+/home/smg/projects/p2/i-tasser-2/orf47/init.wMUSTER exists
+3.2 make restraints
+4.1 run simulation
+run 14 serial simulations
+run simulation job 1 / 14
+run simulation job 2 / 14
+run simulation job 3 / 14
+run simulation job 4 / 14
+run simulation job 5 / 14
+run simulation job 6 / 14
+run simulation job 7 / 14
+run simulation job 8 / 14
+run simulation job 9 / 14
+run simulation job 10 / 14
+run simulation job 11 / 14
+run simulation job 12 / 14
+run simulation job 13 / 14
+run simulation job 14 / 14
+5.1 do clustering
+No. of trajectory files: 62
+   8.000000       3.500000       12.00000    
+5.2 build full-atomic model
+/opt/I-TASSER3.0/I-TASSERmod/EMrefinement.pl /home/smg/projects/p2/i-tasser-2/orf47 /opt/I-TASSER3.0/abs/mybin closc1.pdb combo1.pdb p2_orf47 smg
+/opt/I-TASSER3.0/I-TASSERmod/EMrefinement.pl /home/smg/projects/p2/i-tasser-2/orf47 /opt/I-TASSER3.0/abs/mybin closc2.pdb combo2.pdb p2_orf47 smg
+/opt/I-TASSER3.0/I-TASSERmod/EMrefinement.pl /home/smg/projects/p2/i-tasser-2/orf47 /opt/I-TASSER3.0/abs/mybin closc3.pdb combo3.pdb p2_orf47 smg
+/opt/I-TASSER3.0/I-TASSERmod/EMrefinement.pl /home/smg/projects/p2/i-tasser-2/orf47 /opt/I-TASSER3.0/abs/mybin closc4.pdb combo4.pdb p2_orf47 smg
+/opt/I-TASSER3.0/I-TASSERmod/EMrefinement.pl /home/smg/projects/p2/i-tasser-2/orf47 /opt/I-TASSER3.0/abs/mybin closc5.pdb combo5.pdb p2_orf47 smg

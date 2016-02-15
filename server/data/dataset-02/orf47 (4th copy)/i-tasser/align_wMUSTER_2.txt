@@ -1,0 +1,6 @@
+>P1;target
+sequence:target: : : : : : : :
+M-NKEHILAQKEVLTPIEYEHYVKHLFDIGEITKELYIELSS-DL-------*
+>P1;3e21A
+structure:3e21A: : : : : : : :
+-MDREMILADFQACTGIE---------NIDEAITLL--EQNNWDLVAAINGV*

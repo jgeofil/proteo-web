@@ -1,0 +1,86 @@
+ATOM      1  CA  MET     1       1.526  18.422  23.065
+ATOM      2  CA  ASN     2       2.411  15.484  24.292
+ATOM      3  CA  LYS     3       3.083  13.729  21.162
+ATOM      4  CA  GLU     4       2.890  10.364  22.909
+ATOM      5  CA  HIS     5      -0.694  10.974  23.667
+ATOM      6  CA  ILE     6      -1.374  12.284  20.248
+ATOM      7  CA  LEU     7       0.159   9.169  18.710
+ATOM      8  CA  ALA     8      -1.789   6.964  21.017
+ATOM      9  CA  GLN     9      -5.011   8.831  20.079
+ATOM     10  CA  LYS    10      -4.305   8.516  16.472
+ATOM     11  CA  GLU    11      -3.641   4.867  16.585
+ATOM     12  CA  VAL    12      -6.774   4.249  18.598
+ATOM     13  CA  LEU    13      -8.880   5.941  16.128
+ATOM     14  CA  THR    14      -7.430   4.660  13.062
+ATOM     15  CA  PRO    15      -6.207   1.536  13.070
+ATOM     16  CA  ILE    16      -2.910   2.040  12.010
+ATOM     17  CA  GLU    17      -2.144  -0.130  14.385
+ATOM     18  CA  TYR    18      -2.912  -2.061  13.943
+ATOM     19  CA  GLU    19      -2.080  -3.436  12.920
+ATOM     20  CA  HIS    20      -0.937  -3.982  11.275
+ATOM     21  CA  TYR    21      -0.264  -3.481  10.991
+ATOM     22  CA  VAL    22       0.775  -3.839  11.226
+ATOM     23  CA  LYS    23       2.912  -4.763  10.649
+ATOM     24  CA  HIS    24       3.206  -3.554  10.552
+ATOM     25  CA  LEU    25       3.554  -1.129  11.041
+ATOM     26  CA  PHE    26       4.552  -0.377  10.495
+ATOM     27  CA  ASP    27       4.728   0.713  12.239
+ATOM     28  CA  ILE    28       4.862   3.439  14.252
+ATOM     29  CA  GLY    29       7.085   5.312  12.055
+ATOM     30  CA  GLU    30       4.885   5.978   9.363
+ATOM     31  CA  ILE    31       2.498   7.017  11.951
+ATOM     32  CA  THR    32       4.529   9.447  13.346
+ATOM     33  CA  LYS    33       5.151  11.215  10.229
+ATOM     34  CA  GLU    34       1.811  11.651   9.252
+ATOM     35  CA  LEU    35       0.641  12.409  12.466
+ATOM     36  CA  TYR    36       1.782  14.712  14.007
+ATOM     37  CA  ILE    37       2.750  16.581  12.902
+ATOM     38  CA  GLU    38       3.314  16.568  10.914
+ATOM     39  CA  LEU    39       1.610  17.462  10.355
+ATOM     40  CA  SER    40      -0.029  19.480   9.852
+ATOM     41  CA  SER    41      -0.883  20.264  11.282
+ATOM     42  CA  ASP    42      -2.838  19.839  11.983
+ATOM     43  CA  LEU    43      -3.328  17.902  13.910
+TER
+CONECT    1    2
+CONECT    2    3
+CONECT    3    4
+CONECT    4    5
+CONECT    5    6
+CONECT    6    7
+CONECT    7    8
+CONECT    8    9
+CONECT    9   10
+CONECT   10   11
+CONECT   11   12
+CONECT   12   13
+CONECT   13   14
+CONECT   14   15
+CONECT   15   16
+CONECT   16   17
+CONECT   17   18
+CONECT   18   19
+CONECT   19   20
+CONECT   20   21
+CONECT   21   22
+CONECT   22   23
+CONECT   23   24
+CONECT   24   25
+CONECT   25   26
+CONECT   26   27
+CONECT   27   28
+CONECT   28   29
+CONECT   29   30
+CONECT   30   31
+CONECT   31   32
+CONECT   32   33
+CONECT   33   34
+CONECT   34   35
+CONECT   35   36
+CONECT   36   37
+CONECT   37   38
+CONECT   38   39
+CONECT   39   40
+CONECT   40   41
+CONECT   41   42
+CONECT   42   43

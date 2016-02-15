@@ -33,8 +33,10 @@ Running `npm test` will run the unit tests with karma.
 ### Structure
 
     .
-    ├── [dataset name 1]                        # Dataset folder, name is arbitrary but must be unique  
+    ├── [dataset name 1]                        # Dataset folder, name is arbitrary but must be unique
+    │   ├── meta.json                           # Metadata file describing dataset
     │   ├── [orf name 1]                        # ORF folder, name is arbitrary but must be unique
+    │   │   ├── meta.json                       # Metadata file describing ORF
     │   │   ├── disopred3                       # Disopred 3 analysis folder
     │   │   │   ├── [orf name 1].seq            # Sequence file
     │   │   │   ├── [orf name 1].seq.diso       # Disorder file
@@ -51,6 +53,23 @@ Running `npm test` will run the unit tests with karma.
     ├── [dataset name 2]
     └── ...                                     # etc. more datasets
 
+### Metadata
+
+Metadata files for Datasets and ORFs are formatted such as:
+
+`
+    {
+    "dateCreated": "06-06-15",
+    "organism": "phage"
+    }
+`
+`
+{
+	"dateCreated": "06-06-15",
+	"start": 45,
+	"end": 456
+}
+`
 ## API
 
 ### Datasets
@@ -67,26 +86,26 @@ Returns list of available ORFs in selected dataset.
 
 ### Analysis
 
-`GET /api/data/[dataset name]/orf/[orf name]/analysis` 
+`GET /api/data/[dataset name]/orf/[orf name]/analysis`
 
 Returns list of available analysis results for selected ORF.
 
 #### Disopred 3
 
-`GET /api/data/[dataset name]/orf/[orf name]/analysis/disopred3/` 
+`GET /api/data/[dataset name]/orf/[orf name]/analysis/disopred3/`
 
 Returns JSON formatted disopred output
 
 #### I-Tasser
 
-`GET /api/data/[dataset name]/orf/[orf name]/analysis/itasser/models` 
+`GET /api/data/[dataset name]/orf/[orf name]/analysis/itasser/models`
 
 Returns list of available model files
 
-`GET /api/data/[dataset name]/orf/[orf name]/analysis/itasser/models/[modelName]` 
+`GET /api/data/[dataset name]/orf/[orf name]/analysis/itasser/models/[modelName]`
 
 Returns PDB file of selected model
 
-`GET /api/data/[dataset name]/orf/[orf name]/analysis/itasser/predictions` 
+`GET /api/data/[dataset name]/orf/[orf name]/analysis/itasser/predictions`
 
 Returns JSON formatted i-tasser output
