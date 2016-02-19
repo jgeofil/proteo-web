@@ -69,6 +69,14 @@
     <div class="panel-body orf-panel-body"
           ng-show="state.topcons.isOpen && state.topcons.isPresent">
 
+      <p class="orf-title-vertical">Topcons predictions</p>
+      <hr class="orf-hr">
+      <div ng-scrollable="{scrollX:'bottom',scrollY:'none'}"
+            class="scrollarea"
+            spy-x="posX">
+
+            <topcons-graph ng-if="topconsGraphData" graph-data="topconsGraphData"> </topcons-graph>
+      </div>
       </div>
     </div>
 

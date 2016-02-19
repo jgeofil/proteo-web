@@ -115,11 +115,21 @@ angular.module('proteoWebApp')
   // TMHMM
   //**************************************************************************
   $http.get('/api/data/' + $routeParams.datasetName + '/orf/' +
-  $routeParams.orfName + '/analysis/tmhmm')
-  .then(function(data){
-    $scope.tmhmmGraphData = data.data;
-    $scope.state.tmhmm.isPresent = true;
-  });
+    $routeParams.orfName + '/analysis/tmhmm')
+    .then(function(data){
+      $scope.tmhmmGraphData = data.data;
+      $scope.state.tmhmm.isPresent = true;
+    });
+
+  //**************************************************************************
+  // TMHMM
+  //**************************************************************************
+  $http.get('/api/data/' + $routeParams.datasetName + '/orf/' +
+    $routeParams.orfName + '/analysis/topcons')
+    .then(function(data){
+      $scope.topconsGraphData = data.data;
+      $scope.state.topcons.isPresent = true;
+    });
 })
 
 //**************************************************************************

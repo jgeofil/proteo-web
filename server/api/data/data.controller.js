@@ -79,6 +79,13 @@ function updateData(){
           // It isn't accessible
       }
 
+      try {
+        fs.accessSync(path.join(subPath,'topcons'), fs.F_OK);
+        file.topcons = true;
+      } catch (e) {
+          // It isn't accessible
+      }
+
 
       file.name = sub;
       orfs.push(file)

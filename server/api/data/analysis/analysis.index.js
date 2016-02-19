@@ -5,6 +5,7 @@ var controller = require('./analysis.controller');
 var disopred = require('./disopred.controller');
 var itasser = require('./itasser.controller');
 var tmhmm = require('./tmhmm.controller');
+var topcons = require('./topcons.controller');
 
 var router = express.Router({mergeParams: true});
 
@@ -15,6 +16,8 @@ router.get('/itasser/models/:modelName', itasser.getModel);
 router.get('/itasser/predictions', itasser.getPredictions);
 
 router.get('/tmhmm/', tmhmm.getTmhmm);
+
+router.get('/topcons/', topcons.getTopcons);
 
 router.get('/', controller.index);
 

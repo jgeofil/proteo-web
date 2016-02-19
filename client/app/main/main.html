@@ -23,7 +23,7 @@
       <div ng-show="dataSelect">
         <table ng-table="tableParamsOrf" class="table table-condensed table-bordered table-striped" show-filter="true">
           <tr ng-repeat="row in $data">
-            <td data-title="'Name'" filter="{name: 'text'}" sortable="'name'" class="col-lg-7">
+            <td data-title="'Name'" filter="{name: 'text'}" sortable="'name'" class="col-lg-6">
               <a href="/orf/{{dataSelect}}/{{row.name}}">{{row.name}}</a>
             </td>
             <td data-title="'Disopred'" sortable="'disopred'" class="col-lg-1 text-center">
@@ -34,9 +34,13 @@
               <span class="glyphicon present-icon"
                     ng-class="{'glyphicon-ok text-success': row.itasser, 'glyphicon-remove text-warning': !row.itasser}"></span>
             </td>
-            <td data-title="'TMHMM'"sortable="'tmhmm'" class="col-lg-1 text-center">
+            <td data-title="'TMHMM'" sortable="'tmhmm'" class="col-lg-1 text-center">
               <span class="glyphicon present-icon"
                     ng-class="{'glyphicon-ok text-success': row.tmhmm, 'glyphicon-remove text-warning': !row.tmhmm}"></span>
+            </td>
+            <td data-title="'Topcons'" sortable="'topcons'" class="col-lg-1 text-center">
+              <span class="glyphicon present-icon"
+                    ng-class="{'glyphicon-ok text-success': row.topcons, 'glyphicon-remove text-warning': !row.topcons}"></span>
             </td>
             <td data-title="'Start'" filter="{start: 'text'}" sortable="'start'" class="col-lg-1 text-center">
               {{row.start}}
