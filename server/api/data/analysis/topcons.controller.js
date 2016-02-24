@@ -39,7 +39,10 @@ export function getTopcons(req, res){
       var octopus = '';
       var topcons = '';
 
-      var data = [];
+      var data = {};
+      data.zcord = [];
+      data.deltaG = [];
+      data.topRel = [];
 
       var state = 0;
 
@@ -99,21 +102,19 @@ export function getTopcons(req, res){
                 break;
               case 7:
                 if(line !== ''){
-                  data.push({
-                    zcord: Number(line.split(/\s+/)[1])
-                  });
-                }
+                  data.zcord.push(Number(line.split(/\s+/)[1]));
+                  }
                 break;
               case 8:
                 if(line !== ''){
                   line = line.split(/\s+/);
-                  data[Number(line[0])-1].deltaG = Number(line[1]);
+                  data.deltaG.push(Number(line[1]));
                 }
                 break;
               case 9:
                 if(line !== ''){
                   line = line.split(/\s+/);
-                  data[Number(line[0])-1].topRel = Number(line[1]);
+                  data.topRel.push(Number(line[1]));
                 }
                 break;
               default:
@@ -122,15 +123,33 @@ export function getTopcons(req, res){
         }
       })
       .on('close', function (){
-        data.forEach(function(d, i){
-          d.pos = i + 1;
-          d.scampiSeq = scampiSeq[i];
-          d.scampiMsa = scampiMsa[i];
-          d.prodiv = prodiv[i];
-          d.pro = pro[i];
-          d.octopus = octopus[i];
-          d.topcons = topcons[i];
+        data.pred = [];
+
+        data.pred.push({
+          method: 'scampiSeq',
+          values: scampiSeq.split('')
         });
+        data.pred.push({
+          method: 'scampiMsa',
+          values: scampiMsa.split('')
+        });
+        data.pred.push({
+          method: 'prodiv',
+          values: prodiv.split('')
+        });
+        data.pred.push({
+          method: 'pro',
+          values: pro.split('')
+        });
+        data.pred.push({
+          method: 'octopus',
+          values: octopus.split('')
+        });
+        data.pred.push({
+          method: 'topcons',
+          values: topcons.split('')
+        });
+
         callback(null, data);
       });
     }
