@@ -13,8 +13,6 @@ angular.module('proteoWebApp', [
   'ui.bootstrap',
   'ngAnimate',
   'ngScrollable',
-  'ui.grid',
-  'ui.grid.pagination',
   'ngTable'
 ])
   .config(function($routeProvider, $locationProvider) {
