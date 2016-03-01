@@ -22,4 +22,5 @@ angular.module('proteoWebApp', [
       });
 
     $locationProvider.html5Mode(true);
+
   });

@@ -2,6 +2,9 @@
 
 import _ from 'lodash';
 import config from '../../config/environment';
+import Group from './../group/group.model';
+import User from './../user/user.model';
+var mongoose = require('bluebird').promisifyAll(require('mongoose'));
 
 var fs = require('fs');
 var path = require('path');
@@ -119,10 +122,28 @@ chokidar.watch(dataPath, {
 
 // Gets a list of available data sets
 export function index(req, res) {
-  res.status(200).json(dataCache);
+  Group.find({users: mongoose.Types.ObjectId(req.user._id)}, function(err,groups){
+    //TODO: error
+    var permissions = [];
+    groups.forEach(function(d){
+      permissions = permissions.concat(d.permissions);
+    })
+
+    var dataCheck = JSON.parse(JSON.stringify(dataCache));
+
+    dataCheck.forEach(function(d){
+      if(permissions.indexOf(d.name) != -1){
+        d.authorized = true;
+      }
+    })
+
+    res.status(200).json(dataCheck);
+  });
+
+
 }
 
-// Gets a list of available data sets
+// Gets a list of available orfs
 export function orfs(req, res) {
   res.status(200).json(orfCache[req.params.dataId]);
 }

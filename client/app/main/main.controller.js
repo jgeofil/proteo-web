@@ -27,11 +27,18 @@ angular.module('proteoWebApp')
     //TODO: Show message
   });
 
+  var dataSort = function(data){
+    data.sort(function(a,b){
+      return ((b.disopred?1:0) + (b.itasser?1:0) + (b.tmhmm?1:0) + (b.topcons?1:0))-((a.disopred?1:0) + (a.itasser?1:0) + (a.tmhmm?1:0) + (a.topcons?1:0));
+    });
+  };
+
   $scope.getOrfs = function(dataset){
     $scope.dataSelect = dataset;
 
     $http.get('/api/data/'+dataset+'/orf').then(function(response){
       $scope.orfSets = response.data;
+      dataSort($scope.orfSets);
       orfTableSetting.data = response.data;
       $scope.tableParamsOrf = new NgTableParams(dataTableParameters, orfTableSetting);
     }, function(error){

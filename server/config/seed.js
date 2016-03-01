@@ -5,6 +5,7 @@
 
 'use strict';
 import User from '../api/user/user.model';
+import Group from '../api/group/group.model';
 
 User.find({}).removeAsync()
   .then(() => {
@@ -20,7 +21,25 @@ User.find({}).removeAsync()
       email: 'admin@example.com',
       password: 'admin'
     })
-    .then(() => {
+    .then((users) => {
+
+      Group.find({}).removeAsync()
+        .then(() => {
+          Group.createAsync({
+            name: 'general',
+            permissions: ['dataset-01'],
+            users: [users[0]._id, users[1]._id],
+            active: true
+          }, {
+            name: 'restricted',
+            permissions: ['dataset-01'],
+            users: [users[1]._id],
+            active: true
+          })
+          .then(() => {
+            console.log('finished populating groups');
+          });
+        });
       console.log('finished populating users');
     });
   });
