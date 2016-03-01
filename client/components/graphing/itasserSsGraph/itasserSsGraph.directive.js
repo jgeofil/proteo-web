@@ -13,7 +13,7 @@ angular.module('proteoWebApp')
         var seqln = scope.graphDataSs.length; //Length of the sequence alignement
 
         var margin = {top: 10, right: 20, bottom: 35, left: 90};
-        var width = (seqln*15) - margin.left - margin.right;
+        var width = (seqln*10) - margin.left - margin.right;
         var height = 120 - margin.top - margin.bottom;
 
         var x = d3.scale.linear()

@@ -102,19 +102,29 @@ export function getTopcons(req, res){
                 break;
               case 7:
                 if(line !== ''){
-                  data.zcord.push(Number(line.split(/\s+/)[1]));
+                  line = line.split(/\s+/);
+                  data.zcord.push({
+                    pos: Number(line[0]),
+                    value: Number(line[1])
+                  });
                   }
                 break;
               case 8:
                 if(line !== ''){
                   line = line.split(/\s+/);
-                  data.deltaG.push(Number(line[1]));
+                  data.deltaG.push({
+                    pos: Number(line[0]),
+                    value: Number(line[1])
+                  });
                 }
                 break;
               case 9:
                 if(line !== ''){
                   line = line.split(/\s+/);
-                  data.topRel.push(Number(line[1]));
+                  data.topRel.push({
+                    pos: Number(line[0]),
+                    value: Number(line[1])
+                  });
                 }
                 break;
               default:

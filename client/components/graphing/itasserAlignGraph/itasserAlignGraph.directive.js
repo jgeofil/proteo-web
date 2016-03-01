@@ -14,14 +14,13 @@ angular.module('proteoWebApp')
       },
       link: function (scope, element, attrs) {
         var seqln = scope.graphData.seq.length; //Length of the sequence alignement
-        console.log(scope.graphData)
         var data = scope.graphData.coverage.slice(0, scope.seqCount); //Keep only necessary alignements
         data.forEach(function(d){
           d.cov = d.cov.split(''); //Split alignement sequences
         });
 
         var margin = {top: 40, right: 20, bottom:30, left: 90};
-        var width = (seqln*15) - margin.right - margin.left;
+        var width = (seqln*10) - margin.right - margin.left;
         var height = (scope.seqCount*11);
 
         var x = d3.scale.linear().range([0, width]);
