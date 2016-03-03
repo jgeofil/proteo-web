@@ -1,0 +1,40 @@
+<navbar></navbar>
+
+<div class="container">
+
+  <div>
+    <h2>Users</h2>
+    <div class="input-group">
+      <input ng-model="newUser" type="text" class="form-control" placeholder="Add user by email...">
+      <span class="input-group-btn">
+        <button ng-click="addUser(newUser)" class="btn btn-default" type="button">Add!</button>
+      </span>
+    </div>
+    <br>
+    <table ng-table="userTableParams" class="table table-condensed table-bordered table-striped" show-filter="true">
+      <tr ng-repeat="row in $data track by $index">
+        <td data-title="'Name'" filter="{name: 'text'}" sortable="'name'" class="col-lg-4">{{row.name}}</td>
+        <td data-title="'ID'" filter="{_id: 'text'}" class="col-lg-4">{{row._id}}</td>
+        <td data-title="'Email'" filter="{email: 'text'}" sortable="'email'" class="col-lg-4">{{row.email}}</td>
+      </tr>
+    </table>
+  </div>
+  <div>
+    <h2>Permissions</h2>
+    <div class="input-group">
+      <input ng-model="newPerm" type="text" class="form-control" placeholder="Add dataset to permissions...">
+      <span class="input-group-btn">
+        <button ng-click="addPerm(newPerm)" class="btn btn-default" type="button">Add!</button>
+      </span>
+    </div>
+    <br>
+    <table ng-table="permTableParams" class="table table-condensed table-bordered table-striped" show-filter="true">
+      <tr ng-repeat="row in $data track by $index">
+        <td data-title="'Name'" filter="{'name': 'text'}" sortable="'name'" class="col-lg-7">
+          {{row.name}}<a ng-click="removePerm(row.name)" class="glyphicon glyphicon-remove pull-right text-danger"></a>
+        </td>
+      </tr>
+    </table>
+
+  </div>
+</div>

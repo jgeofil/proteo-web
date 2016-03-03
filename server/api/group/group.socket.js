@@ -23,7 +23,13 @@ export function register(socket) {
 
 function createListener(event, socket) {
   return function(doc) {
-    socket.emit(event, doc);
+    doc.populate('users', function(err, poped){
+      if(err){
+        console.log(err)
+      }else{
+        socket.emit(event, poped);
+      }
+    })
   };
 }
 

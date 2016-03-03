@@ -11,6 +11,7 @@
 
 import _ from 'lodash';
 var Group = require('./group.model');
+var User = require('./../user/user.model');
 
 function handleError(res, statusCode) {
   statusCode = statusCode || 500;
@@ -59,6 +60,7 @@ function removeEntity(res) {
   };
 }
 
+
 // Gets a list of Groups
 export function index(req, res) {
   Group.findAsync()
@@ -68,7 +70,8 @@ export function index(req, res) {
 
 // Gets a single Group from the DB
 export function show(req, res) {
-  Group.findByIdAsync(req.params.id)
+  Group.findById(req.params.id)
+    .populate('users', 'name _id email')
     .then(handleEntityNotFound(res))
     .then(responseWithResult(res))
     .catch(handleError(res));
@@ -91,6 +94,55 @@ export function update(req, res) {
     .then(saveUpdates(req.body))
     .then(responseWithResult(res))
     .catch(handleError(res));
+}
+
+// Updates an existing Group in the DB
+export function addSet(req, res) {
+  Group.findByIdAsync(req.params.id)
+    .then(handleEntityNotFound(res))
+    .then(function(entity) {
+      entity.permissions.push(req.params.name);
+      return entity.saveAsync()
+        .spread(updated => {
+          return updated;
+        });
+    })
+    .then(responseWithResult(res))
+    .catch(handleError(res));
+}
+
+// Updates an existing Group in the DB
+export function removeSet(req, res) {
+  Group.findByIdAsync(req.params.id)
+    .then(handleEntityNotFound(res))
+    .then(function(entity) {
+      entity.permissions.splice(entity.permissions.indexOf(req.params.name),1);
+      return entity.saveAsync()
+        .spread(updated => {
+          return updated;
+        });
+    })
+    .then(responseWithResult(res))
+    .catch(handleError(res));
+}
+
+// Updates an existing Group in the DB
+export function addUser(req, res) {
+  User.findOne({email: req.body.email}).exec(function(err, user){
+    if(err || !user){ res.status(404).end();}
+    else{
+      Group.findById(req.params.id).exec(function(err, group){
+        if(err || !group){ res.status(404).end();}
+        else{
+          group.users.push(user._id);
+          group.save(function(err, saved){
+            if(err){ res.status(500).end();}
+            res.status(200).end();
+          });
+        }
+      })
+    }
+  })
 }
 
 // Deletes a Group from the DB
