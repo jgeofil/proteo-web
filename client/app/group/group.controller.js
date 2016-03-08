@@ -82,6 +82,7 @@ angular.module('proteoWebApp')
 
     $http.get('/api/groups/'+ $routeParams.groupId).then(function(response){
       updateData(response.data);
+      $scope.groupName = response.data.name;
     }, function(error){
       console.log(error);
       //TODO: Show message

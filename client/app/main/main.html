@@ -1,32 +1,38 @@
 <navbar></navbar>
 
-<script type="text/ng-template" id="boolsort.html">
-  <input type="radio" ng-model="params.filter()[name]" value="" /> <strong>None</strong>
-</script>
-
 <div class="container">
   <div class="row">
     <div class="col-lg-12">
 
-      <p ng-click="resetData()" ng-show="dataSelect">
-        <a>Return  </a> {{dataSelect}}
-      </p>
+
 
       <div ng-show="!dataSelect">
-          <table ng-table="tableParams" class="table table-condensed table-bordered table-striped" show-filter="true">
-            <tr ng-repeat="row in $data">
-              <td  data-title="'Name'" filter="{name: 'text'}" sortable="'name'" class="col-lg-7">
-                <a ng-if="row.authorized" ng-click="getOrfs(row.name)">{{row.name}}</a>
-                <span ng-if="!row.authorized" class="text-muted"><span class="glyphicon glyphicon-lock"></span>  {{row.name}}</span>
-              </td>
-              <td data-title="'Organism'" filter="{organism: 'text'}" sortable="'organism'" class="col-lg-2">{{row.organism}}</td>
-              <td data-title="'ORFs'" filter="{quantity: 'number'}" sortable="'quantity'" class="col-lg-1">{{row.quantity}}</td>
-              <td data-title="'Date Created'" filter="{dateCreated: 'text'}" sortable="'dateCreated'" class="col-lg-2">{{row.dateCreated}}</td>
-            </tr>
-          </table>
+        <h4>Available datasets</h4>
+        <small class="text-muted">
+          Authorization must be requested for datasets marked with the <span class="glyphicon glyphicon-lock"></span> icon.</small>
+        <br>
+        <br>
+        <table ng-table="tableParams" class="table table-condensed table-bordered table-striped" show-filter="true">
+          <tr ng-repeat="row in $data">
+            <td  data-title="'Name'" filter="{name: 'text'}" sortable="'name'" class="col-lg-7">
+              <a ng-if="row.authorized" ng-click="getOrfs(row.name)">{{row.name}}</a>
+              <span ng-if="!row.authorized" class="text-muted"><span class="glyphicon glyphicon-lock"></span>  {{row.name}}</span>
+            </td>
+            <td data-title="'Organism'" filter="{organism: 'text'}" sortable="'organism'" class="col-lg-2">{{row.organism}}</td>
+            <td data-title="'ORFs'" filter="{quantity: 'number'}" sortable="'quantity'" class="col-lg-1">{{row.quantity}}</td>
+            <td data-title="'Date Created'" filter="{dateCreated: 'text'}" sortable="'dateCreated'" class="col-lg-2">{{row.dateCreated}}</td>
+          </tr>
+        </table>
       </div>
 
+
+
       <div ng-show="dataSelect">
+        <h4>ORFs in {{dataSelect}}</h4>
+        <p ng-click="resetData()" ng-show="dataSelect">
+          <a><span class="glyphicon glyphicon-arrow-left"></span></span>  Return</a>
+        </p>
+
         <table ng-table="tableParamsOrf" class="table table-condensed table-bordered table-striped" show-filter="true">
           <tr ng-repeat="row in $data">
             <td data-title="'Name'" filter="{name: 'text'}" sortable="'name'" class="col-lg-6">
