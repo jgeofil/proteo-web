@@ -145,6 +145,20 @@ export function addUser(req, res) {
   })
 }
 
+// Updates an existing Group in the DB
+export function removeUser(req, res) {
+  Group.findById(req.params.id).exec(function(err, group){
+    if(err || !group){ res.status(404).end();}
+    else{
+      group.users.splice(group.users.indexOf(req.params.userId),1);
+      group.save(function(err, saved){
+        if(err){ res.status(500).end();}
+        res.status(200).end();
+      });
+    }
+  })
+}
+
 // Deletes a Group from the DB
 export function destroy(req, res) {
   Group.findByIdAsync(req.params.id)

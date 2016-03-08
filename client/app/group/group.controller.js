@@ -57,6 +57,15 @@ angular.module('proteoWebApp')
       });
     };
 
+    $scope.removeUser = function(id){
+      $http.patch('/api/groups/' + $routeParams.groupId + '/removeuser/'+ id).then(function(response){
+        console.log(response);
+      }, function(error){
+        console.log(error);
+        //TODO: Show message
+      });
+    };
+
 
 
     function updateData (data) {

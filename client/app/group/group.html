@@ -13,7 +13,9 @@
     <br>
     <table ng-table="userTableParams" class="table table-condensed table-bordered table-striped" show-filter="true">
       <tr ng-repeat="row in $data track by $index">
-        <td data-title="'Name'" filter="{name: 'text'}" sortable="'name'" class="col-lg-4">{{row.name}}</td>
+        <td data-title="'Name'" filter="{name: 'text'}" sortable="'name'" class="col-lg-4">
+          {{row.name}} <a ng-click="removeUser(row._id)" class="glyphicon glyphicon-remove pull-right text-danger"></a>
+        </td>
         <td data-title="'ID'" filter="{_id: 'text'}" class="col-lg-4">{{row._id}}</td>
         <td data-title="'Email'" filter="{email: 'text'}" sortable="'email'" class="col-lg-4">{{row.email}}</td>
       </tr>

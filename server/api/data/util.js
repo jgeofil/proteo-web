@@ -5,6 +5,8 @@ var path = require("path");
 var glob = require("glob");
 var readMultipleFiles = require('read-multiple-files');
 var asy = require('async');
+import Group from './../group/group.model';
+var mongoose = require('bluebird').promisifyAll(require('mongoose'));
 /**
 
 **/
@@ -44,9 +46,24 @@ export function getSubDirs(dir, cb) {
   ], function (err, result) {
     cb(result, err);
   });
-
 }
 
+export function isAuthorizedOnGroup(req, res, next) {
+  Group.find({users: mongoose.Types.ObjectId(req.user._id)}, function(err,groups){
+    //TODO: error
+    var permissions = [];
+    groups.forEach(function(d){
+      permissions = permissions.concat(d.permissions);
+    })
+
+    if(permissions.indexOf(req.params.dataId) === -1){
+      res.status(403).end();
+    }else{
+      next();
+    }
+
+  });
+}
 
 
 
