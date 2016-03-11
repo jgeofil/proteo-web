@@ -42,12 +42,17 @@ Running `npm test` will run the unit tests with karma.
     │   │   │   ├── disopred.seq.diso           # Disorder file
     │   │   │   └── disopred.seq.pbdat          # Protein binding file
     │   │   └── i-tasser                        # I-tasser analysis folder  
-    │   │       ├── cscore                      # CScore file
-    │   │       ├── seq.ss                      # Secondary sequence file
-    │   │       ├── coverage                    # Alignment file
-    │   │       ├── model[number 1].pdb         # Model PDB file
-    │   │       ├── model[number 2].pdb         
-    │   │       └── ...                         # etc. more models
+    │   │   │   ├── cscore                      # CScore file
+    │   │   │   ├── seq.ss                      # Secondary sequence file
+    │   │   │   ├── coverage                    # Alignment file
+    │   │   │   ├── model[number 1].pdb         # Model PDB file
+    │   │   │   ├── model[number 2].pdb         
+    │   │   │   └── ...                         # etc. more models
+    │   │   └── tmhmm                           # TMHMM analysis folder  
+    │   │   │   ├── tmhmm.long                  # Secondary sequence file
+    │   │   │   └── tmhmm.plp                   # PLP file
+    │   │   └── topcons                         # TOPCONS analysis folder  
+    │   │       └── topcons.txt                 # TOPCONS data file
     │   ├── [orf name 2]        
     │   └── ...                                 # etc. more ORFs
     ├── [dataset name 2]
