@@ -23,8 +23,8 @@ function getLineReader(path){
 export function getTmhmm(req, res){
   var subPath = path.join(dataPath, req.params.dataId, req.params.orfId, 'tmhmm');
 
-  var longFilePath = path.join(subPath, req.params.orfId+'.long');
-  var plpFilePath = path.join(subPath, req.params.orfId+'.plp');
+  var longFilePath = path.join(subPath, 'tmhmm.long');
+  var plpFilePath = path.join(subPath, 'tmhmm.plp');
 
   asy.waterfall([
     //**************************************************************************

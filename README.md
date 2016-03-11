@@ -38,9 +38,9 @@ Running `npm test` will run the unit tests with karma.
     │   ├── [orf name 1]                        # ORF folder, name is arbitrary but must be unique
     │   │   ├── meta.json                       # Metadata file describing ORF
     │   │   ├── disopred3                       # Disopred 3 analysis folder
-    │   │   │   ├── [orf name 1].seq            # Sequence file
-    │   │   │   ├── [orf name 1].seq.diso       # Disorder file
-    │   │   │   └── [orf name 1].seq.pbdat      # Protein binding file
+    │   │   │   ├── disopred.seq                # Sequence file
+    │   │   │   ├── disopred.seq.diso           # Disorder file
+    │   │   │   └── disopred.seq.pbdat          # Protein binding file
     │   │   └── i-tasser                        # I-tasser analysis folder  
     │   │       ├── cscore                      # CScore file
     │   │       ├── seq.ss                      # Secondary sequence file
