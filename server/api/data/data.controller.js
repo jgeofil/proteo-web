@@ -4,6 +4,7 @@ import _ from 'lodash';
 import config from '../../config/environment';
 import Group from './../group/group.model';
 import User from './../user/user.model';
+import Data from './dataset.model';
 var mongoose = require('bluebird').promisifyAll(require('mongoose'));
 
 var fs = require('fs');
@@ -145,5 +146,6 @@ export function index(req, res) {
 
 // Gets a list of available orfs
 export function orfs(req, res) {
+  //TODO: has own property
   res.status(200).json(orfCache[req.params.dataId]);
 }
