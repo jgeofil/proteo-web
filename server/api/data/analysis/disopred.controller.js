@@ -21,9 +21,9 @@ export function disopred3(req, res){
   var subPath = path.join(dataPath, req.params.dataId, req.params.orfId, 'disopred3');
   console.log(subPath)
 
-  var seqFilePath = path.join(subPath, req.params.orfId + '.seq');
-  var disoFilePath = path.join(subPath, req.params.orfId + '.seq.diso');
-  var bindFilePath = path.join(subPath, req.params.orfId + '.seq.pbdat');
+  var seqFilePath = path.join(subPath, 'disopred' + '.seq');
+  var disoFilePath = path.join(subPath, 'disopred' + '.seq.diso');
+  var bindFilePath = path.join(subPath, 'disopred' + '.seq.pbdat');
 
   asy.waterfall([
     function(callback) {
