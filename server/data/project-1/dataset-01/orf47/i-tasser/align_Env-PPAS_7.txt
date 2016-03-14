@@ -1,0 +1,6 @@
+>P1;target
+sequence:target: : : : : : : :
+-----MNKEHILAQKEVLTPIEYEHYVKHLFDIGEITKELYIEL-SSDL-----*
+>P1;1hcrA
+structure:1hcrA: : : : : : : :
+GRPRAINKHEQEQISRLLEKGHPRQQLAIIFGIG--VSTLYRYFPASSIKKRMN*

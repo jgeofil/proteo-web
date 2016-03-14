@@ -56,7 +56,7 @@ export function isAuthorizedOnGroup(req, res, next) {
       permissions = permissions.concat(d.permissions);
     })
 
-    if(permissions.indexOf(req.params.dataId) === -1){
+    if(permissions.indexOf(req.params.projectId) === -1){
       res.status(403).end();
     }else{
       next();

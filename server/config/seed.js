@@ -27,7 +27,7 @@ User.find({}).removeAsync()
         .then(() => {
           Group.createAsync({
             name: 'general',
-            permissions: ['dataset-01'],
+            permissions: ['dataset-01', 'project-1'],
             users: [users[0]._id, users[1]._id],
             active: true
           }, {

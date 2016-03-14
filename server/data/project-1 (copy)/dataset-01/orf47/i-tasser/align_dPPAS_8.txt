@@ -1,0 +1,6 @@
+>P1;target
+sequence:target: : : : : : : :
+MNKEHILAQKEVLTPIEYEHYVKHLFDIGEITKELYIELSSDL*
+>P1;3j47P
+structure:3j47P: : : : : : : :
+-SQLLNEWSHNVDELLEHIETIGHLITKEEIMHGL--------*

@@ -20,7 +20,7 @@ function getLineReader(path){
 
 // Get JSON formatted tmhmm
 export function getTopcons(req, res){
-  var subPath = path.join(dataPath, req.params.dataId, req.params.orfId, 'topcons');
+  var subPath = path.join(dataPath, req.params.projectId, req.params.dataId, req.params.orfId, 'topcons');
 
   var topFilePath = path.join(subPath, 'topcons.txt');
   var plpFilePath = path.join(subPath, req.params.orfId+'.plp');

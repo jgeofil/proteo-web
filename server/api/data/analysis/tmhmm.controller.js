@@ -21,7 +21,7 @@ function getLineReader(path){
 
 // Get JSON formatted tmhmm
 export function getTmhmm(req, res){
-  var subPath = path.join(dataPath, req.params.dataId, req.params.orfId, 'tmhmm');
+  var subPath = path.join(dataPath, req.params.projectId, req.params.dataId, req.params.orfId, 'tmhmm');
 
   var longFilePath = path.join(subPath, 'tmhmm.long');
   var plpFilePath = path.join(subPath, 'tmhmm.plp');

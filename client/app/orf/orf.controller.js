@@ -61,10 +61,11 @@ angular.module('proteoWebApp')
   //**************************************************************************
   // DISOPRED3
   //**************************************************************************
-  $http.get('/api/data/' + $routeParams.datasetName + '/orf/' +
+  $http.get('/api/data/' + $routeParams.projectName +'/dataset/'+ $routeParams.datasetName + '/orf/' +
   $routeParams.orfName + '/analysis/disopred3')
   .then(function(data){
     var inDat = data.data.data;
+    console.log(data.data)
     $scope.disoGraphData = inDat;
     $scope.state.disopred.isPresent = true;
 
@@ -73,14 +74,14 @@ angular.module('proteoWebApp')
   //**************************************************************************
   // ITASSER
   //**************************************************************************
-  $http.get('/api/data/' + $routeParams.datasetName + '/orf/' +
+  $http.get('/api/data/' + $routeParams.projectName +'/dataset/'+ $routeParams.datasetName + '/orf/' +
   $routeParams.orfName + '/analysis/itasser/models')
   .then(function(data){
     $scope.itasserModels = data.data;
     $scope.state.itasser.isPresent = true;
 
     $scope.itasserModels.forEach(function(model){
-      $http.get('/api/data/' + $routeParams.datasetName + '/orf/' +
+      $http.get('/api/data/' + $routeParams.projectName +'/dataset/'+ $routeParams.datasetName + '/orf/' +
       $routeParams.orfName + '/analysis/itasser/models/'+model.name)
       .then(function(data){
 
@@ -104,7 +105,7 @@ angular.module('proteoWebApp')
     });
   });
 
-  $http.get('/api/data/' + $routeParams.datasetName + '/orf/' +
+  $http.get('/api/data/' + $routeParams.projectName +'/dataset/'+ $routeParams.datasetName + '/orf/' +
   $routeParams.orfName + '/analysis/itasser/predictions')
   .then(function(response){
     $scope.itasserSsGraphData = response.data;
@@ -116,7 +117,7 @@ angular.module('proteoWebApp')
   //**************************************************************************
   // TMHMM
   //**************************************************************************
-  $http.get('/api/data/' + $routeParams.datasetName + '/orf/' +
+  $http.get('/api/data/' + $routeParams.projectName +'/dataset/'+ $routeParams.datasetName + '/orf/' +
     $routeParams.orfName + '/analysis/tmhmm')
     .then(function(data){
       $scope.tmhmmGraphData = data.data;
@@ -124,9 +125,9 @@ angular.module('proteoWebApp')
     });
 
   //**************************************************************************
-  // TMHMM
+  // topcons
   //**************************************************************************
-  $http.get('/api/data/' + $routeParams.datasetName + '/orf/' +
+  $http.get('/api/data/' + $routeParams.projectName +'/dataset/'+ $routeParams.datasetName + '/orf/' +
     $routeParams.orfName + '/analysis/topcons')
     .then(function(data){
       $scope.topconsGraphData = data.data;

@@ -4,39 +4,61 @@
   <div class="row">
     <div class="col-lg-12">
 
+      <ol class="breadcrumb">
+        <li class="active">
+          <a ng-if="select.project" ng-click="reset()">Projects</a>
+          <span ng-if="!select.project">Projects</span>
+        </li>
+        <li class="active" ng-if="select.project">
+          <a ng-if="select.dataset" ng-click="resetToProject()">{{select.project}}</a>
+          <span ng-if="!select.dataset">{{select.project}}</span>
+        </li>
+        <li class="active" ng-if="select.dataset">
+          {{select.dataset}}
+        </li>
+      </ol>
 
-
-      <div ng-show="!dataSelect">
-        <h4>Available datasets</h4>
+      <div ng-show="data.projects && !select.project">
+        <h4>Available projects</h4>
         <small class="text-muted">
-          Authorization must be requested for datasets marked with the <span class="glyphicon glyphicon-lock"></span> icon.</small>
+          Authorization must be requested for projects marked with the <span class="glyphicon glyphicon-lock"></span> icon.</small>
         <br>
         <br>
-        <table ng-table="tableParams" class="table table-condensed table-bordered table-striped" show-filter="true">
+        <table ng-table="table.projects" class="table table-condensed table-bordered table-striped" show-filter="true">
           <tr ng-repeat="row in $data">
             <td  data-title="'Name'" filter="{name: 'text'}" sortable="'name'" class="col-lg-7">
-              <a ng-if="row.authorized" ng-click="getOrfs(row.name)">{{row.name}}</a>
+              <a ng-if="row.authorized" ng-click="getDatasets(row.name)">{{row.name}}</a>
               <span ng-if="!row.authorized" class="text-muted"><span class="glyphicon glyphicon-lock"></span>  {{row.name}}</span>
             </td>
-            <td data-title="'Organism'" filter="{organism: 'text'}" sortable="'organism'" class="col-lg-2">{{row.organism}}</td>
-            <td data-title="'ORFs'" filter="{quantity: 'number'}" sortable="'quantity'" class="col-lg-1">{{row.quantity}}</td>
+            <td data-title="'Datasets'" filter="{quantity: 'number'}" sortable="'quantity'" class="col-lg-1">{{row.datasets.length}}</td>
             <td data-title="'Date Created'" filter="{dateCreated: 'text'}" sortable="'dateCreated'" class="col-lg-2">{{row.dateCreated}}</td>
           </tr>
         </table>
       </div>
 
+      <div ng-show="data.datasets && !select.dataset">
+        <h4>Available datasets</h4>
+        <br>
+        <table ng-table="table.datasets" class="table table-condensed table-bordered table-striped" show-filter="true">
+          <tr ng-repeat="row in $data">
+            <td  data-title="'Name'" filter="{name: 'text'}" sortable="'name'" class="col-lg-7">
+              <a ng-click="getOrfs(row.name)">{{row.name}}</a></td>
+            <td data-title="'Orfs'" filter="{quantity: 'number'}" sortable="'quantity'" class="col-lg-1">{{row.orfs.length}}</td>
+            <td data-title="'Date Created'" filter="{dateCreated: 'text'}" sortable="'dateCreated'" class="col-lg-2">{{row.dateCreated}}</td>
+          </tr>
+        </table>
+      </div>
 
-
-      <div ng-show="dataSelect">
-        <h4>ORFs in {{dataSelect}}</h4>
+      <div ng-show="data.orfs">
+        <h4>Available orfs</h4>
         <p ng-click="resetData()" ng-show="dataSelect">
           <a><span class="glyphicon glyphicon-arrow-left"></span></span>  Return</a>
         </p>
 
-        <table ng-table="tableParamsOrf" class="table table-condensed table-bordered table-striped" show-filter="true">
+        <table ng-table="table.orfs" class="table table-condensed table-bordered table-striped" show-filter="true">
           <tr ng-repeat="row in $data">
             <td data-title="'Name'" filter="{name: 'text'}" sortable="'name'" class="col-lg-6">
-              <a href="/orf/{{dataSelect}}/{{row.name}}">{{row.name}}</a>
+              <a href="/orf/{{select.project}}/{{select.dataset}}/{{row.name}}">{{row.name}}</a>
             </td>
             <td data-title="'Disopred'" sortable="'disopred'" class="col-lg-1 text-center">
               <span class="glyphicon present-icon"

@@ -4,24 +4,38 @@
 angular.module('proteoWebApp')
 .controller('MainController', function ($scope, $http, $routeParams, $rootScope, NgTableParams) {
 
-  $scope.dataSelect = null;
-  $scope.orfSelect = null;
+  $scope.projectSelect = true;
 
-  var dataTableParameters = {
+  $scope.data = {
+    projects: false,
+    datasets: false,
+    orfs: false
+  };
+  $scope.table = {
+    projects: undefined,
+    datasets: undefined,
+    orfs: undefined
+  };
+  $scope.select = {
+    project: undefined,
+    dataset: undefined
+  };
+
+  var tableParameters = {
     page: 1,
-    count: 10,
-    filter: {name:''}
+    count: 10
   };
-  var dataTableSetting = {
+  var projectsTableSetting = {
   };
-
-  var orfTableSetting = {
+  var datasetsTableSetting = {
+  };
+  var orfsTableSetting = {
   };
 
   $http.get('/api/data').then(function(response){
-    $scope.dataSets = response.data;
-    dataTableSetting.data = response.data;
-    $scope.tableParams = new NgTableParams(dataTableParameters, dataTableSetting);
+    $scope.data.projects = true;
+    projectsTableSetting.data = response.data;
+    $scope.table.projects = new NgTableParams(tableParameters, projectsTableSetting);
   }, function(error){
     console.log(error);
     //TODO: Show message
@@ -33,23 +47,53 @@ angular.module('proteoWebApp')
     });
   };
 
-  $scope.getOrfs = function(dataset){
-    $scope.dataSelect = dataset;
+  $scope.getDatasets = function(project){
+    $scope.data.datasets = false;
+    $scope.select.project = project;
 
-    $http.get('/api/data/'+dataset+'/orf').then(function(response){
-      $scope.orfSets = response.data;
-      dataSort($scope.orfSets);
-      orfTableSetting.data = response.data;
-      $scope.tableParamsOrf = new NgTableParams(dataTableParameters, orfTableSetting);
+    $http.get('/api/data/'+project).then(function(response){
+
+      datasetsTableSetting.data = response.data;
+      $scope.table.datasets = new NgTableParams(tableParameters, datasetsTableSetting);
+      $scope.data.datasets = true;
     }, function(error){
       console.log(error);
       //TODO: Show message
     });
   };
 
-  $scope.resetData = function(){
-    $scope.dataSelect = null;
-    $scope.orfSets = [];
+  $scope.getOrfs = function(dataset){
+    $scope.data.orfs = false;
+    $scope.select.dataset = dataset;
+
+    $http.get('/api/data/'+$scope.select.project+'/dataset/'+dataset).then(function(response){
+      dataSort(response.data);
+      orfsTableSetting.data = response.data;
+      $scope.table.orfs = new NgTableParams(tableParameters, orfsTableSetting);
+      $scope.data.orfs = true;
+    }, function(error){
+      console.log(error);
+      //TODO: Show message
+    });
+  };
+
+  $scope.reset = function(){
+    $scope.data = {
+      projects: true,
+      datasets: false,
+      orfs: false
+    };
+
+    $scope.select = {
+      project: undefined,
+      dataset: undefined
+    };
+  };
+
+  $scope.resetToProject = function(){
+    $scope.select.dataset = undefined;
+    $scope.data.orfs = false;
+    $scope.data.dataset = false;
   };
 
 
