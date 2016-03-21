@@ -63,7 +63,8 @@ function readOrfs(dataset){
       name: orf,
       meta: readMetaData(path.join(dataset.path, orf, 'meta.json')),
       path: path.join(dataset.path, orf),
-      dataset: dataset._id
+      dataset: dataset._id,
+      analyses: getAnalyses(path.join(dataset.path, orf))
     }, function(err, orfSaved){
       if (err) console.log(err)
       else{
@@ -84,7 +85,6 @@ function readProjects() {
       meta: readMetaData(path.join(DATA_PATH, proj, 'meta.json')),
       path: path.join(DATA_PATH, proj)
     }, function (err, projSaved) {
-      console.log("here")
       if (err) console.log(err)
       else{
         readDatasets(projSaved);
@@ -143,7 +143,7 @@ export function index(req, res) {
           d.authorized = true;
         }
       })
-      console.log(projects)
+
       res.status(200).json(projects);
     })
   });
@@ -180,59 +180,13 @@ export function datasets(req, res) {
   })
 }
 
-/**
+function getAnalyses (path) {
+  var analyses = {};
+  var dirs = getDirectories(path);
 
-    var file = {};
+  dirs.forEach(function(dir){
+    analyses[dir] = true;
+  })
 
-    file.name = dir;
-    file.quantity = subs.length;
-    dataCache.push(file)
-
-    var orfs = [];
-    subs.forEach(function(sub){
-      var subPath = path.join(DATA_PATH, dir, sub);
-      var metaLoc = path.join(subPath,'meta.json');
-      var file = {};
-      try{
-        file = JSON.parse(fs.readFileSync(metaLoc));
-      }catch(er){
-        console.log(er)
-      }
-
-
-      //TODO: read all dirs at once
-      try {
-        fs.accessSync(path.join(subPath,'disopred3'), fs.F_OK);
-        file.disopred = true;
-      } catch (e) {
-          // It isn't accessible
-      }
-
-      try {
-        fs.accessSync(path.join(subPath,'i-tasser'), fs.F_OK);
-        file.itasser = true;
-      } catch (e) {
-          // It isn't accessible
-      }
-
-      try {
-        fs.accessSync(path.join(subPath,'tmhmm'), fs.F_OK);
-        file.tmhmm = true;
-      } catch (e) {
-          // It isn't accessible
-      }
-
-      try {
-        fs.accessSync(path.join(subPath,'topcons'), fs.F_OK);
-        file.topcons = true;
-      } catch (e) {
-          // It isn't accessible
-      }
-
-
-      file.name = sub;
-      orfs.push(file)
-
-    })
-
-**/
+  return analyses;
+}

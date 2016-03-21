@@ -62,19 +62,19 @@
             </td>
             <td data-title="'Disopred'" sortable="'disopred'" class="col-lg-1 text-center">
               <span class="glyphicon present-icon"
-                    ng-class="{'glyphicon-ok text-success': row.disopred, 'glyphicon-remove text-warning': !row.disopred}"></span>
+                    ng-class="{'glyphicon-ok text-success': row.analyses.disopred, 'glyphicon-remove text-warning': !row.analyses.disopred}"></span>
             </td>
             <td data-title="'I-Tasser'" sortable="'itasser'" class="col-lg-1 text-center">
               <span class="glyphicon present-icon"
-                    ng-class="{'glyphicon-ok text-success': row.itasser, 'glyphicon-remove text-warning': !row.itasser}"></span>
+                    ng-class="{'glyphicon-ok text-success': row.analyses.itasser, 'glyphicon-remove text-warning': !row.analyses.itasser}"></span>
             </td>
             <td data-title="'TMHMM'" sortable="'tmhmm'" class="col-lg-1 text-center">
               <span class="glyphicon present-icon"
-                    ng-class="{'glyphicon-ok text-success': row.tmhmm, 'glyphicon-remove text-warning': !row.tmhmm}"></span>
+                    ng-class="{'glyphicon-ok text-success': row.analyses.tmhmm, 'glyphicon-remove text-warning': !row.analyses.tmhmm}"></span>
             </td>
             <td data-title="'Topcons'" sortable="'topcons'" class="col-lg-1 text-center">
               <span class="glyphicon present-icon"
-                    ng-class="{'glyphicon-ok text-success': row.topcons, 'glyphicon-remove text-warning': !row.topcons}"></span>
+                    ng-class="{'glyphicon-ok text-success': row.analyses.topcons, 'glyphicon-remove text-warning': !row.analyses.topcons}"></span>
             </td>
             <td data-title="'Start'" filter="{start: 'text'}" sortable="'start'" class="col-lg-1 text-center">
               {{row.start}}

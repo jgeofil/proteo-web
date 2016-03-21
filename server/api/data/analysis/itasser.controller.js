@@ -21,7 +21,7 @@ function getLineReader(path){
 
 // Get JSON formatted list of all available models for the analysis
 export function listModels(req, res){
-  var subPath = path.join(dataPath, req.params.projectId, req.params.dataId, req.params.orfId, 'i-tasser');
+  var subPath = path.join(dataPath, req.params.projectId, req.params.dataId, req.params.orfId, 'itasser');
   var cscorePath = path.join(subPath, 'cscore');
 
   asy.waterfall([
@@ -105,7 +105,7 @@ export function listModels(req, res){
 
 // Get PDB format models
 export function getModel(req, res){
-  var subPath = path.join(dataPath, req.params.projectId, req.params.dataId, req.params.orfId, 'i-tasser', req.params.modelName+'.pdb');
+  var subPath = path.join(dataPath, req.params.projectId, req.params.dataId, req.params.orfId, 'itasser', req.params.modelName+'.pdb');
 
   fs.readFile(subPath, 'utf8', function(err, contents) {
     if(err) {
@@ -117,7 +117,7 @@ export function getModel(req, res){
 
 // Get secondary sequence
 export function getPredictions(req, res){
-  var subPath = path.join(dataPath, req.params.projectId, req.params.dataId, req.params.orfId, 'i-tasser');
+  var subPath = path.join(dataPath, req.params.projectId, req.params.dataId, req.params.orfId, 'itasser');
 
   var ssFilePath = path.join(subPath, 'seq.ss');
   var alignFilePath = path.join(subPath, 'coverage');

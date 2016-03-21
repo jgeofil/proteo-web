@@ -17,7 +17,7 @@ var dataPath = config.data;
 // Get JSON formatted DISOPRED3 output
 export function disopred3(req, res){
 
-  var subPath = path.join(dataPath, req.params.projectId, req.params.dataId, req.params.orfId, 'disopred3');
+  var subPath = path.join(dataPath, req.params.projectId, req.params.dataId, req.params.orfId, 'disopred');
 
   var seqFilePath = path.join(subPath, 'disopred' + '.seq');
   var disoFilePath = path.join(subPath, 'disopred' + '.seq.diso');

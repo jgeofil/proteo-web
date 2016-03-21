@@ -2,7 +2,7 @@
 //TODO: include D3 in a more Angular way
 /* jshint undef: false*/
 angular.module('proteoWebApp')
-.controller('MainController', function ($scope, $http, $routeParams, $rootScope, NgTableParams) {
+.controller('MainController', function ($scope, $http, $location, $routeParams, $rootScope, NgTableParams) {
 
   $scope.projectSelect = true;
 
@@ -43,15 +43,18 @@ angular.module('proteoWebApp')
 
   var dataSort = function(data){
     data.sort(function(a,b){
-      return ((b.disopred?1:0) + (b.itasser?1:0) + (b.tmhmm?1:0) + (b.topcons?1:0))-((a.disopred?1:0) + (a.itasser?1:0) + (a.tmhmm?1:0) + (a.topcons?1:0));
+      return ((b.analyses.disopred?1:0) + (b.analyses.itasser?1:0) + (b.analyses.tmhmm?1:0) +
+      (b.analyses.topcons?1:0))-((a.analyses.disopred?1:0) + (a.analyses.itasser?1:0) + (a.analyses.tmhmm?1:0) + (a.analyses.topcons?1:0));
     });
   };
 
-  $scope.getDatasets = function(project){
+  $scope.getDatasets = function(project, setLoc){
     $scope.data.datasets = false;
     $scope.select.project = project;
-
-    $http.get('/api/data/'+project).then(function(response){
+    if(!setLoc) {
+      $location.search({project: project});
+    }
+    return $http.get('/api/data/'+project).then(function(response){
 
       datasetsTableSetting.data = response.data;
       $scope.table.datasets = new NgTableParams(tableParameters, datasetsTableSetting);
@@ -62,9 +65,12 @@ angular.module('proteoWebApp')
     });
   };
 
-  $scope.getOrfs = function(dataset){
+  $scope.getOrfs = function(dataset, setLoc){
     $scope.data.orfs = false;
     $scope.select.dataset = dataset;
+    if(!setLoc) {
+      $location.search({project: $scope.select.project, dataset: dataset});
+    }
 
     $http.get('/api/data/'+$scope.select.project+'/dataset/'+dataset).then(function(response){
       dataSort(response.data);
@@ -88,13 +94,25 @@ angular.module('proteoWebApp')
       project: undefined,
       dataset: undefined
     };
+
+    $location.search({});
   };
 
   $scope.resetToProject = function(){
     $scope.select.dataset = undefined;
     $scope.data.orfs = false;
     $scope.data.dataset = false;
+    $location.search({project: $scope.select.project});
   };
+
+  var search = $location.search();
+  if(search.project){
+    $scope.getDatasets(search.project, true).then(function(){
+      if(search.dataset){
+        $scope.getOrfs(search.dataset, true);
+      }
+    });
+  }
 
 
 });

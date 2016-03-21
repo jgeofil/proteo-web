@@ -25,6 +25,7 @@ var OrfSchema = new mongoose.Schema({
   active: { type: Boolean, default: true },
   path: { type: String, unique: true},
   dataset: {type: mongoose.Schema.Types.ObjectId, ref: 'Dataset'},
+  analyses: {},
   meta: {}
 });
 
