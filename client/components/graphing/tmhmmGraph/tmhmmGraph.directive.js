@@ -2,22 +2,22 @@
 //TODO: include D3 in a more Angular way
 /* jshint undef: false*/
 angular.module('proteoWebApp')
-  .directive('tmhmmGraph', function () {
+  .directive('tmhmmGraph', function (d3Helper) {
     return {
       templateUrl: 'components/graphing/tmhmmGraph/tmhmmGraph.html',
       restrict: 'EA',      scope:{
-          graphData: '='
+          graphData: '=',
+          graphSpacing: '='
         },
         link: function (scope, element, attrs) {
           var seqln = scope.graphData.prob.length-1; //Length of the sequence alignement
 
-          var margin = {top: 20, right: 20, bottom: 35, left: 90};
-          var width = (seqln*10) - margin.left - margin.right;
-          var height = 100;
+          // Size and margins
+          var si = d3Helper.getSizing(150, 20, 35, seqln);
 
-          var x = d3.scale.linear().range([0, width]);
+          var x = d3.scale.linear().range([0, si.width]);
           var xAxis = d3.svg.axis().scale(x).orient('bottom');
-          var yProb = d3.scale.linear().range([height-25,0]);
+          var yProb = d3.scale.linear().range([si.height-25,0]);
           var yProbAxis = d3.svg.axis().scale(yProb).orient('left').ticks(3);
 
           var memLine = d3.svg.line()
@@ -39,11 +39,9 @@ angular.module('proteoWebApp')
               return "<span style='color:white'>" + d.start +"-"+ d.end+ "</span>";
             });
 
-          var svg = d3.select('#tmhmm-graph').append('svg')
-            .attr('width', width + margin.left + margin.right)
-            .attr('height', height + margin.top + margin.bottom)
-            .append('g')
-            .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
+            // Create SVG D3 container
+            var svg = d3Helper.getSvgCanvas('#tmhmm-graph',si);
+
 
           svg.call(tip);
           x.domain(d3.extent(scope.graphData.prob, function(d) { return d.pos; }));
@@ -58,11 +56,11 @@ angular.module('proteoWebApp')
             .attr('y', function(d){
               switch(d.type){
                 case 'TMhelix':
-                  return height-15;
+                  return si.height-15;
                 case 'inside':
-                  return height-10;
+                  return si.height-10;
                 default:
-                  return height-15;
+                  return si.height-15;
               }
             })
             .attr('width', function(d) { return x(d.end)-x(d.start)+range; })
@@ -91,21 +89,21 @@ angular.module('proteoWebApp')
 
           svg.append('rect')
             .attr('x', -30)
-            .attr('y', height-15)
+            .attr('y', si.height-15)
             .attr('height', 15)
             .attr('width', 30)
             .attr('class', 'tmhmm-block');
 
           svg.append('rect')
             .attr('x', x(seqln))
-            .attr('y', height-15)
+            .attr('y', si.height-15)
             .attr('height', 15)
             .attr('width', 30)
             .attr('class', 'tmhmm-block');
 
           svg.append('g')
             .attr('class', 'x axis')
-            .attr('transform', 'translate(0,' + height + ')')
+            .attr('transform', 'translate(0,' + si.height + ')')
             .call(xAxis);
 
           svg.append('g')
@@ -116,7 +114,7 @@ angular.module('proteoWebApp')
             .attr('class', 'y label')
             .attr('text-anchor', 'middle')
             .attr('y', -40)
-            .attr('x', 10-height/2)
+            .attr('x', 10-si.height/2)
             .attr('transform', 'rotate(-90)')
             .text('confidence');
 
@@ -141,7 +139,7 @@ angular.module('proteoWebApp')
           var legend = svg.append('g')
         	  .attr('class', 'legend')
         	  .attr('x', 20)
-        	  .attr('y', height+25)
+        	  .attr('y', si.height+25)
         	  .attr('height', 100)
         	  .attr('width', 100);
 
@@ -166,14 +164,14 @@ angular.module('proteoWebApp')
               var g = d3.select(this);
               g.append('rect')
                 .attr('x', 20+100*i)
-                .attr('y', height+25)
+                .attr('y', si.height+25)
                 .attr('width', 10)
                 .attr('height', 10)
                 .style('fill', d.color);
 
               g.append('text')
                 .attr('x', 20+100*i+15)
-                .attr('y', height+35)
+                .attr('y', si.height+35)
                 .attr('height',30)
                 .attr('width',100)
                 .style('fill', d.color)

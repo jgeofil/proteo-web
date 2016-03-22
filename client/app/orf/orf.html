@@ -25,7 +25,8 @@
             class="scrollarea"
             spy-x="posX">
         <diso-graph-line ng-if="disoGraphData"
-                          graph-data="disoGraphData"></diso-graph-line>
+                          graph-data="disoGraphData"
+                          graph-spacing="graphSpacing"></diso-graph-line>
       </div>
     </div>
   </div>
@@ -52,7 +53,8 @@
             spy-x="posX">
         <tmhmm-graph ng-if="tmhmmGraphData"
                       graph-data="tmhmmGraphData"
-                      graph-height="100"></tmhmm-graph>
+                      graph-height="100"
+                      graph-spacing="graphSpacing"></tmhmm-graph>
       </div>
     </div>
   </div>
@@ -77,7 +79,9 @@
             class="scrollarea"
             spy-x="posX">
 
-            <topcons-graph ng-if="topconsGraphData" graph-data="topconsGraphData"> </topcons-graph>
+            <topcons-graph ng-if="topconsGraphData"
+                            graph-data="topconsGraphData"
+                            graph-spacing="graphSpacing"> </topcons-graph>
       </div>
       </div>
     </div>
@@ -104,7 +108,8 @@
             spy-x="posX">
         <itasser-ss-graph ng-if="itasserSsGraphData"
                           graph-data-ss="itasserSsGraphData.ss"
-                          graph-height="150"></itasser-ss-graph>
+                          graph-height="150"
+                          graph-spacing="graphSpacing"></itasser-ss-graph>
       </div>
 
       <p class="orf-title-vertical">Top 10 threading templates</p>
@@ -115,7 +120,8 @@
             spy-x="posX">
         <itasser-align-graph ng-if="itasserAlignGraphData"
                               graph-data="itasserAlignGraphData"
-                              seq-count="10"></itasser-align-graph>
+                              seq-count="10"
+                              graph-spacing="graphSpacing"></itasser-align-graph>
       </div>
 
       <p class="orf-title-vertical">Top final models predicted</p>

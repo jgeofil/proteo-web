@@ -1,23 +1,22 @@
 'use strict';
 /* jshint undef: false*/
 angular.module('proteoWebApp')
-  .directive('topconsGraph', function () {
+  .directive('topconsGraph', function (d3Helper) {
     return {
       templateUrl: 'components/graphing/topconsGraph/topconsGraph.html',
       restrict: 'EA',      scope:{
-          graphData: '='
+          graphData: '=',
+          graphSpacing: '='
         },
         link: function (scope, element, attrs) {
           var seqln = scope.graphData.zcord.length; //Length of the sequence alignement
           var data = scope.graphData;
 
+          // Size and margins
           var lineGraphHeight = 100;
+          var si = d3Helper.getSizing(lineGraphHeight + (data.pred.length * 12) + 80, 20, 35, seqln);
 
-          var margin = {top: 20, right: 20, bottom: 35, left: 90};
-          var width = (seqln*10) - margin.left - margin.right;
-          var height = lineGraphHeight + scope.graphData.pred.length * 12 + 20;
-
-          var x = d3.scale.linear().range([1, width]);
+          var x = d3.scale.linear().range([1, si.width]);
           var xAxis = d3.svg.axis().scale(x).orient('bottom');
 
           var yProb = d3.scale.linear().range([(lineGraphHeight/2)-5,0]);
@@ -45,11 +44,9 @@ angular.module('proteoWebApp')
               return "<span style='color:white'>" + d.start +"-"+ d.end+ "</span>";
             });
 
-          var svg = d3.select('#topcons-graph').append('svg')
-            .attr('width', width + margin.left + margin.right)
-            .attr('height', height + margin.top + margin.bottom)
-            .append('g')
-            .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
+            // Create SVG D3 container
+            var svg = d3Helper.getSvgCanvas('#topcons-graph',si);
+
 
           svg.call(tip);
           x.domain(d3.extent(scope.graphData.zcord, function(d,i) { return i+1; }));
@@ -136,7 +133,7 @@ angular.module('proteoWebApp')
 
           svg.append('g')
             .attr('class', 'x axis')
-            .attr('transform', 'translate(0,' + height + ')')
+            .attr('transform', 'translate(0,' + si.height + ')')
             .call(xAxis);
 
           svg.append('g')
@@ -174,7 +171,7 @@ angular.module('proteoWebApp')
             var legend = svg.append('g')
               .attr('class', 'legend')
               .attr('x', 20)
-              .attr('y', height+25)
+              .attr('y', si.height+25)
               .attr('height', 100)
               .attr('width', 100);
 
@@ -199,14 +196,14 @@ angular.module('proteoWebApp')
                 var g = d3.select(this);
                 g.append('rect')
                   .attr('x', 20+100*i)
-                  .attr('y', height+25)
+                  .attr('y', si.height+25)
                   .attr('width', 10)
                   .attr('height', 10)
                   .style('fill', d.color);
 
                 g.append('text')
                   .attr('x', 20+100*i+15)
-                  .attr('y', height+35)
+                  .attr('y', si.height+35)
                   .attr('height',30)
                   .attr('width',100)
                   .style('fill', d.color)

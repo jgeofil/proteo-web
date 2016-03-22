@@ -4,35 +4,32 @@
 /* jshint undef: false*/
 
 angular.module('proteoWebApp')
-  .directive('itasserAlignGraph', function () {
+  .directive('itasserAlignGraph', function (d3Helper) {
     return {
       templateUrl: 'components/graphing/itasserAlignGraph/itasserAlignGraph.html',
       restrict: 'E',
       scope:{
         graphData: '=',
-        seqCount: '=' //Number of sequences to display
+        seqCount: '=',
+        graphSpacing: '=' //Number of sequences to display
       },
       link: function (scope, element, attrs) {
         var seqln = scope.graphData.seq.length; //Length of the sequence alignement
+
         var data = scope.graphData.coverage.slice(0, scope.seqCount); //Keep only necessary alignements
         data.forEach(function(d){
           d.cov = d.cov.split(''); //Split alignement sequences
         });
 
-        var margin = {top: 40, right: 20, bottom:30, left: 90};
-        var width = (seqln*10) - margin.right - margin.left;
-        var height = (scope.seqCount*11);
+        // Size and margins
+        var si = d3Helper.getSizing(scope.seqCount*12+40+30, 40, 30, seqln);
 
-        var x = d3.scale.linear().range([0, width]);
+        var x = d3.scale.linear().range([0, si.width]);
         var xAxis = d3.svg.axis().scale(x).orient('bottom');
         x.domain([1,seqln]);
 
         // Create SVG D3 container
-        var svg = d3.select('#itasser-align-graph').append('svg')
-          .attr('width', width + margin.left + margin.right)
-          .attr('height', height + margin.top + margin.bottom)
-          .append('g')
-          .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
+        var svg = d3Helper.getSvgCanvas('#itasser-align-graph',si);
 
         var header = svg.append('g')
           .attr('class', 'itasser-align-header');
@@ -107,7 +104,7 @@ angular.module('proteoWebApp')
         // Draw x axis line
         svg.append('g')
           .attr('class', 'x axis')
-          .attr('transform', 'translate(0,' + (height+5) + ')')
+          .attr('transform', 'translate(0,' + (si.height+5) + ')')
           .call(xAxis);
 
 

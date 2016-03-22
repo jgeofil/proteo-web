@@ -31,6 +31,7 @@ angular.module('proteoWebApp')
   };
 
   $scope.orfName = $routeParams.orfName;
+  $scope.graphSpacing = 10;
 
   //**************************************************************************
   // Model Modal

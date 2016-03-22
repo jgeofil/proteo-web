@@ -25,18 +25,11 @@ angular.module('proteoWebApp')
     page: 1,
     count: 10
   };
-  var projectsTableSetting = {
-  };
-  var datasetsTableSetting = {
-  };
-  var orfsTableSetting = {
-  };
 
   $http.get('/api/data').then(function(response){
-    $scope.dataIsLoading = false;
     $scope.data.projects = true;
-    projectsTableSetting.data = response.data;
-    $scope.table.projects = new NgTableParams(tableParameters, projectsTableSetting);
+    $scope.table.projects = new NgTableParams(tableParameters, {data: response.data});
+    $scope.dataIsLoading = false;
   }, function(error){
     $scope.dataIsLoading = false;
     console.log(error);
@@ -53,15 +46,14 @@ angular.module('proteoWebApp')
   $scope.getDatasets = function(project, setLoc){
     $scope.dataIsLoading = true;
     $scope.data.datasets = false;
-    $scope.select.project = project;
+    $scope.selectedProject = project;
     if(!setLoc) {
       $location.search({project: project});
     }
     return $http.get('/api/data/'+project).then(function(response){
-      $scope.dataIsLoading = false;
-      datasetsTableSetting.data = response.data;
-      $scope.table.datasets = new NgTableParams(tableParameters, datasetsTableSetting);
+      $scope.table.datasets = new NgTableParams(tableParameters, {data: response.data});
       $scope.data.datasets = true;
+      $scope.dataIsLoading = false;
     }, function(error){
       $scope.dataIsLoading = false;
       console.log(error);
@@ -72,17 +64,16 @@ angular.module('proteoWebApp')
   $scope.getOrfs = function(dataset, setLoc){
     $scope.dataIsLoading = true;
     $scope.data.orfs = false;
-    $scope.select.dataset = dataset;
+    $scope.selectedDataset = dataset;
     if(!setLoc) {
-      $location.search({project: $scope.select.project, dataset: dataset});
+      $location.search({project: $scope.selectedProject, dataset: dataset});
     }
 
-    $http.get('/api/data/'+$scope.select.project+'/dataset/'+dataset).then(function(response){
+    $http.get('/api/data/'+$scope.selectedProject+'/dataset/'+dataset).then(function(response){
       dataSort(response.data);
-      $scope.dataIsLoading = false;
-      orfsTableSetting.data = response.data;
-      $scope.table.orfs = new NgTableParams(tableParameters, orfsTableSetting);
+      $scope.table.orfs = new NgTableParams(tableParameters, {data: response.data});
       $scope.data.orfs = true;
+      $scope.dataIsLoading = false;
     }, function(error){
       $scope.dataIsLoading = false;
       console.log(error);
@@ -97,19 +88,17 @@ angular.module('proteoWebApp')
       orfs: false
     };
 
-    $scope.select = {
-      project: undefined,
-      dataset: undefined
-    };
+    $scope.selectedDataset = undefined;
+    $scope.selectedProject = undefined;
 
     $location.search({});
   };
 
   $scope.resetToProject = function(){
-    $scope.select.dataset = undefined;
+    $scope.selectedDataset = undefined;
     $scope.data.orfs = false;
     $scope.data.dataset = false;
-    $location.search({project: $scope.select.project});
+    $location.search({project: $scope.selectedProject});
   };
 
   var search = $location.search();
