@@ -29,8 +29,13 @@ var OrfSchema = new mongoose.Schema({
   meta: {}
 });
 
+
+var Dataset = mongoose.model('Dataset', DatasetSchema);
+var Project = mongoose.model('Project', ProjectSchema);
+var Orf = mongoose.model('Orf', OrfSchema);
+
 export default {
-  Project: mongoose.model('Project', ProjectSchema),
-  Dataset: mongoose.model('Dataset', DatasetSchema),
-  Orf: mongoose.model('Orf', OrfSchema)
+  Project: Project,
+  Dataset: Dataset,
+  Orf: Orf
 }

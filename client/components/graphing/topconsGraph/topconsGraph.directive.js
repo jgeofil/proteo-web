@@ -10,7 +10,6 @@ angular.module('proteoWebApp')
         link: function (scope, element, attrs) {
           var seqln = scope.graphData.zcord.length; //Length of the sequence alignement
           var data = scope.graphData;
-          console.log(data)
 
           var lineGraphHeight = 100;
 
@@ -51,7 +50,6 @@ angular.module('proteoWebApp')
             .attr('height', height + margin.top + margin.bottom)
             .append('g')
             .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
-
 
           svg.call(tip);
           x.domain(d3.extent(scope.graphData.zcord, function(d,i) { return i+1; }));

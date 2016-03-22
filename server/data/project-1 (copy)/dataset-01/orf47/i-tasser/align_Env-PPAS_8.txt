@@ -1,6 +1,0 @@
->P1;target
-sequence:target: : : : : : : :
--MNKEHILAQKEVLTPIEYEHYVKHLFDIGEITKELYIELSSDL-------*
->P1;1z6cA2
-structure:1z6cA2: : : : : : : :
-DECSENMCAQLCVNYPGGYTCYC--------DGKKGF-KLAQDQKSCEVVS*

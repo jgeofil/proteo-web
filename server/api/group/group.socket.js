@@ -25,7 +25,7 @@ function createListener(event, socket) {
   return function(doc) {
     doc.populate('users', function(err, poped){
       if(err){
-        console.log(err)
+        console.log("Error popuating users in group: " + err)
       }else{
         socket.emit(event, poped);
       }

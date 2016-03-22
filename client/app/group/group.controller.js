@@ -29,8 +29,7 @@ angular.module('proteoWebApp')
 
     $scope.addUser = function(user){
       $http.patch('/api/groups/' + $routeParams.groupId + '/adduser', {email: user}).then(function(response){
-        console.log(response);
-
+        //TODO: inform user
       }, function(error){
         console.log(error);
         //TODO: Show message
@@ -40,7 +39,7 @@ angular.module('proteoWebApp')
 
     $scope.addPerm = function(perm){
       $http.patch('/api/groups/' + $routeParams.groupId + '/addset/'+ perm).then(function(response){
-        console.log(response);
+        //TODO: inform user
       }, function(error){
         console.log(error);
         //TODO: Show message
@@ -50,7 +49,7 @@ angular.module('proteoWebApp')
 
     $scope.removePerm = function(perm){
       $http.patch('/api/groups/' + $routeParams.groupId + '/remove/'+ perm).then(function(response){
-        console.log(response);
+        //TODO: inform user
       }, function(error){
         console.log(error);
         //TODO: Show message
@@ -59,7 +58,7 @@ angular.module('proteoWebApp')
 
     $scope.removeUser = function(id){
       $http.patch('/api/groups/' + $routeParams.groupId + '/removeuser/'+ id).then(function(response){
-        console.log(response);
+        //TODO: inform user
       }, function(error){
         console.log(error);
         //TODO: Show message

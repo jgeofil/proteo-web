@@ -29,8 +29,7 @@ angular.module('proteoWebApp.admin')
 
     $scope.addGroup = function(group){
       $http.post('/api/groups/', {name: group}).then(function(response){
-        console.log(response);
-
+        //TODO: inform user
       }, function(error){
         console.log(error);
         //TODO: Show message
@@ -40,8 +39,7 @@ angular.module('proteoWebApp.admin')
 
     $scope.removeGroup = function(groupId){
       $http.delete('/api/groups/' + groupId).then(function(response){
-        console.log(response);
-
+        //TODO: inform user
       }, function(error){
         console.log(error);
         //TODO: Show message

@@ -55,7 +55,6 @@ angular.module('proteoWebApp')
       $location.search({project: project});
     }
     return $http.get('/api/data/'+project).then(function(response){
-
       datasetsTableSetting.data = response.data;
       $scope.table.datasets = new NgTableParams(tableParameters, datasetsTableSetting);
       $scope.data.datasets = true;

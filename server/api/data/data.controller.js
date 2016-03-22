@@ -29,13 +29,14 @@ function readMetaData(path){
   try{
     file = JSON.parse(fs.readFileSync(path));
   }catch(er){
-    console.log(er)
+    console.log("Error reading metaData file: " + er)
   }
   return file;
 }
 
 function readDatasets(project){
   var datasets = getDirectories(project.path)
+  var count = 0;
 
   datasets.forEach(function(set){
     Data.Dataset.create({
@@ -44,10 +45,15 @@ function readDatasets(project){
       path: path.join(project.path, set),
       project: project._id
     }, function(err, dataSaved){
-      if (err) console.log(err)
+      count +=1;
+      if (err) console.log("Error saving new dataset: " + err)
       else{
         project.datasets.push(dataSaved._id);
-        project.save(function(err){console.log(err)});
+        if(count >= datasets.length) {
+          project.save(function(err){
+            if(err) console.log("Error saving datasets to project: " + err)
+          });
+        }
         readOrfs(dataSaved);
       }
     })
@@ -55,8 +61,8 @@ function readDatasets(project){
 }
 
 function readOrfs(dataset){
-
   var orfs = getDirectories(dataset.path)
+  var count = 0;
 
   orfs.forEach(function(orf){
     Data.Orf.create({
@@ -66,14 +72,18 @@ function readOrfs(dataset){
       dataset: dataset._id,
       analyses: getAnalyses(path.join(dataset.path, orf))
     }, function(err, orfSaved){
-      if (err) console.log(err)
+      count +=1
+      if (err) console.log("Error saving new ORF: " + err)
       else{
         dataset.orfs.push(orfSaved._id);
-        dataset.save(function(err){console.log(err)});
+        if(count >= orfs.length){
+          dataset.save(function(err){
+            if(err) console.log("Error saving ORFs to dataset: " + err)
+          })
+        }
       }
     })
   })
-
 }
 
 function readProjects() {
@@ -85,7 +95,7 @@ function readProjects() {
       meta: readMetaData(path.join(DATA_PATH, proj, 'meta.json')),
       path: path.join(DATA_PATH, proj)
     }, function (err, projSaved) {
-      if (err) console.log(err)
+      if (err) console.log("Error saving new project: " + err)
       else{
         readDatasets(projSaved);
       }
@@ -143,7 +153,6 @@ export function index(req, res) {
           d.authorized = true;
         }
       })
-
       res.status(200).json(projects);
     })
   });
@@ -170,9 +179,8 @@ export function orfs(req, res) {
 export function datasets(req, res) {
   Data.Project.findOne({name: req.params.projectId}, function(err, project){
     if(project){
-      Data.Dataset.find({project: project._id}, function(err, datasets){
+      Data.Dataset.find({project: project._id}).populate('orfs').exec(function(err, datasets){
         //TODO: error
-        console.log(datasets)
         res.status(200).json(datasets);
       })
     }

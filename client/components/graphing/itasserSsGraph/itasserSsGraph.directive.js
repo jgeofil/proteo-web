@@ -35,7 +35,6 @@ angular.module('proteoWebApp')
           .x(function(d) { return x(d.pos); })
           .y(function(d) { return yCon(Math.max(d.confidence.coil,d.confidence.beta,d.confidence.helix)); });
 
-
         var tip = d3.tip()
           .attr('class', 'd3-tip')
           .offset([-10, 0])
@@ -48,6 +47,8 @@ angular.module('proteoWebApp')
           .attr('height', height + margin.top + margin.bottom)
           .append('g')
           .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
+
+        svg.on('.zoom', null);
 
         svg.call(tip);
 

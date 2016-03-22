@@ -65,7 +65,6 @@ angular.module('proteoWebApp')
   $routeParams.orfName + '/analysis/disopred3')
   .then(function(data){
     var inDat = data.data.data;
-    console.log(data.data)
     $scope.disoGraphData = inDat;
     $scope.state.disopred.isPresent = true;
 

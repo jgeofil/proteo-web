@@ -20,7 +20,6 @@ angular.module('proteoWebApp')
         //'data' is a string containing molecule data in pdb format
         var model = myviewer.addModel(String(scope.mmPdb), 'pdb');
         var h = model.selectedAtoms({atom: 'HA'});
-        console.log(h)
         model.removeAtoms(h);
         myviewer.setBackgroundColor(0xffffff);
         myviewer.setStyle({}, {cartoon: {color: 'spectrum'}});

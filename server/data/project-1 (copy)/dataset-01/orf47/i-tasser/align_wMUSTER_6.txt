@@ -1,6 +1,0 @@
->P1;target
-sequence:target: : : : : : : :
-MNKEHILAQKEVLTPIEYEHYVKHLFDIGEITKEL-YIEL-SSDL---*
->P1;3zwlE
-structure:3zwlE: : : : : : : :
---RDLILHQRELL--KQWTEYREKIGQEME--KSMNF---KIFDVQPE*
