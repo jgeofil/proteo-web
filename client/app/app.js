@@ -13,7 +13,8 @@ angular.module('proteoWebApp', [
   'ui.bootstrap',
   'ngAnimate',
   'ngScrollable',
-  'ngTable'
+  'ngTable',
+  'angularSpinner'
 ])
   .config(function($routeProvider, $locationProvider) {
     $routeProvider

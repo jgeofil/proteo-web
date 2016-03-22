@@ -4,7 +4,7 @@
 angular.module('proteoWebApp')
 .controller('MainController', function ($scope, $http, $location, $routeParams, $rootScope, NgTableParams) {
 
-  $scope.projectSelect = true;
+  $scope.dataIsLoading = true;
 
   $scope.data = {
     projects: false,
@@ -33,10 +33,12 @@ angular.module('proteoWebApp')
   };
 
   $http.get('/api/data').then(function(response){
+    $scope.dataIsLoading = false;
     $scope.data.projects = true;
     projectsTableSetting.data = response.data;
     $scope.table.projects = new NgTableParams(tableParameters, projectsTableSetting);
   }, function(error){
+    $scope.dataIsLoading = false;
     console.log(error);
     //TODO: Show message
   });
@@ -49,22 +51,26 @@ angular.module('proteoWebApp')
   };
 
   $scope.getDatasets = function(project, setLoc){
+    $scope.dataIsLoading = true;
     $scope.data.datasets = false;
     $scope.select.project = project;
     if(!setLoc) {
       $location.search({project: project});
     }
     return $http.get('/api/data/'+project).then(function(response){
+      $scope.dataIsLoading = false;
       datasetsTableSetting.data = response.data;
       $scope.table.datasets = new NgTableParams(tableParameters, datasetsTableSetting);
       $scope.data.datasets = true;
     }, function(error){
+      $scope.dataIsLoading = false;
       console.log(error);
       //TODO: Show message
     });
   };
 
   $scope.getOrfs = function(dataset, setLoc){
+    $scope.dataIsLoading = true;
     $scope.data.orfs = false;
     $scope.select.dataset = dataset;
     if(!setLoc) {
@@ -73,10 +79,12 @@ angular.module('proteoWebApp')
 
     $http.get('/api/data/'+$scope.select.project+'/dataset/'+dataset).then(function(response){
       dataSort(response.data);
+      $scope.dataIsLoading = false;
       orfsTableSetting.data = response.data;
       $scope.table.orfs = new NgTableParams(tableParameters, orfsTableSetting);
       $scope.data.orfs = true;
     }, function(error){
+      $scope.dataIsLoading = false;
       console.log(error);
       //TODO: Show message
     });
