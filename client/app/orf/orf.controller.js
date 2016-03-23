@@ -11,21 +11,29 @@ angular.module('proteoWebApp')
     disopred:{
       isOpen: true,
       toggle: function (){this.isOpen = !this.isOpen;},
+      infoOpen: false,
+      toggleInfo: function (){this.infoOpen = !this.infoOpen;},
       isPresent: false
     },
     itasser:{
       isOpen: true,
       toggle: function (){this.isOpen = !this.isOpen;},
+      infoOpen: false,
+      toggleInfo: function (){this.infoOpen = !this.infoOpen;},
       isPresent: false
     },
     tmhmm:{
       isOpen: true,
       toggle: function (){this.isOpen = !this.isOpen;},
+      infoOpen: false,
+      toggleInfo: function (){this.infoOpen = !this.infoOpen;},
       isPresent: false
     },
     topcons:{
       isOpen: true,
       toggle: function (){this.isOpen = !this.isOpen;},
+      infoOpen: false,
+      toggleInfo: function (){this.infoOpen = !this.infoOpen;},
       isPresent: false
     }
   };
@@ -65,8 +73,7 @@ angular.module('proteoWebApp')
   $http.get('/api/data/' + $routeParams.projectName +'/dataset/'+ $routeParams.datasetName + '/orf/' +
   $routeParams.orfName + '/analysis/disopred3')
   .then(function(data){
-    var inDat = data.data.data;
-    $scope.disoGraphData = inDat;
+    $scope.disoGraphData = data.data;
     $scope.state.disopred.isPresent = true;
 
   });

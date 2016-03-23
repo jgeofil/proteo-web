@@ -6,10 +6,24 @@ var glob = require("glob");
 var readMultipleFiles = require('read-multiple-files');
 var asy = require('async');
 import Group from './../group/group.model';
+import config from '../../config/environment';
 var mongoose = require('bluebird').promisifyAll(require('mongoose'));
-/**
 
-**/
+// Location of data folder
+var DATA_PATH = config.data;
+
+// Read metadata file
+export function readMetaData(path){
+  var file = {};
+  try{
+    file = JSON.parse(fs.readFileSync(path));
+  }catch(er){
+    console.log("Error reading metaData file: " + er)
+  }
+  return file;
+}
+
+
 // Get all sub-directories in directory
 export function getSubDirs(dir, cb) {
   //TODO:waterfall no longer needed
@@ -65,7 +79,31 @@ export function isAuthorizedOnGroup(req, res, next) {
   });
 }
 
+function readMetaDataAsync(path, callback){
+  fs.readFile(path, function(err, data){
+  if (err) console.log("Error reading metaData file: " + err);
+  try{
+    var file = JSON.parse(fs.readFileSync(path));
+    callback(file);
+  }catch(er){
+    console.log("Error reading metaData file: " + er)
+    callback({});
+  }
+});
+}
 
+export function fetchMetadata(analysis) {
+
+  return function(req, res, next){
+    var metaPath = path.join(DATA_PATH, req.params.projectId, req.params.dataId, req.params.orfId, analysis,'meta.json');
+
+    readMetaDataAsync(metaPath, function(meta){
+      req.params.metadata = meta;
+      next();
+    })
+  }
+
+}
 
 
 

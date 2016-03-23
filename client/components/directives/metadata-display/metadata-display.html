@@ -1,0 +1,17 @@
+
+
+<div class="col-sm-6">
+  <dl class="dl-horizontal">
+    <dt>Date modified:</dt><dd>{{mdMetadata.dateModified}}
+      <span ng-if="!mdMetadata.dateModified" class="text-danger">Unset</span></dd>
+    <dt>Date created:</dt><dd>{{mdMetadata.dateCreated}}
+    <span ng-if="!mdMetadata.dateCreated" class="text-danger">Unset</span></dd>
+    <dt>Author:</dt><dd>{{mdMetadata.author}}
+    <span ng-if="!mdMetadata.author" class="text-danger">Unset</span></dd>
+  </dl>
+</div>
+<div class="col-sm-6">
+  <dl class="dl-horizontal">
+    <span ng-repeat="meta in mdMetadata.other"><dt>{{meta.name}}:</dt><dd>{{meta.value}}</dd><span>
+  </dl>
+</div>
