@@ -66,7 +66,7 @@ export function disopred3(req, res){
         })
       });
 
-      res.status(200).json({seq: result.seq, data: formatted});
+      res.status(200).json({seq: result.seq, data: formatted, metadata: req.params.metadata});
     }else{
       res.status(404).send("Not found");
     }

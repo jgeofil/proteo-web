@@ -165,6 +165,7 @@ export function getTopcons(req, res){
     }
   ], function (err, result) {
     if(result && ! err){
+      result.metadata = req.params.metadata;
       res.status(200).json(result);
     }else{
       res.status(404).send("Not found");

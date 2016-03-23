@@ -1,0 +1,17 @@
+{
+	"dateCreated": "06-06-15",
+	"dateModified": "06-07-16",
+	"author": "Jeremy",
+	"version": "1.2.5",
+	"other":[
+			{
+				"name": "Other property",
+				"value": "e4t345"		
+			},
+			{
+				"name": "Other property 3",
+				"value": "345345"		
+			}
+		
+		]
+}

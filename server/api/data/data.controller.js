@@ -5,11 +5,13 @@ import config from '../../config/environment';
 import Group from './../group/group.model';
 import User from './../user/user.model';
 import Data from './data.model';
+
 var mongoose = require('bluebird').promisifyAll(require('mongoose'));
 
 var fs = require('fs');
 var path = require('path');
 var chokidar = require('chokidar'); //To watch for data file changes
+var util = require('./util');
 
 // Location of data folder
 var DATA_PATH = config.data;
@@ -23,17 +25,6 @@ function getDirectories(srcpath) {
 // Limit updates to one per 5 seconds
 var triggered = false;
 
-// Read metadata file
-function readMetaData(path){
-  var file = {};
-  try{
-    file = JSON.parse(fs.readFileSync(path));
-  }catch(er){
-    console.log("Error reading metaData file: " + er)
-  }
-  return file;
-}
-
 function readDatasets(project){
   var datasets = getDirectories(project.path)
   var count = 0;
@@ -41,7 +32,7 @@ function readDatasets(project){
   datasets.forEach(function(set){
     Data.Dataset.create({
       name: set,
-      meta: readMetaData(path.join(project.path, set , 'meta.json')),
+      meta: util.readMetaData(path.join(project.path, set , 'meta.json')),
       path: path.join(project.path, set),
       project: project._id
     }, function(err, dataSaved){
@@ -67,7 +58,7 @@ function readOrfs(dataset){
   orfs.forEach(function(orf){
     Data.Orf.create({
       name: orf,
-      meta: readMetaData(path.join(dataset.path, orf, 'meta.json')),
+      meta: util.readMetaData(path.join(dataset.path, orf, 'meta.json')),
       path: path.join(dataset.path, orf),
       dataset: dataset._id,
       analyses: getAnalyses(path.join(dataset.path, orf))
@@ -92,7 +83,7 @@ function readProjects() {
   projects.forEach(function(proj){
     Data.Project.create({
       name: proj,
-      meta: readMetaData(path.join(DATA_PATH, proj, 'meta.json')),
+      meta: util.readMetaData(path.join(DATA_PATH, proj, 'meta.json')),
       path: path.join(DATA_PATH, proj)
     }, function (err, projSaved) {
       if (err) console.log("Error saving new project: " + err)

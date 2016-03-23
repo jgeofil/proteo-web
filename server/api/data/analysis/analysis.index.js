@@ -6,18 +6,19 @@ var disopred = require('./disopred.controller');
 var itasser = require('./itasser.controller');
 var tmhmm = require('./tmhmm.controller');
 var topcons = require('./topcons.controller');
+var util = require('./../util');
 
 var router = express.Router({mergeParams: true});
 
-router.get('/disopred3/', disopred.disopred3);
+router.get('/disopred3/', util.fetchMetadata('disopred'), disopred.disopred3);
 
 router.get('/itasser/models', itasser.listModels);
 router.get('/itasser/models/:modelName', itasser.getModel);
-router.get('/itasser/predictions', itasser.getPredictions);
+router.get('/itasser/predictions', util.fetchMetadata('itasser'), itasser.getPredictions);
 
-router.get('/tmhmm/', tmhmm.getTmhmm);
+router.get('/tmhmm/', util.fetchMetadata('tmhmm'), tmhmm.getTmhmm);
 
-router.get('/topcons/', topcons.getTopcons);
+router.get('/topcons/', util.fetchMetadata('topcons'), topcons.getTopcons);
 
 router.get('/', controller.index);
 
