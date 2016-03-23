@@ -7,8 +7,7 @@ angular.module('proteoWebApp')
       templateUrl: 'components/graphing/disoGraphLine/disoGraphLine.html',
       restrict: 'E',
       scope:{
-        graphData: '=',
-        graphSpacing: '='
+        graphData: '='
       },
       link: function (scope, element, attrs) {
         var seqln = scope.graphData.length; //Length of the sequence alignement
@@ -16,7 +15,7 @@ angular.module('proteoWebApp')
         // Size and margins
         var si = d3Helper.getSizing(100, 10, 25, seqln);
 
-        //Scales and axes and domains
+        //Scales and domains
         var x = d3.scale.linear().range([0, si.width]);
         var y = d3.scale.linear().range([si.height,0]);
         x.domain(d3.extent(scope.graphData, function(d) { return d.pos; }));
@@ -58,7 +57,21 @@ angular.module('proteoWebApp')
           .attr('y', -40)
           .attr('x', -si.height/2)
           .attr('transform', 'rotate(-90)')
-          .text('probability score');
+          .text('confidence');
+        svg.append('text')
+          .attr('class', 'y label diso-diso-label')
+          .attr('text-anchor', 'middle')
+          .attr('y', -60)
+          .attr('x', -si.height/4)
+          .attr('transform', 'rotate(-90)')
+          .text('diso');
+        svg.append('text')
+          .attr('class', 'y label diso-bind-label')
+          .attr('text-anchor', 'middle')
+          .attr('y', -60)
+          .attr('x', -si.height/4*3)
+          .attr('transform', 'rotate(-90)')
+          .text('bind');
 
         //**********************************************************************
         // Lines
@@ -74,13 +87,13 @@ angular.module('proteoWebApp')
         svg.append('path')
           .attr('class', 'line')
           .attr('d', disorderLine(scope.graphData))
-          .style('stroke-width', 1)    // set the stroke width
+          .style('stroke-width', 1)
           .style('stroke', 'red') ;
         svg.append('path')
           .attr('class', 'line')
           .attr('d', bindingLine(scope.graphData))
-          .style('stroke-width', 1)    // set the stroke width
-          .style('stroke', 'blue') ;
+          .style('stroke-width', 1)
+          .style('stroke', 'blue');
 
         //**********************************************************************
         // Popup tip
