@@ -4,41 +4,47 @@
 /* jshint undef: false*/
 
 angular.module('proteoWebApp')
-  .directive('itasserAlignGraph', function () {
+  .directive('itasserAlignGraph', function (d3Helper) {
     return {
       templateUrl: 'components/graphing/itasserAlignGraph/itasserAlignGraph.html',
       restrict: 'E',
       scope:{
         graphData: '=',
-        seqCount: '=' //Number of sequences to display
+        seqCount: '='
       },
       link: function (scope, element, attrs) {
-        var seqln = scope.graphData.seq.length; //Length of the sequence alignement
-        var data = scope.graphData.coverage.slice(0, scope.seqCount); //Keep only necessary alignements
+        //Length of the sequence alignement
+        var seqln = scope.graphData.seq.length;
+
+        //Keep only necessary alignements
+        var data = scope.graphData.coverage.slice(0, scope.seqCount);
         data.forEach(function(d){
           d.cov = d.cov.split(''); //Split alignement sequences
         });
 
-        var margin = {top: 40, right: 20, bottom:30, left: 90};
-        var width = (seqln*10) - margin.right - margin.left;
-        var height = (scope.seqCount*11);
+        // Size and margins
+        var si = d3Helper.getSizing(scope.seqCount*17, 25, 20, seqln);
 
-        var x = d3.scale.linear().range([0, width]);
-        var xAxis = d3.svg.axis().scale(x).orient('bottom');
+        // Scales and domains
+        var x = d3.scale.linear().range([0, si.width]);
         x.domain([1,seqln]);
+        var step = x(0)-x(1);
 
         // Create SVG D3 container
-        var svg = d3.select('#itasser-align-graph').append('svg')
-          .attr('width', width + margin.left + margin.right)
-          .attr('height', height + margin.top + margin.bottom)
-          .append('g')
-          .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
+        var svg = d3Helper.getSvgCanvas('#itasser-align-graph',si);
+        // Sub-containers
+        var header = svg.append('g').attr('class', 'itasser-align-header');
+        var body = svg.append('g').attr('class', 'itasser-align-body');
 
-        var header = svg.append('g')
-          .attr('class', 'itasser-align-header');
-        var body = svg.append('g')
-          .attr('class', 'itasser-align-body');
+        //**********************************************************************
+        // Axes
+        var xAxis = d3.svg.axis().scale(x).orient('bottom');
+        svg.append('g')
+          .attr('class', 'x axis')
+          .attr('transform', 'translate(0,' + (si.height) + ')')
+          .call(xAxis);
 
+        //**********************************************************************
         // Create tooltip function
         var tip = d3.tip()
           .attr('class', 'd3-tip')
@@ -48,14 +54,19 @@ angular.module('proteoWebApp')
           });
         svg.call(tip);
 
+        //**********************************************************************
+        // Main sequence
         header.selectAll('text')
           .data(scope.graphData.seq.split('')).enter()
           .append('text')
             .attr('class', 'itasser-sequence-amino')
             .attr('text-anchor', 'middle')
             .attr('x', function(d,i){return x(i+1);})
-            .attr('y',  -25)
+            .attr('y',  -15)
             .text(function(d){return d;});
+
+        //**********************************************************************
+        // Alignement sequences
 
         // Append sequence identifiers
         body.selectAll('g').data(data).enter()
@@ -73,8 +84,6 @@ angular.module('proteoWebApp')
           .data(data).enter()
           .append('g')
           .attr('transform', function(d,i){return 'translate(0,' + i*12 + ')';});
-
-        var step = x(0)-x(1);
 
         // Append sequences to containers
         sequences.selectAll('rect')
@@ -95,22 +104,6 @@ angular.module('proteoWebApp')
                 return 'itasser-align';
             }
           });
-
-          /**
-          .append('text')
-            .attr('class', 'itasser-sequence-amino')
-            .attr('text-anchor', 'middle')
-            .attr('x', function(d,i){return x(i+1);})
-            .attr('y',  0)
-            .text(function(d){return d;});
-          **/
-        // Draw x axis line
-        svg.append('g')
-          .attr('class', 'x axis')
-          .attr('transform', 'translate(0,' + (height+5) + ')')
-          .call(xAxis);
-
-
       }
     };
   });

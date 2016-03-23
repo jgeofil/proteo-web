@@ -1,69 +1,96 @@
 'use strict';
 /* jshint undef: false*/
 angular.module('proteoWebApp')
-  .directive('topconsGraph', function () {
+  .directive('topconsGraph', function (d3Helper) {
     return {
       templateUrl: 'components/graphing/topconsGraph/topconsGraph.html',
       restrict: 'EA',      scope:{
-          graphData: '='
+          graphData: '=',
+          graphSpacing: '='
         },
         link: function (scope, element, attrs) {
-          var seqln = scope.graphData.zcord.length; //Length of the sequence alignement
+          //Length of the sequence alignement
+          var seqln = scope.graphData.zcord.length;
           var data = scope.graphData;
 
+          // Size and margins
           var lineGraphHeight = 100;
+          var si = d3Helper.getSizing(lineGraphHeight + (data.pred.length * 20), 10, 20, seqln);
 
-          var margin = {top: 20, right: 20, bottom: 35, left: 90};
-          var width = (seqln*10) - margin.left - margin.right;
-          var height = lineGraphHeight + scope.graphData.pred.length * 12 + 20;
-
-          var x = d3.scale.linear().range([1, width]);
-          var xAxis = d3.svg.axis().scale(x).orient('bottom');
-
+          //Scales and domains
+          var x = d3.scale.linear().range([1, si.width]);
           var yProb = d3.scale.linear().range([(lineGraphHeight/2)-5,0]);
-          var yProbAxis = d3.svg.axis().scale(yProb).orient('left').ticks(3);
-
           var yZcord = d3.scale.linear().range([lineGraphHeight,(lineGraphHeight/2)+5]);
+          x.domain(d3.extent(scope.graphData.zcord, function(d,i) { return i+1; }));
+          yProb.domain([0,1]);
+          yZcord.domain([0,25]);
+          var range = x(1)-x(0);
+
+          // Create SVG D3 container
+          var svg = d3Helper.getSvgCanvas('#topcons-graph',si);
+          // Sub-containers
+          var body = svg.append('g')
+            .attr('transform', 'translate(0,'+ (lineGraphHeight+15) +')');
+          var ids = svg.append('g')
+            .attr('transform', 'translate(0,'+ (lineGraphHeight+21) +')');
+
+          //**********************************************************************
+          // Axes
+          var xAxis = d3.svg.axis().scale(x).orient('bottom');
+          var yProbAxis = d3.svg.axis().scale(yProb).orient('left').ticks(3);
           var yZcordAxis = d3.svg.axis().scale(yZcord).orient('left').ticks(3);
 
+          svg.append('g')
+            .attr('class', 'x axis')
+            .attr('transform', 'translate(0,' + si.height + ')')
+            .call(xAxis);
+          svg.append('g')
+            .attr('class', 'y axis')
+            .call(yProbAxis);
+          svg.append('g')
+            .attr('class', 'y axis')
+            .call(yZcordAxis);
+
+          //**********************************************************************
+          // Lines
           var zCordLine = d3.svg.line()
             .x(function(d) { return x(d.pos); })
             .y(function(d) { return yZcord(d.value); });
-
           var deltaGLine = d3.svg.line()
             .x(function(d) { return x(d.pos); })
             .y(function(d) { return yZcord(d.value); });
-
           var topRelLine = d3.svg.line()
             .x(function(d) { return x(d.pos); })
             .y(function(d) { return yProb(d.value); });
 
+          svg.append('path')
+            .attr('class', 'line')
+            .attr('d', zCordLine(scope.graphData.zcord))
+            .style('stroke-width', 1)
+            .style('stroke', 'black') ;
+          svg.append('path')
+            .attr('class', 'line')
+            .attr('d', topRelLine(scope.graphData.topRel))
+            .style('stroke-width', 1)
+            .style('stroke', 'black') ;
+          svg.append('path')
+            .attr('class', 'line')
+            .attr('d', deltaGLine(scope.graphData.deltaG))
+            .style('stroke-width', 1)
+            .style('stroke', 'grey') ;
+
+          //**********************************************************************
+          // Popup tip
           var tip = d3.tip()
             .attr('class', 'd3-tip')
             .offset([-10, 0])
             .html(function(d) {
               return "<span style='color:white'>" + d.start +"-"+ d.end+ "</span>";
             });
-
-          var svg = d3.select('#topcons-graph').append('svg')
-            .attr('width', width + margin.left + margin.right)
-            .attr('height', height + margin.top + margin.bottom)
-            .append('g')
-            .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
-
           svg.call(tip);
-          x.domain(d3.extent(scope.graphData.zcord, function(d,i) { return i+1; }));
 
-          yProb.domain([0,1]);
-          yZcord.domain([0,25]);
-
-          var range = x(1)-x(0);
-
-          var body = svg.append('g')
-            .attr('transform', 'translate(0,'+ (lineGraphHeight+15) +')');
-
-          var ids = svg.append('g')
-            .attr('transform', 'translate(0,'+ (lineGraphHeight+15) +')');
+          //**********************************************************************
+          // Secondary sequence
 
           // Create sequence containers
           var sequences = body.selectAll('g')
@@ -71,6 +98,7 @@ angular.module('proteoWebApp')
             .append('g')
             .attr('transform', function(d,i){return 'translate(0,' + (i*12) + ')';})
 
+          // Append ids
           ids.selectAll('text')
             .data(data.pred).enter()
             .append('text')
@@ -80,6 +108,7 @@ angular.module('proteoWebApp')
             .attr('y', function(d,i){return i*12;})
             .text(function(d){return d.method;});
 
+          // Append secondary sequences rectangles
           sequences.selectAll('rect')
             .data(function(d){return d.values;})
             .enter().append('svg:rect')
@@ -116,37 +145,8 @@ angular.module('proteoWebApp')
               }
             });
 
-          svg.append('path')
-            .attr('class', 'line')
-            .attr('d', zCordLine(scope.graphData.zcord))
-            .style('stroke-width', 1)    // set the stroke width
-            .style('stroke', 'red') ;
-
-          svg.append('path')
-            .attr('class', 'line')
-            .attr('d', topRelLine(scope.graphData.topRel))
-            .style('stroke-width', 1)    // set the stroke width
-            .style('stroke', 'blue') ;
-
-          svg.append('path')
-            .attr('class', 'line')
-            .attr('d', deltaGLine(scope.graphData.deltaG))
-            .style('stroke-width', 1)    // set the stroke width
-            .style('stroke', 'grey') ;
-
-          svg.append('g')
-            .attr('class', 'x axis')
-            .attr('transform', 'translate(0,' + height + ')')
-            .call(xAxis);
-
-          svg.append('g')
-            .attr('class', 'y axis')
-            .call(yProbAxis);
-
-          svg.append('g')
-            .attr('class', 'y axis')
-            .call(yZcordAxis);
-
+          //**********************************************************************
+          // Labels
           svg.append('text')
             .attr('class', 'y label')
             .attr('text-anchor', 'middle')
@@ -154,15 +154,13 @@ angular.module('proteoWebApp')
             .attr('x', -lineGraphHeight/4)
             .attr('transform', 'rotate(-90)')
             .text('confidence');
-
           svg.append('text')
             .attr('class', 'y label')
             .attr('text-anchor', 'middle')
             .attr('y', -40)
             .attr('x', -3*lineGraphHeight/4)
             .attr('transform', 'rotate(-90)')
-            .text('zCord').style('fill', 'red');
-
+            .text('zCord').style('fill', 'black');
           svg.append('text')
             .attr('class', 'y label')
             .attr('text-anchor', 'middle')
@@ -171,48 +169,27 @@ angular.module('proteoWebApp')
             .attr('transform', 'rotate(-90)')
             .text('deltaG').style('fill', 'grey');
 
-            var legend = svg.append('g')
-              .attr('class', 'legend')
-              .attr('x', 20)
-              .attr('y', height+25)
-              .attr('height', 100)
-              .attr('width', 100);
-
-            legend.selectAll('g')
-              .data([
-                {
-                  name: 'Inside',
-                  color: 'grey'
-                },
-                {
-                  name: 'Outside',
-                  color: 'blue'
-                },
-                {
-                  name: 'Transmembrane',
-                  color: 'red'
-                }
-              ])
-              .enter()
-              .append('g')
-              .each(function(d, i) {
-                var g = d3.select(this);
-                g.append('rect')
-                  .attr('x', 20+100*i)
-                  .attr('y', height+25)
-                  .attr('width', 10)
-                  .attr('height', 10)
-                  .style('fill', d.color);
-
-                g.append('text')
-                  .attr('x', 20+100*i+15)
-                  .attr('y', height+35)
-                  .attr('height',30)
-                  .attr('width',100)
-                  .style('fill', d.color)
-                  .text(d.name);
-
-              });
+          svg.append('text')
+            .attr('class', 'y label')
+            .attr('text-anchor', 'middle')
+            .attr('y', -75)
+            .attr('x', -lineGraphHeight-15-((6*12)/6*5))
+            .attr('transform', 'rotate(-90)')
+            .text('Helix').style('fill', 'red');
+          svg.append('text')
+            .attr('class', 'y label')
+            .attr('text-anchor', 'middle')
+            .attr('y', -75)
+            .attr('x', -lineGraphHeight-15-((6*12)/2))
+            .attr('transform', 'rotate(-90)')
+            .text('In').style('fill', 'blue');
+          svg.append('text')
+            .attr('class', 'y label')
+            .attr('text-anchor', 'middle')
+            .attr('y', -75)
+            .attr('x', -lineGraphHeight-15-((6*12)/6))
+            .attr('transform', 'rotate(-90)')
+            .text('Out').style('fill', 'grey');
 
         }
     };

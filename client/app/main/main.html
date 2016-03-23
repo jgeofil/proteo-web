@@ -6,23 +6,23 @@
 
       <ol class="breadcrumb">
         <li class="active">
-          <a ng-if="select.project" ng-click="reset()">Projects</a>
-          <span ng-if="!select.project">Projects</span>
+          <a ng-if="selectedProject" ng-click="reset()">Projects</a>
+          <span ng-if="!selectedProject">Projects</span>
         </li>
-        <li class="active" ng-if="select.project">
-          <a ng-if="select.dataset" ng-click="resetToProject()">{{select.project}}</a>
-          <span ng-if="!select.dataset">{{select.project}}</span>
+        <li class="active" ng-if="selectedProject">
+          <a ng-if="selectedDataset" ng-click="resetToProject()">{{selectedProject}}</a>
+          <span ng-if="!selectedDataset">{{selectedProject}}</span>
         </li>
-        <li class="active" ng-if="select.dataset">
-          {{select.dataset}}
+        <li class="active" ng-if="selectedDataset">
+          {{selectedDataset}}
         </li>
       </ol>
 
       <div class="loading-spinner" ng-show="dataIsLoading">
         <span us-spinner="{radius:30, width:8, length: 16}" spinner-on="dataIsLoading"></span>
       </div>
-      
-      <div ng-show="data.projects && !select.project">
+
+      <div ng-show="data.projects && !selectedProject">
         <h4>Available projects</h4>
         <small class="text-muted">
           Authorization must be requested for projects marked with the <span class="glyphicon glyphicon-lock"></span> icon.</small>
@@ -40,7 +40,7 @@
         </table>
       </div>
 
-      <div ng-show="data.datasets && !select.dataset">
+      <div ng-show="data.datasets && !selectedDataset">
         <h4>Available datasets</h4>
         <br>
         <table ng-table="table.datasets" class="table table-condensed table-bordered table-striped" show-filter="true">
@@ -62,7 +62,7 @@
         <table ng-table="table.orfs" class="table table-condensed table-bordered table-striped" show-filter="true">
           <tr ng-repeat="row in $data">
             <td data-title="'Name'" filter="{name: 'text'}" sortable="'name'" class="col-lg-6">
-              <a href="/orf/{{select.project}}/{{select.dataset}}/{{row.name}}">{{row.name}}</a>
+              <a href="/orf/{{selectedProject}}/{{selectedDataset}}/{{row.name}}">{{row.name}}</a>
             </td>
             <td data-title="'Disopred'" sortable="'disopred'" class="col-lg-1 text-center">
               <span class="glyphicon present-icon"
