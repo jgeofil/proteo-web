@@ -12,56 +12,6 @@ var mongoose = require('bluebird').promisifyAll(require('mongoose'));
 // Location of data folder
 var DATA_PATH = config.data;
 
-// Read metadata file
-export function readMetaData(path){
-  var file = {};
-  try{
-    file = JSON.parse(fs.readFileSync(path));
-  }catch(er){
-    console.log("Error reading metaData file: " + er)
-  }
-  return file;
-}
-
-
-// Get all sub-directories in directory
-export function getSubDirs(dir, cb) {
-  //TODO:waterfall no longer needed
-  asy.waterfall([
-    //**************************************************************************
-    //
-    function(callback) {
-      fs.readdir(dir, function(err, files) {
-        var dirs = [];
-        var filePath;
-        var checkDirectory = function (i,l){
-          return function(err, stat) {
-            if(stat.isDirectory()) {
-                dirs.push(files[i]);
-            }
-            if(i + 1 === l) { // last record
-              callback(err,dirs);
-            }
-          };
-        };
-
-        if(files){
-          for(var i=0, l=files.length; i<l; i++) {
-            if(files[i][0] !== '.') { // ignore hidden
-              filePath = path.join(dir,files[i]);
-              fs.stat(filePath, checkDirectory(i, l));
-            }
-          }
-        }else{
-          return callback('Not found!', []);
-        }
-      });
-    }
-  ], function (err, result) {
-    cb(result, err);
-  });
-}
-
 export function isAuthorizedOnGroup(req, res, next) {
   Group.find({users: mongoose.Types.ObjectId(req.user._id)}, function(err,groups){
     //TODO: error
@@ -81,18 +31,33 @@ export function isAuthorizedOnGroup(req, res, next) {
 
 function readMetaDataAsync(path, callback){
   fs.readFile(path, function(err, data){
-  if (err) console.log("Error reading metaData file: " + err);
+  if (err) console.log("Error loading metaData file: " + err);
   try{
     var file = JSON.parse(fs.readFileSync(path));
+    file.dateCreated = new Date(file.dateCreated);
+    file.dateModified = new Date(file.dateModified);
     callback(file);
   }catch(er){
     console.log("Error reading metaData file: " + er)
+
     callback({});
   }
-});
+  });
 }
 
-export function fetchMetadata(analysis) {
+// Read metadata file for Projects, Datasets, ORFs
+export function readMetaData(path){
+  var file = {};
+  try{
+    file = JSON.parse(fs.readFileSync(path));
+    file.dateCreated =  new Date(file.dateCreated);
+  }catch(er){
+    console.log("Error reading metaData file: " + er)
+  }
+  return file;
+}
+
+export function fetchMetadataAsync(analysis) {
 
   return function(req, res, next){
     var metaPath = path.join(DATA_PATH, req.params.projectId, req.params.dataId, req.params.orfId, analysis,'meta.json');
