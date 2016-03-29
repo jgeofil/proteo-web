@@ -26,20 +26,23 @@ function getDirectories(srcpath) {
 var triggered = false;
 
 function readDatasets(project){
+  // Read directories
   var datasets = getDirectories(project.path)
   var count = 0;
 
   datasets.forEach(function(set){
+    // Create record in database for dataset
     Data.Dataset.create({
       name: set,
       meta: util.readMetaData(path.join(project.path, set , 'meta.json')),
       path: path.join(project.path, set),
-      project: project._id
+      project: project._id // Reference to parent Project
     }, function(err, dataSaved){
       count +=1;
       if (err) console.log("Error saving new dataset: " + err)
       else{
-        project.datasets.push(dataSaved._id);
+        project.datasets.push(dataSaved._id); // Reference in parent Project
+        // When all datasets records a associated with project, save project
         if(count >= datasets.length) {
           project.save(function(err){
             if(err) console.log("Error saving datasets to project: " + err)
@@ -52,10 +55,12 @@ function readDatasets(project){
 }
 
 function readOrfs(dataset){
+  // Read directories
   var orfs = getDirectories(dataset.path)
   var count = 0;
 
   orfs.forEach(function(orf){
+    // Create record in database for ORF
     Data.Orf.create({
       name: orf,
       meta: util.readMetaData(path.join(dataset.path, orf, 'meta.json')),
@@ -96,7 +101,7 @@ function readProjects() {
 
 function updateData(){
 
-  // Remove all existing entries
+  // Remove all existing entries and create new ones
   Data.Project.find({}).removeAsync().then(function(){
     Data.Dataset.find({}).removeAsync().then(function(){
       Data.Orf.find({}).removeAsync().then(function(){
@@ -128,64 +133,79 @@ chokidar.watch(DATA_PATH, {
   triggerUpdate();
 });
 
+
+function getAnalyses (path) {
+  var analyses = {};
+  var dirs = getDirectories(path);
+  dirs.forEach(function(dir){
+    analyses[dir] = true;
+  })
+  return analyses;
+}
+
 // Gets a list of available data sets
 export function index(req, res) {
   Group.find({users: mongoose.Types.ObjectId(req.user._id)}, function(err,groups){
-    //TODO: error
-    var permissions = [];
-    groups.forEach(function(d){
-      permissions = permissions.concat(d.permissions);
-    })
+    if(err){
+      res.status(500).send("Error reading groups..")
+    }else{
+      var permissions = [];
+      groups.forEach(function(d){
+        permissions = permissions.concat(d.permissions);
+      })
 
-    Data.Project.find({}, function(err, projects){
-      //TODO: error
-      projects.forEach(function(d){
-        if(permissions.indexOf(d.name) !== -1){
-          d.authorized = true;
+      Data.Project.find({}, function(err, projects){
+        if(err){
+          res.status(500).send("Error reading datasets..")
+        }else{
+          projects.forEach(function(d){
+            if(permissions.indexOf(d.name) !== -1){
+              d.authorized = true;
+            }
+          })
+          res.status(200).json(projects);
         }
       })
-      res.status(200).json(projects);
-    })
+    }
   });
 }
 
 // Gets a list of available orfs
 export function orfs(req, res) {
   Data.Project.findOne({name: req.params.projectId}, function(err, project){
-    if(project){
+    if(project && !err){
       Data.Dataset.findOne({project: project._id, name: req.params.dataId}, function(err, dataset){
-        if(dataset){
+        if(dataset && !err){
           Data.Orf.find({dataset: dataset._id}, function(err, orfs){
-            //TODO: error
-            res.status(200).json(orfs);
+            if(!err){
+              res.status(200).json(orfs);
+            }else{
+              res.status(500).send("Error reading ORFs.");
+            }
           })
+        }else{
+          res.status(403).send("Dataset not found.");
         }
       })
+    }else{
+      res.status(403).send("Project not found.");
     }
-    //TODO: error
   })
 }
 
 
 export function datasets(req, res) {
   Data.Project.findOne({name: req.params.projectId}, function(err, project){
-    if(project){
+    if(project && !err){
       Data.Dataset.find({project: project._id}).populate('orfs').exec(function(err, datasets){
-        //TODO: error
-        res.status(200).json(datasets);
+        if(!err){
+          res.status(200).json(datasets);
+        }else{
+          res.status(500).send("Error reading datasets.");
+        }
       })
+    }else{
+      res.status(403).send("Project not found.");
     }
-    //TODO: error
-  })
-}
-
-function getAnalyses (path) {
-  var analyses = {};
-  var dirs = getDirectories(path);
-
-  dirs.forEach(function(dir){
-    analyses[dir] = true;
-  })
-
-  return analyses;
+  });
 }
