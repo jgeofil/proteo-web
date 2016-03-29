@@ -34,8 +34,8 @@
               <a ng-if="row.authorized" ng-click="getDatasets(row.name)">{{row.name}}</a>
               <span ng-if="!row.authorized" class="text-muted"><span class="glyphicon glyphicon-lock"></span>  {{row.name}}</span>
             </td>
-            <td data-title="'Datasets'" filter="{quantity: 'number'}" sortable="'quantity'" class="col-lg-1">{{row.datasets.length}}</td>
-            <td data-title="'Date Created'" filter="{dateCreated: 'text'}" sortable="'dateCreated'" class="col-lg-2">{{row.dateCreated}}</td>
+            <td data-title="'Datasets'" filter="{quantity: 'number'}" sortable="'quantity'" class="col-lg-1 text-center">{{row.datasets.length}}</td>
+            <td data-title="'Date Created'" filter="{'meta.dateCreated': 'text'}" sortable="'meta.dateCreated'" class="col-lg-2 text-center">{{row.meta.dateCreated}}</td>
           </tr>
         </table>
       </div>
