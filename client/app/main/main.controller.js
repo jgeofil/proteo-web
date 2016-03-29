@@ -4,18 +4,22 @@
 angular.module('proteoWebApp')
 .controller('MainController', function ($scope, $http, $location, $routeParams, $rootScope, NgTableParams) {
 
+  // If data is being loaded from server
   $scope.dataIsLoading = true;
 
+  // If data is present for each level
   $scope.data = {
     projects: false,
     datasets: false,
     orfs: false
   };
+  // Tables containing data
   $scope.table = {
     projects: undefined,
     datasets: undefined,
     orfs: undefined
   };
+  // Selected project and dataset
   $scope.select = {
     project: undefined,
     dataset: undefined
@@ -26,16 +30,19 @@ angular.module('proteoWebApp')
     count: 10
   };
 
+  // Get projects
   $http.get('/api/data').then(function(response){
     $scope.data.projects = true;
     $scope.table.projects = new NgTableParams(tableParameters, {data: response.data});
     $scope.dataIsLoading = false;
+    console.log(response.data)
   }, function(error){
     $scope.dataIsLoading = false;
     console.log(error);
     //TODO: Show message
   });
 
+  // Sort datasets by number of available analyses
   var dataSort = function(data){
     data.sort(function(a,b){
       return ((b.analyses.disopred?1:0) + (b.analyses.itasser?1:0) + (b.analyses.tmhmm?1:0) +
@@ -43,6 +50,7 @@ angular.module('proteoWebApp')
     });
   };
 
+  // Get datasets for specified project
   $scope.getDatasets = function(project, setLoc){
     $scope.dataIsLoading = true;
     $scope.data.datasets = false;
@@ -61,6 +69,7 @@ angular.module('proteoWebApp')
     });
   };
 
+  // Get ORFs for specified dataset
   $scope.getOrfs = function(dataset, setLoc){
     $scope.dataIsLoading = true;
     $scope.data.orfs = false;
@@ -81,6 +90,8 @@ angular.module('proteoWebApp')
     });
   };
 
+
+  // Reset to initial view
   $scope.reset = function(){
     $scope.data = {
       projects: true,
@@ -94,6 +105,7 @@ angular.module('proteoWebApp')
     $location.search({});
   };
 
+  // Reset to previously selected project
   $scope.resetToProject = function(){
     $scope.selectedDataset = undefined;
     $scope.data.orfs = false;
@@ -101,6 +113,7 @@ angular.module('proteoWebApp')
     $location.search({project: $scope.selectedProject});
   };
 
+  // Set location from URL
   var search = $location.search();
   if(search.project){
     $scope.getDatasets(search.project, true).then(function(){
