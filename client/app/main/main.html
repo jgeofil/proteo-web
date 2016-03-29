@@ -34,8 +34,8 @@
               <a ng-if="row.authorized" ng-click="getDatasets(row.name)">{{row.name}}</a>
               <span ng-if="!row.authorized" class="text-muted"><span class="glyphicon glyphicon-lock"></span>  {{row.name}}</span>
             </td>
-            <td data-title="'Datasets'" filter="{quantity: 'number'}" sortable="'quantity'" class="col-lg-1 text-center">{{row.datasets.length}}</td>
-            <td data-title="'Date Created'" filter="{'meta.dateCreated': 'text'}" sortable="'meta.dateCreated'" class="col-lg-2 text-center">{{row.meta.dateCreated}}</td>
+            <td data-title="'Datasets'" sortable="'quantity'" class="col-lg-1 text-center">{{row.datasets.length}}</td>
+            <td data-title="'Date Created'" sortable="'meta.dateCreated'" class="col-lg-2 text-center">{{row.meta.dateCreated | date:'MM/dd/yyyy'}}</td>
           </tr>
         </table>
       </div>
@@ -45,10 +45,11 @@
         <br>
         <table ng-table="table.datasets" class="table table-condensed table-bordered table-striped" show-filter="true">
           <tr ng-repeat="row in $data">
-            <td  data-title="'Name'" filter="{name: 'text'}" sortable="'name'" class="col-lg-7">
+            <td  data-title="'Name'" filter="{name: 'text'}" sortable="'name'" class="col-lg-5">
               <a ng-click="getOrfs(row.name)">{{row.name}}</a></td>
-            <td data-title="'Orfs'" filter="{quantity: 'number'}" sortable="'quantity'" class="col-lg-1">{{row.orfs.length}}</td>
-            <td data-title="'Date Created'" filter="{dateCreated: 'text'}" sortable="'dateCreated'" class="col-lg-2">{{row.dateCreated}}</td>
+            <td data-title="'Organism'" filter="{'organism': 'text'}" sortable="'organism'" class="col-lg-3 text-center">{{row.organism}}</td>
+            <td data-title="'Orfs'" sortable="'quantity'" class="col-lg-1 text-center">{{row.orfs.length}}</td>
+            <td data-title="'Date Created'" sortable="'meta.dateCreated'" class="col-lg-2 text-center">{{row.meta.dateCreated | date:'MM/dd/yyyy'}}</td>
           </tr>
         </table>
       </div>
@@ -61,7 +62,7 @@
 
         <table ng-table="table.orfs" class="table table-condensed table-bordered table-striped" show-filter="true">
           <tr ng-repeat="row in $data">
-            <td data-title="'Name'" filter="{name: 'text'}" sortable="'name'" class="col-lg-6">
+            <td data-title="'Name'" filter="{name: 'text'}" sortable="'name'" class="col-lg-4">
               <a href="/orf/{{selectedProject}}/{{selectedDataset}}/{{row.name}}">{{row.name}}</a>
             </td>
             <td data-title="'Disopred'" sortable="'disopred'" class="col-lg-1 text-center">
@@ -80,12 +81,13 @@
               <span class="glyphicon present-icon"
                     ng-class="{'glyphicon-ok text-success': row.analyses.topcons, 'glyphicon-remove text-warning': !row.analyses.topcons}"></span>
             </td>
-            <td data-title="'Start'" filter="{start: 'text'}" sortable="'start'" class="col-lg-1 text-center">
-              {{row.start}}
+            <td data-title="'Start'" sortable="'meta.start'" class="col-lg-1 text-center">
+              {{row.meta.start}}
             </td>
-            <td data-title="'End'" filter="{end: 'text'}" sortable="'end'" class="col-lg-1 text-center">
-              {{row.end}}
+            <td data-title="'End'" sortable="'meta.end'" class="col-lg-1 text-center">
+              {{row.meta.end}}
             </td>
+            <td data-title="'Date Created'" sortable="'meta.dateCreated'" class="col-lg-2 text-center">{{row.meta.dateCreated | date:'MM/dd/yyyy'}}</td>
           </tr>
         </table>
       </div>

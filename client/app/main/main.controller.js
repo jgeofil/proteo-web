@@ -50,6 +50,13 @@ angular.module('proteoWebApp')
     });
   };
 
+  var setProperty = function(data, property){
+    data = data.map(function(d){
+      d[property] = d.meta[property];
+      return d;
+    });
+  };
+
   // Get datasets for specified project
   $scope.getDatasets = function(project, setLoc){
     $scope.dataIsLoading = true;
@@ -59,6 +66,7 @@ angular.module('proteoWebApp')
       $location.search({project: project});
     }
     return $http.get('/api/data/'+project).then(function(response){
+      setProperty(response.data, 'organism');
       $scope.table.datasets = new NgTableParams(tableParameters, {data: response.data});
       $scope.data.datasets = true;
       $scope.dataIsLoading = false;
