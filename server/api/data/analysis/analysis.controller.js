@@ -23,3 +23,8 @@ export function index(req, res) {
     }
   });
 }
+
+// Gets metadata for ORF
+export function metadata(req, res) {
+  res.status(200).json(req.params.metadata);
+}

@@ -5,6 +5,19 @@ angular.module('proteoWebApp')
 .controller('OrfCtrl', function ($scope, $http, $routeParams, $rootScope, $uibModal) {
 
   //**************************************************************************
+  // MetaData
+  //**************************************************************************
+
+  $http.get('/api/data/'+$routeParams.projectName+'/dataset/'+
+    $routeParams.datasetName+'/orf/'+$routeParams.orfName+
+    '/analysis/meta/').then(function(response){
+    $scope.metadata = response.data;
+  }, function(error){
+    console.log(error);
+    //TODO: Show message
+  });
+
+  //**************************************************************************
   // State
   //**************************************************************************
   $scope.state = {

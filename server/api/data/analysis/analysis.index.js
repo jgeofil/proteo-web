@@ -20,6 +20,7 @@ router.get('/tmhmm/', util.fetchMetadataAsync('tmhmm'), tmhmm.getTmhmm);
 
 router.get('/topcons/', util.fetchMetadataAsync('topcons'), topcons.getTopcons);
 
+router.get('/meta/', util.fetchMetadataAsync(''), controller.metadata);
 router.get('/', controller.index);
 
 module.exports = router;
