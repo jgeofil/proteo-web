@@ -12,36 +12,21 @@ var mongoose = require('bluebird').promisifyAll(require('mongoose'));
 // Location of data folder
 var DATA_PATH = config.data;
 
+// Middleware - check if user is authorized on group
 export function isAuthorizedOnGroup(req, res, next) {
   Group.find({users: mongoose.Types.ObjectId(req.user._id)}, function(err,groups){
-    //TODO: error
     var permissions = [];
     groups.forEach(function(d){
       permissions = permissions.concat(d.permissions);
     })
-
-    if(permissions.indexOf(req.params.projectId) === -1){
-      res.status(403).end();
+    if(err){ // User is in no groups
+      res.status(403).send("User is in no groups.");
+    }
+    else if(permissions.indexOf(req.params.projectId) === -1){ //User is not authorized on group
+      res.status(403).send("User not authorized.");
     }else{
       next();
     }
-
-  });
-}
-
-function readMetaDataAsync(path, callback){
-  fs.readFile(path, function(err, data){
-  if (err) console.log("Error loading metaData file: " + err);
-  try{
-    var file = JSON.parse(fs.readFileSync(path));
-    file.dateCreated = new Date(file.dateCreated);
-    file.dateModified = new Date(file.dateModified);
-    callback(file);
-  }catch(er){
-    console.log("Error reading metaData file: " + er)
-
-    callback({});
-  }
   });
 }
 
@@ -57,17 +42,33 @@ export function readMetaData(path){
   return file;
 }
 
-export function fetchMetadataAsync(analysis) {
+// Read metaData for analyses
+function readMetaDataAsync(path, callback){
+  fs.readFile(path, function(err, data){
+    if (err) console.log("Error loading metaData file: " + err);
+    try{
+      var file = JSON.parse(fs.readFileSync(path));
+      file.dateCreated = new Date(file.dateCreated);
+      file.dateModified = new Date(file.dateModified);
+      callback(file);
+    }catch(er){
+      console.log("Error reading metaData file: " + er)
+      callback({});
+    }
+  });
+}
 
+// Read metaData for analyses
+export function fetchMetadataAsync(analysis) {
   return function(req, res, next){
-    var metaPath = path.join(DATA_PATH, req.params.projectId, req.params.dataId, req.params.orfId, analysis,'meta.json');
+    var metaPath = path.join(DATA_PATH, req.params.projectId,
+      req.params.dataId, req.params.orfId, analysis,'meta.json');
 
     readMetaDataAsync(metaPath, function(meta){
       req.params.metadata = meta;
       next();
     })
   }
-
 }
 
 

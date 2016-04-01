@@ -4,6 +4,8 @@
 
   <h2>{{orfName}}</h2>
   <hr>
+  <orf-metadata-display md-metadata="metadata"></orf-metadata-display>
+  <hr>
 
   <!-- Disopred panel ****************************************************** -->
   <div class="panel panel-default orf-panel">
@@ -15,7 +17,7 @@
                         'glyphicon-chevron-right': !state.disopred.isOpen && state.disopred.isPresent,
                         'glyphicon-remove': !state.disopred.isPresent}"></span>
       DISOPRED3
-      <span class="glyphicon glyphicon-th-list pull-right"
+      <span class="glyphicon glyphicon-plus pull-right"
             ng-show="state.disopred.isOpen && state.disopred.isPresent"
             ng-class="{'text-success': state.disopred.infoOpen}"
             ng-click="state.disopred.toggleInfo()"><span>
@@ -53,7 +55,7 @@
                         'glyphicon-chevron-right': !state.tmhmm.isOpen && state.tmhmm.isPresent,
                         'glyphicon-remove': !state.tmhmm.isPresent}"></span>
       TMHMM
-      <span class="glyphicon glyphicon-th-list pull-right"
+      <span class="glyphicon glyphicon-plus pull-right"
             ng-show="state.tmhmm.isOpen && state.tmhmm.isPresent"
             ng-class="{'text-success': state.tmhmm.infoOpen}"
             ng-click="state.tmhmm.toggleInfo()"><span>
@@ -92,7 +94,7 @@
                         'glyphicon-chevron-right': !state.topcons.isOpen && state.topcons.isPresent,
                         'glyphicon-remove': !state.topcons.isPresent}"></span>
       Topcons
-      <span class="glyphicon glyphicon-th-list pull-right"
+      <span class="glyphicon glyphicon-plus pull-right"
             ng-show="state.topcons.isOpen && state.topcons.isPresent"
             ng-class="{'text-success': state.topcons.infoOpen}"
             ng-click="state.topcons.toggleInfo()"><span>
@@ -130,7 +132,7 @@
                         'glyphicon-chevron-right': !state.itasser.isOpen && state.itasser.isPresent,
                         'glyphicon-remove': !state.itasser.isPresent}"></span>
       I-Tasser
-      <span class="glyphicon glyphicon-th-list pull-right"
+      <span class="glyphicon glyphicon-plus pull-right"
             ng-show="state.itasser.isOpen && state.itasser.isPresent"
             ng-class="{'text-success': state.itasser.infoOpen}"
             ng-click="state.itasser.toggleInfo()"><span>
