@@ -7,9 +7,10 @@ class LoginController {
   submitted = false;
   //end-non-standard
 
-  constructor(Auth, $location) {
+  constructor(Auth, $location, version) {
     this.Auth = Auth;
     this.$location = $location;
+    this.version = version.getVersion();
   }
 
   login(form) {

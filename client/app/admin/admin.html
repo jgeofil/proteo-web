@@ -7,7 +7,7 @@
     <tr ng-repeat="row in $data track by $index">
       <td data-title="'Name'" filter="{name: 'text'}" sortable="'name'" class="col-lg-4">
         {{row.name}}
-        <a ng-click="delete(row)" class="glyphicon glyphicon-remove pull-right text-danger"></a>
+        <a ng-show="row.email != 'admin@example.com'" ng-click="delete(row)" class="glyphicon glyphicon-remove pull-right text-danger"></a>
       </td>
       <td data-title="'ID'" filter="{_id: 'text'}" class="col-lg-4">{{row._id}}</td>
       <td data-title="'Email'" filter="{email: 'text'}" sortable="'email'" class="col-lg-4">{{row.email}}</td>
