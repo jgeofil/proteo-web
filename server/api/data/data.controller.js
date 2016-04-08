@@ -133,7 +133,7 @@ chokidar.watch(DATA_PATH, {
   console.log(event, path);
   triggerUpdate();
 });
-*//
+**/
 
 function getAnalyses (path) {
   var analyses = {};
