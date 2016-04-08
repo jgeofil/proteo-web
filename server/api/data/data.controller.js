@@ -17,6 +17,7 @@ var util = require('./util');
 var DATA_PATH = config.data;
 
 function getDirectories(srcpath) {
+  //TODO: try catch
   return fs.readdirSync(srcpath).filter(function(file) {
     return fs.statSync(path.join(srcpath, file)).isDirectory();
   });
@@ -121,7 +122,7 @@ function triggerUpdate(){
 }
 
 updateData();
-
+/**
 // Watch data folder for changes
 chokidar.watch(DATA_PATH, {
   ignoreInitial: true,
@@ -132,7 +133,7 @@ chokidar.watch(DATA_PATH, {
   console.log(event, path);
   triggerUpdate();
 });
-
+*//
 
 function getAnalyses (path) {
   var analyses = {};
@@ -208,4 +209,10 @@ export function datasets(req, res) {
       res.status(403).send("Project not found.");
     }
   });
+}
+
+export function update(req, res){
+  updateData();
+  console.log("DataUpdated as per request")
+  res.status(200).send("Done.");
 }

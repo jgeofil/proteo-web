@@ -46,6 +46,15 @@ angular.module('proteoWebApp.admin')
       });
     };
 
+    $scope.updateData = function(){
+      $http.post('/api/data/', {}).then(function(response){
+        //TODO: inform user
+      }, function(error){
+        console.log(error);
+        //TODO: Show message
+      });
+    };
+
     $http.get('/api/groups/').then(function(response){
       $scope.groups = response.data;
       socket.syncUpdates('group', $scope.groups);
