@@ -45,8 +45,12 @@ angular.module('proteoWebApp')
   // Sort datasets by number of available analyses
   var dataSort = function(data){
     data.sort(function(a,b){
-      return ((b.analyses.disopred?1:0) + (b.analyses.itasser?1:0) + (b.analyses.tmhmm?1:0) +
-      (b.analyses.topcons?1:0))-((a.analyses.disopred?1:0) + (a.analyses.itasser?1:0) + (a.analyses.tmhmm?1:0) + (a.analyses.topcons?1:0));
+      if(a.analyses && b.analyses){
+        return ((b.analyses.disopred?1:0) + (b.analyses.itasser?1:0) + (b.analyses.tmhmm?1:0) +
+        (b.analyses.topcons?1:0))-((a.analyses.disopred?1:0) + (a.analyses.itasser?1:0) + (a.analyses.tmhmm?1:0) + (a.analyses.topcons?1:0));
+      }else{
+        return 0;
+      }
     });
   };
 
@@ -87,6 +91,7 @@ angular.module('proteoWebApp')
     }
 
     $http.get('/api/data/'+$scope.selectedProject+'/dataset/'+dataset).then(function(response){
+      console.log(response)
       dataSort(response.data);
       $scope.table.orfs = new NgTableParams(tableParameters, {data: response.data});
       $scope.data.orfs = true;
