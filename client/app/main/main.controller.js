@@ -2,7 +2,7 @@
 //TODO: include D3 in a more Angular way
 /* jshint undef: false*/
 angular.module('proteoWebApp')
-.controller('MainController', function ($scope, $http, $location, $routeParams, $rootScope, NgTableParams) {
+.controller('MainController', function ($scope, $http, $location, $routeParams, $timeout , $rootScope, NgTableParams) {
 
   // If data is being loaded from server
   $scope.dataIsLoading = true;
@@ -32,10 +32,12 @@ angular.module('proteoWebApp')
 
   // Get projects
   $http.get('/api/data').then(function(response){
-    $scope.data.projects = true;
-    $scope.table.projects = new NgTableParams(tableParameters, {data: response.data});
-    $scope.dataIsLoading = false;
-    console.log(response.data)
+    $timeout(function(){
+      $scope.data.projects = true;
+      $scope.table.projects = new NgTableParams(tableParameters, {data: response.data});
+      $scope.dataIsLoading = false;
+    });
+
   }, function(error){
     $scope.dataIsLoading = false;
     console.log(error);
@@ -70,10 +72,12 @@ angular.module('proteoWebApp')
       $location.search({project: project});
     }
     return $http.get('/api/data/'+project).then(function(response){
-      setProperty(response.data, 'organism');
-      $scope.table.datasets = new NgTableParams(tableParameters, {data: response.data});
-      $scope.data.datasets = true;
-      $scope.dataIsLoading = false;
+      $timeout(function(){
+        setProperty(response.data, 'organism');
+        $scope.table.datasets = new NgTableParams(tableParameters, {data: response.data});
+        $scope.data.datasets = true;
+        $scope.dataIsLoading = false;
+      });
     }, function(error){
       $scope.dataIsLoading = false;
       console.log(error);
@@ -91,11 +95,14 @@ angular.module('proteoWebApp')
     }
 
     $http.get('/api/data/'+$scope.selectedProject+'/dataset/'+dataset).then(function(response){
-      console.log(response)
-      dataSort(response.data);
-      $scope.table.orfs = new NgTableParams(tableParameters, {data: response.data});
-      $scope.data.orfs = true;
-      $scope.dataIsLoading = false;
+
+      $timeout(function(){
+        dataSort(response.data);
+        $scope.table.orfs = new NgTableParams(tableParameters, {data: response.data});
+        $scope.data.orfs = true;
+        $scope.dataIsLoading = false;
+      });
+
     }, function(error){
       $scope.dataIsLoading = false;
       console.log(error);

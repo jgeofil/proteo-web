@@ -3,7 +3,7 @@
 (function() {
 
 angular.module('proteoWebApp.admin')
-  .controller('AdminController', function(User, $scope, $http, socket, NgTableParams){
+  .controller('AdminController', function(User, $scope, $http, $timeout, socket, NgTableParams){
 
     $scope.groups = [];
 
@@ -47,7 +47,10 @@ angular.module('proteoWebApp.admin')
     };
 
     $scope.updateData = function(){
-      $http.post('/api/data/', {}).then(function(response){
+      $scope.updating = true;
+      $http.post('/api/data/update', {}).then(function(response){
+        $timeout(function(){$scope.updating = false;}, 1000);
+
         //TODO: inform user
       }, function(error){
         console.log(error);
