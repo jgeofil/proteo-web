@@ -171,24 +171,26 @@
                               graph-spacing="graphSpacing"></itasser-align-graph>
       </div>
 
-      <p class="orf-title-vertical">Top final models predicted</p>
-      <hr class="orf-hr">
+      <div ng-if="itasserModels.length > 0">
+        <p class="orf-title-vertical">Top final models predicted</p>
+        <hr class="orf-hr">
 
-      <div clas="row">
-        <div ng-repeat="model in itasserModels" class="col-md-4">
-          <div id="gldiv-{{model.name}}" class="prot itasser-model-box">
+        <div clas="row">
+          <div ng-repeat="model in itasserModels" class="col-md-4">
+            <div id="gldiv-{{model.name}}" class="prot itasser-model-box">
 
+            </div>
+            <h5>
+              {{model.name}}
+              <span class="glyphicon glyphicon-plus itasser-model-glyph pull-right"
+                    ng-click="spawnModelModal(model.data)"></span>
+            </h5>
+            <h4>
+              <small>CScore: {{model.cscore}}</small><br>
+              <small ng-if="model.tm">TM-Score: {{model.tm}}</small><br>
+              <small ng-if="model.rmsd">RMSD: {{model.rmsd}}</small><br>
+            </h4>
           </div>
-          <h5>
-            {{model.name}}
-            <span class="glyphicon glyphicon-plus itasser-model-glyph pull-right"
-                  ng-click="spawnModelModal(model.data)"></span>
-          </h5>
-          <h4>
-            <small>CScore: {{model.cscore}}</small><br>
-            <small ng-if="model.tm">TM-Score: {{model.tm}}</small><br>
-            <small ng-if="model.rmsd">RMSD: {{model.rmsd}}</small><br>
-          </h4>
         </div>
       </div>
     </div>
