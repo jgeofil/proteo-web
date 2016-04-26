@@ -43,7 +43,7 @@ export function readMetaData(path){
 }
 
 // Read metaData for analyses
-function readMetaDataAsync(path, callback){
+export function readMetaDataAsync(path, callback){
   fs.readFile(path, function(err, data){
     if (err) console.log("Error loading metaData file: " + err);
     try{
@@ -57,6 +57,7 @@ function readMetaDataAsync(path, callback){
     }
   });
 }
+
 
 // Read metaData for analyses
 export function fetchMetadataAsync(analysis) {

@@ -1,13 +1,6 @@
-<div class="container">
-  <div class="col-sm-2">
-    <div id="orf-solubility"></div>
-
-  </div>
-  <div class="col-sm-10">
-    <div class="row">
-
-      <div class="col-sm-6">
-        <dl class="dl-horizontal">
+<div>
+  <div id="orf-solubility"></div>
+        <dl >
           <dt>Positions:</dt>
           <dd>
             <span ng-if="mdMetadata.start && mdMetadata.end">{{mdMetadata.start}}-{{mdMetadata.end}}</span>
@@ -18,11 +11,6 @@
             {{mdMetadata.sysName}}
             <span ng-if="!mdMetadata.sysName" class="text-danger">Unset</span>
           </dd>
-
-        </dl>
-      </div>
-      <div class="col-sm-6">
-        <dl class="dl-horizontal">
           <dt>Date created:</dt>
           <dd>
             {{mdMetadata.dateCreated}}
@@ -33,21 +21,11 @@
             {{mdMetadata.author}}
             <span ng-if="!mdMetadata.author" class="text-danger">Unset</span>
           </dd>
-        </dl>
-      </div>
-    </div>
-
-    <div class="row">
-      <div class="col-sm-12">
-        <dl class="dl-horizontal">
           <dt>Description:</dt>
           <dd>
             {{mdMetadata.description}}
             <span ng-if="!mdMetadata.description" class="text-danger">Unset</span>
           </dd>
         </dl>
-      </div>
-    </div>
-  </div>
 
-<div>
+  </div>

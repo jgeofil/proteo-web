@@ -6,9 +6,13 @@ var disopred = require('./disopred.controller');
 var itasser = require('./itasser.controller');
 var tmhmm = require('./tmhmm.controller');
 var topcons = require('./topcons.controller');
+var images = require('./images.controller');
 var util = require('./../util');
 
 var router = express.Router({mergeParams: true});
+
+router.get('/images/', images.getList);
+router.get('/images/:imageName', images.getImage);
 
 router.get('/disopred3/', util.fetchMetadataAsync('disopred'), disopred.disopred3);
 

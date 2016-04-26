@@ -1,200 +1,224 @@
 <navbar></navbar>
 
-<div class="container">
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-lg-1"></div>
+    <div class="col-lg-3">
+      <div class="panel panel-default orf-panel">
+        <div class="panel-heading orf-panel-heading">
+        </div>
 
-  <h2>{{orfName}}</h2>
-  <hr>
-  <orf-metadata-display md-metadata="metadata"></orf-metadata-display>
-  <hr>
+        <div class="panel-body orf-panel-body">
 
-  <!-- Disopred panel ****************************************************** -->
-  <div class="panel panel-default orf-panel">
-    <div class="panel-heading orf-panel-heading"
-          ng-class="{'panel-disabled': !state.disopred.isPresent}">
-      <span class="glyphicon"
-            ng-click="state.disopred.toggle()"
-            ng-class="{'glyphicon-chevron-down': state.disopred.isOpen && state.disopred.isPresent,
-                        'glyphicon-chevron-right': !state.disopred.isOpen && state.disopred.isPresent,
-                        'glyphicon-remove': !state.disopred.isPresent}"></span>
-      DISOPRED3
-      <span class="glyphicon glyphicon-plus pull-right"
-            ng-show="state.disopred.isOpen && state.disopred.isPresent"
-            ng-class="{'text-success': state.disopred.infoOpen}"
-            ng-click="state.disopred.toggleInfo()"><span>
-    </div>
+          <h2>{{orfName}}</h2>
+          <hr>
+          <orf-metadata-display md-metadata="metadata"></orf-metadata-display>
+          <hr>
 
-    <ul class="list-group" ng-show="state.disopred.isOpen && state.disopred.isPresent && state.disopred.infoOpen">
-      <li class="list-group-item meta-active">
-        <metadata-display md-metadata="disoGraphData.metadata"></metadata-display>
-      </li>
-    </ul>
-
-    <div class="panel-body orf-panel-body"
-          ng-show="state.disopred.isOpen && state.disopred.isPresent">
-      <p class="orf-title-vertical">Disorder pred.</p>
-      <hr class="orf-hr">
-
-      <div ng-scrollable="{scrollX:'bottom',scrollY:'none'}"
-            class="scrollarea"
-            spy-x="posX">
-        <diso-graph-line ng-if="disoGraphData"
-                          graph-data="disoGraphData.data"
-                          graph-spacing="graphSpacing"></diso-graph-line>
-      </div>
-    </div>
-
-  </div>
-
-  <!-- TMHMM panel ********************************************************* -->
-  <div class="panel panel-default orf-panel">
-    <div class="panel-heading orf-panel-heading"
-          ng-class="{'panel-disabled': !state.tmhmm.isPresent}">
-      <span class="glyphicon"
-            ng-click="state.tmhmm.toggle()"
-            ng-class="{'glyphicon-chevron-down': state.tmhmm.isOpen && state.tmhmm.isPresent,
-                        'glyphicon-chevron-right': !state.tmhmm.isOpen && state.tmhmm.isPresent,
-                        'glyphicon-remove': !state.tmhmm.isPresent}"></span>
-      TMHMM
-      <span class="glyphicon glyphicon-plus pull-right"
-            ng-show="state.tmhmm.isOpen && state.tmhmm.isPresent"
-            ng-class="{'text-success': state.tmhmm.infoOpen}"
-            ng-click="state.tmhmm.toggleInfo()"><span>
-    </div>
-
-    <ul class="list-group" ng-show="state.tmhmm.isOpen && state.tmhmm.isPresent && state.tmhmm.infoOpen">
-       <li class="list-group-item meta-active">
-         <metadata-display md-metadata="tmhmmGraphData.metadata"></metadata-display>
-       </li>
-     </ul>
-
-    <div class="panel-body orf-panel-body"
-          ng-show="state.tmhmm.isOpen && state.tmhmm.isPresent">
-
-      <p class="orf-title-vertical">Transmembrane pred.</p>
-      <hr class="orf-hr">
-
-      <div ng-scrollable="{scrollX:'bottom',scrollY:'none'}"
-            class="scrollarea"
-            spy-x="posX">
-        <tmhmm-graph ng-if="tmhmmGraphData"
-                      graph-data="tmhmmGraphData"
-                      graph-height="100"
-                      graph-spacing="graphSpacing"></tmhmm-graph>
-      </div>
-    </div>
-  </div>
-
-  <!-- Topcons panel ******************************************************* -->
-  <div class="panel panel-default orf-panel">
-    <div  class="panel-heading orf-panel-heading"
-          ng-class="{'panel-disabled': !state.topcons.isPresent}">
-      <span class="glyphicon"
-            ng-click="state.topcons.toggle()"
-            ng-class="{'glyphicon-chevron-down': state.topcons.isOpen && state.topcons.isPresent,
-                        'glyphicon-chevron-right': !state.topcons.isOpen && state.topcons.isPresent,
-                        'glyphicon-remove': !state.topcons.isPresent}"></span>
-      Topcons
-      <span class="glyphicon glyphicon-plus pull-right"
-            ng-show="state.topcons.isOpen && state.topcons.isPresent"
-            ng-class="{'text-success': state.topcons.infoOpen}"
-            ng-click="state.topcons.toggleInfo()"><span>
-    </div>
-
-    <ul class="list-group" ng-show="state.topcons.isOpen && state.topcons.isPresent && state.topcons.infoOpen">
-       <li class="list-group-item meta-active">
-        <metadata-display md-metadata="topconsGraphData.metadata"></metadata-display>
-       </li>
-    </ul>
-
-    <div class="panel-body orf-panel-body"
-          ng-show="state.topcons.isOpen && state.topcons.isPresent">
-
-      <p class="orf-title-vertical">Topcons predictions</p>
-      <hr class="orf-hr">
-      <div ng-scrollable="{scrollX:'bottom',scrollY:'none'}"
-            class="scrollarea"
-            spy-x="posX">
-
-            <topcons-graph ng-if="topconsGraphData"
-                            graph-data="topconsGraphData"
-                            graph-spacing="graphSpacing"> </topcons-graph>
-      </div>
-      </div>
-    </div>
-
-  <!-- I-Tasser panel ****************************************************** -->
-  <div class="panel panel-default orf-panel">
-    <div class="panel-heading orf-panel-heading"
-          ng-class="{'panel-disabled': !state.itasser.isPresent}">
-      <span class="glyphicon"
-            ng-click="state.itasser.toggle()"
-            ng-class="{'glyphicon-chevron-down': state.itasser.isOpen && state.itasser.isPresent,
-                        'glyphicon-chevron-right': !state.itasser.isOpen && state.itasser.isPresent,
-                        'glyphicon-remove': !state.itasser.isPresent}"></span>
-      I-Tasser
-      <span class="glyphicon glyphicon-plus pull-right"
-            ng-show="state.itasser.isOpen && state.itasser.isPresent"
-            ng-class="{'text-success': state.itasser.infoOpen}"
-            ng-click="state.itasser.toggleInfo()"><span>
-    </div>
-
-    <ul class="list-group" ng-show="state.itasser.isOpen && state.itasser.isPresent && state.itasser.infoOpen">
-       <li class="list-group-item meta-active">
-         <metadata-display md-metadata="itasserSsGraphData.metadata"></metadata-display>
-       </li>
-     </ul>
-
-    <div class="panel-body orf-panel-body"
-          ng-show="state.itasser.isOpen && state.itasser.isPresent">
-
-      <p class="orf-title-vertical">Secondary structure</p>
-      <hr class="orf-hr">
-
-      <div ng-scrollable="{scrollX:'bottom',scrollY:'none'}"
-            class="scrollarea"
-            spy-x="posX">
-        <itasser-ss-graph ng-if="itasserSsGraphData"
-                          graph-data-ss="itasserSsGraphData.ss"
-                          graph-height="150"
-                          graph-spacing="graphSpacing"></itasser-ss-graph>
-      </div>
-
-      <p class="orf-title-vertical">Top 10 threading templates</p>
-      <hr class="orf-hr">
-
-      <div ng-scrollable="{scrollX:'bottom',scrollY:'none'}"
-            class="scrollarea"
-            spy-x="posX">
-        <itasser-align-graph ng-if="itasserAlignGraphData"
-                              graph-data="itasserAlignGraphData"
-                              seq-count="10"
-                              graph-spacing="graphSpacing"></itasser-align-graph>
-      </div>
-
-      <div ng-if="itasserModels.length > 0">
-        <p class="orf-title-vertical">Top final models predicted</p>
-        <hr class="orf-hr">
-
-        <div clas="row">
-          <div ng-repeat="model in itasserModels" class="col-md-4">
-            <div id="gldiv-{{model.name}}" class="prot itasser-model-box">
-
-            </div>
-            <h5>
-              {{model.name}}
-              <span class="glyphicon glyphicon-plus itasser-model-glyph pull-right"
-                    ng-click="spawnModelModal(model.data)"></span>
-            </h5>
-            <h4>
-              <small>CScore: {{model.cscore}}</small><br>
-              <small ng-if="model.tm">TM-Score: {{model.tm}}</small><br>
-              <small ng-if="model.rmsd">RMSD: {{model.rmsd}}</small><br>
-            </h4>
-          </div>
+          <orf-image-carousel oic-images="images"></orf-image-carousel>
         </div>
       </div>
     </div>
+
+
+    <div class="col-lg-7">
+
+
+      <!-- Disopred panel ****************************************************** -->
+      <div class="panel panel-default orf-panel">
+        <div class="panel-heading orf-panel-heading"
+              ng-class="{'panel-disabled': !state.disopred.isPresent}">
+          <span class="glyphicon"
+                ng-click="state.disopred.toggle()"
+                ng-class="{'glyphicon-chevron-down': state.disopred.isOpen && state.disopred.isPresent,
+                            'glyphicon-chevron-right': !state.disopred.isOpen && state.disopred.isPresent,
+                            'glyphicon-remove': !state.disopred.isPresent}"></span>
+          DISOPRED3
+          <span class="glyphicon glyphicon-plus pull-right"
+                ng-show="state.disopred.isOpen && state.disopred.isPresent"
+                ng-class="{'text-success': state.disopred.infoOpen}"
+                ng-click="state.disopred.toggleInfo()"><span>
+        </div>
+
+        <ul class="list-group" ng-show="state.disopred.isOpen && state.disopred.isPresent && state.disopred.infoOpen">
+          <li class="list-group-item meta-active">
+            <metadata-display md-metadata="disoGraphData.metadata"></metadata-display>
+          </li>
+        </ul>
+
+        <div class="panel-body orf-panel-body"
+              ng-show="state.disopred.isOpen && state.disopred.isPresent">
+          <p class="orf-title-vertical">Disorder pred.</p>
+          <hr class="orf-hr">
+
+          <div ng-scrollable="{scrollX:'bottom',scrollY:'none'}"
+                class="scrollarea"
+                spy-x="posX">
+            <diso-graph-line ng-if="disoGraphData"
+                              graph-data="disoGraphData.data"
+                              graph-spacing="graphSpacing"></diso-graph-line>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- TMHMM panel ********************************************************* -->
+      <div class="panel panel-default orf-panel">
+        <div class="panel-heading orf-panel-heading"
+              ng-class="{'panel-disabled': !state.tmhmm.isPresent}">
+          <span class="glyphicon"
+                ng-click="state.tmhmm.toggle()"
+                ng-class="{'glyphicon-chevron-down': state.tmhmm.isOpen && state.tmhmm.isPresent,
+                            'glyphicon-chevron-right': !state.tmhmm.isOpen && state.tmhmm.isPresent,
+                            'glyphicon-remove': !state.tmhmm.isPresent}"></span>
+          TMHMM
+          <span class="glyphicon glyphicon-plus pull-right"
+                ng-show="state.tmhmm.isOpen && state.tmhmm.isPresent"
+                ng-class="{'text-success': state.tmhmm.infoOpen}"
+                ng-click="state.tmhmm.toggleInfo()"><span>
+        </div>
+
+        <ul class="list-group" ng-show="state.tmhmm.isOpen && state.tmhmm.isPresent && state.tmhmm.infoOpen">
+           <li class="list-group-item meta-active">
+             <metadata-display md-metadata="tmhmmGraphData.metadata"></metadata-display>
+           </li>
+         </ul>
+
+        <div class="panel-body orf-panel-body"
+              ng-show="state.tmhmm.isOpen && state.tmhmm.isPresent">
+
+          <p class="orf-title-vertical">Transmembrane pred.</p>
+          <hr class="orf-hr">
+
+          <div ng-scrollable="{scrollX:'bottom',scrollY:'none'}"
+                class="scrollarea"
+                spy-x="posX">
+            <tmhmm-graph ng-if="tmhmmGraphData"
+                          graph-data="tmhmmGraphData"
+                          graph-height="100"
+                          graph-spacing="graphSpacing"></tmhmm-graph>
+          </div>
+        </div>
+      </div>
+
+      <!-- Topcons panel ******************************************************* -->
+      <div class="panel panel-default orf-panel">
+        <div  class="panel-heading orf-panel-heading"
+              ng-class="{'panel-disabled': !state.topcons.isPresent}">
+          <span class="glyphicon"
+                ng-click="state.topcons.toggle()"
+                ng-class="{'glyphicon-chevron-down': state.topcons.isOpen && state.topcons.isPresent,
+                            'glyphicon-chevron-right': !state.topcons.isOpen && state.topcons.isPresent,
+                            'glyphicon-remove': !state.topcons.isPresent}"></span>
+          Topcons
+          <span class="glyphicon glyphicon-plus pull-right"
+                ng-show="state.topcons.isOpen && state.topcons.isPresent"
+                ng-class="{'text-success': state.topcons.infoOpen}"
+                ng-click="state.topcons.toggleInfo()"><span>
+        </div>
+
+        <ul class="list-group" ng-show="state.topcons.isOpen && state.topcons.isPresent && state.topcons.infoOpen">
+           <li class="list-group-item meta-active">
+            <metadata-display md-metadata="topconsGraphData.metadata"></metadata-display>
+           </li>
+        </ul>
+
+        <div class="panel-body orf-panel-body"
+              ng-show="state.topcons.isOpen && state.topcons.isPresent">
+
+          <p class="orf-title-vertical">Topcons predictions</p>
+          <hr class="orf-hr">
+          <div ng-scrollable="{scrollX:'bottom',scrollY:'none'}"
+                class="scrollarea"
+                spy-x="posX">
+
+                <topcons-graph ng-if="topconsGraphData"
+                                graph-data="topconsGraphData"
+                                graph-spacing="graphSpacing"> </topcons-graph>
+          </div>
+          </div>
+        </div>
+
+      <!-- I-Tasser panel ****************************************************** -->
+      <div class="panel panel-default orf-panel">
+        <div class="panel-heading orf-panel-heading"
+              ng-class="{'panel-disabled': !state.itasser.isPresent}">
+          <span class="glyphicon"
+                ng-click="state.itasser.toggle()"
+                ng-class="{'glyphicon-chevron-down': state.itasser.isOpen && state.itasser.isPresent,
+                            'glyphicon-chevron-right': !state.itasser.isOpen && state.itasser.isPresent,
+                            'glyphicon-remove': !state.itasser.isPresent}"></span>
+          I-Tasser
+          <span class="glyphicon glyphicon-plus pull-right"
+                ng-show="state.itasser.isOpen && state.itasser.isPresent"
+                ng-class="{'text-success': state.itasser.infoOpen}"
+                ng-click="state.itasser.toggleInfo()"><span>
+        </div>
+
+        <ul class="list-group" ng-show="state.itasser.isOpen && state.itasser.isPresent && state.itasser.infoOpen">
+           <li class="list-group-item meta-active">
+             <metadata-display md-metadata="itasserSsGraphData.metadata"></metadata-display>
+           </li>
+         </ul>
+
+        <div class="panel-body orf-panel-body"
+              ng-show="state.itasser.isOpen && state.itasser.isPresent">
+
+          <p class="orf-title-vertical">Secondary structure</p>
+          <hr class="orf-hr">
+
+          <div ng-scrollable="{scrollX:'bottom',scrollY:'none'}"
+                class="scrollarea"
+                spy-x="posX">
+            <itasser-ss-graph ng-if="itasserSsGraphData"
+                              graph-data-ss="itasserSsGraphData.ss"
+                              graph-height="150"
+                              graph-spacing="graphSpacing"></itasser-ss-graph>
+          </div>
+
+          <p class="orf-title-vertical">Top 10 threading templates</p>
+          <hr class="orf-hr">
+
+          <div ng-scrollable="{scrollX:'bottom',scrollY:'none'}"
+                class="scrollarea"
+                spy-x="posX">
+            <itasser-align-graph ng-if="itasserAlignGraphData"
+                                  graph-data="itasserAlignGraphData"
+                                  seq-count="10"
+                                  graph-spacing="graphSpacing"></itasser-align-graph>
+          </div>
+
+          <div ng-if="itasserModels.length > 0">
+            <p class="orf-title-vertical">Top final models predicted</p>
+            <hr class="orf-hr">
+
+            <div clas="row">
+              <div ng-repeat="model in itasserModels" class="col-md-4">
+                <div id="gldiv-{{model.name}}" class="prot itasser-model-box">
+
+                </div>
+                <h5>
+                  {{model.name}}
+                  <span class="glyphicon glyphicon-plus itasser-model-glyph pull-right"
+                        ng-click="spawnModelModal(model.data)"></span>
+                </h5>
+                <h4>
+                  <small>CScore: {{model.cscore}}</small><br>
+                  <small ng-if="model.tm">TM-Score: {{model.tm}}</small><br>
+                  <small ng-if="model.rmsd">RMSD: {{model.rmsd}}</small><br>
+                </h4>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+
+    </div>
   </div>
+
+
 
 
 </div>

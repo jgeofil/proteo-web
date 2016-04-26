@@ -17,10 +17,14 @@ var util = require('./util');
 var DATA_PATH = config.data;
 
 function getDirectories(srcpath) {
-  //TODO: try catch
-  return fs.readdirSync(srcpath).filter(function(file) {
-    return fs.statSync(path.join(srcpath, file)).isDirectory();
-  });
+  try{
+    return fs.readdirSync(srcpath).filter(function(file) {
+      return fs.statSync(path.join(srcpath, file)).isDirectory();
+    });
+  }catch(er){
+    console.log("Error getting directories: " + er)
+    return [];
+  }
 }
 
 // Limit updates to one per 5 seconds

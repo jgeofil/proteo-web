@@ -4,6 +4,10 @@
 angular.module('proteoWebApp')
 .controller('OrfCtrl', function ($scope, $http, $routeParams, $rootScope, $uibModal) {
 
+
+
+
+
   //**************************************************************************
   // MetaData
   //**************************************************************************
@@ -12,6 +16,33 @@ angular.module('proteoWebApp')
     $routeParams.datasetName+'/orf/'+$routeParams.orfName+
     '/analysis/meta/').then(function(response){
     $scope.metadata = response.data;
+  }, function(error){
+    console.log(error);
+    //TODO: Show message
+  });
+
+  //**************************************************************************
+  // Images
+  //**************************************************************************
+  $scope.imgBasePath = '/api/data/'+$routeParams.projectName+'/dataset/'+
+    $routeParams.datasetName+'/orf/'+$routeParams.orfName+
+    '/analysis/images/';
+
+  // Get images using auth tokens
+  var getImageDataURL = function(imgObj, url, imageType = 'image/jpeg'){
+    $http.get(url, {responseType: 'arraybuffer'}).then(function(res){
+      let blob = new Blob([res.data], {type: imageType});
+      imgObj.url = (window.URL || window.webkitURL).createObjectURL(blob);
+    });
+  };
+
+  $http.get('/api/data/'+$routeParams.projectName+'/dataset/'+
+    $routeParams.datasetName+'/orf/'+$routeParams.orfName+
+    '/analysis/images/').then(function(response){
+      $scope.images = response.data;
+      $scope.images.forEach(function(img){
+        getImageDataURL(img, $scope.imgBasePath+img.name);
+      });
   }, function(error){
     console.log(error);
     //TODO: Show message
