@@ -61,7 +61,7 @@ Running `npm test` will run the unit tests with karma.
     │   │   │   └── topcons                         # TOPCONS analysis folder  
     │   │   │       └── topcons.txt                 # TOPCONS data file
     │   │   ├── [orf name 2]        
-    │   │   └── ...                                 # etc. more ORFs
+    │   │   └── ...                                 # etc. more ORFs
     │   ├── [dataset name 2]
     │   └── ...                                     # etc. more datasets
     └── ...                                         # etc. more projects
@@ -111,7 +111,7 @@ Available properties for metadata files are:
   * author
   * other
 
-  Other property takes a list of objects such as:
+Other property takes a list of objects such as:
 ```javascript
     [
       {
@@ -127,7 +127,6 @@ Available properties for metadata files are:
 ```
 
 #### Images
-
-  Available properties for metadata files are:
-    - title
-    - caption
+Available properties for metadata files are:
+  * title
+  * caption
