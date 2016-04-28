@@ -79,38 +79,37 @@ Date values should be in any format accepted by javascript Date().
 
 #### Projects
 
-  Project name is taken from project folder name.
-  Available properties for metadata files are:
-    * dateCreated
-    * description
-    * owner
+Project name is taken from project folder name.
+Available properties for metadata files are:
+  * dateCreated
+  * description
+  * owner
 
 #### Datasets
 
-  Project name is taken from dataset folder name.
-  Available properties for metadata files are:
-    * dateCreated
-    * organism
+Project name is taken from dataset folder name.
+Available properties for metadata files are:
+  * dateCreated
+  * organism
 
 #### ORFs
 
-  Project name is taken from ORF folder name.
-  Available properties for metadata files are:
-    * dateCreated
-    * start
-    * end
-    * sysName
-    * author
-    * description
+Project name is taken from ORF folder name.
+Available properties for metadata files are:
+  * dateCreated
+  * start
+  * end
+  * sysName
+  * author
+  * description
 
 
 #### Analyses
-
-  Available properties for metadata files are:
-    * dateCreated
-    * dateModified
-    * author
-    * other
+Available properties for metadata files are:
+  * dateCreated
+  * dateModified
+  * author
+  * other
 
   Other property takes a list of objects such as:
 ```javascript
