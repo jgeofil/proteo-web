@@ -68,12 +68,12 @@ Running `npm test` will run the unit tests with karma.
 
 ### Metadata
 Metadata JSON files are formatted such as:
-`
+```javascript
     {
     "property": "value",
     "property2": "value"
     }
-`
+```
 Metadata files should always be names meta.json, except for images where they take the name of the image they refer to ([imageName].jpg <-> [imageName].json).
 Date values should be in any format accepted by javascript Date().
 
@@ -81,39 +81,39 @@ Date values should be in any format accepted by javascript Date().
 
   Project name is taken from project folder name.
   Available properties for metadata files are:
-    - dateCreated
-    - description
-    - owner
+    * dateCreated
+    * description
+    * owner
 
 #### Datasets
 
   Project name is taken from dataset folder name.
   Available properties for metadata files are:
-    - dateCreated
-    - organism
+    * dateCreated
+    * organism
 
 #### ORFs
 
   Project name is taken from ORF folder name.
   Available properties for metadata files are:
-    - dateCreated
-    - start
-    - end
-    - sysName
-    - author
-    - description
+    * dateCreated
+    * start
+    * end
+    * sysName
+    * author
+    * description
 
 
 #### Analyses
 
   Available properties for metadata files are:
-    - dateCreated
-    - dateModified
-    - author
-    - other
+    * dateCreated
+    * dateModified
+    * author
+    * other
 
   Other property takes a list of objects such as:
-  `
+```javascript
     [
       {
         "name": "name of property 1",
@@ -125,7 +125,7 @@ Date values should be in any format accepted by javascript Date().
       },
       ...
     ]
-  `
+```
 
 #### Images
 
