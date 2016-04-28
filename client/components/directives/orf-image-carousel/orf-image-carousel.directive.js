@@ -9,12 +9,15 @@ angular.module('proteoWebApp')
         oicImages: '='
       },
       link: function (scope, element, attrs) {
+        //Current active image index
         var active = 0;
 
+        //Returns current index
         scope.current = function(){
           return active;
         };
 
+        //Increment image index
         scope.right = function(){
           if(active === scope.oicImages.length-1){
             active = 0;
@@ -23,6 +26,7 @@ angular.module('proteoWebApp')
           }
         };
 
+        //Decrement image index
         scope.left = function(){
           if(active === 0){
             active = scope.oicImages.length-1;
@@ -30,8 +34,7 @@ angular.module('proteoWebApp')
             active -= 1;
           }
         };
-
-
+        
       }
     };
   });

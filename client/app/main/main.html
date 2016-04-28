@@ -39,12 +39,14 @@
         <br>
         <table ng-table="table.projects" class="table table-condensed table-bordered table-striped" show-filter="true">
           <tr ng-repeat="row in $data">
-            <td  data-title="'Name'" filter="{name: 'text'}" sortable="'name'" class="col-lg-7">
+            <td  data-title="'Name'" filter="{name: 'text'}" sortable="'name'" class="col-lg-2">
               <a ng-if="row.authorized" ng-click="getDatasets(row.name)">{{row.name}}</a>
               <span ng-if="!row.authorized" class="text-muted"><span class="glyphicon glyphicon-lock"></span>  {{row.name}}</span>
             </td>
+            <td data-title="'Description'" class="col-lg-4">{{row.meta.description}}</td>
+            <td data-title="'Owner'" class="col-lg-2">{{row.meta.owner}}</td>
             <td data-title="'Datasets'" sortable="'quantity'" class="col-lg-1 text-center">{{row.datasets.length}}</td>
-            <td data-title="'Date Created'" sortable="'meta.dateCreated'" class="col-lg-2 text-center">{{row.meta.dateCreated | date:'MM/dd/yyyy'}}</td>
+            <td data-title="'Created'" sortable="'meta.dateCreated'" class="col-lg-1 text-center">{{row.meta.dateCreated | date:'MM/dd/yyyy'}}</td>
           </tr>
         </table>
       </div>

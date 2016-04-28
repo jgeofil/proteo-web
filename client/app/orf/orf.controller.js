@@ -4,31 +4,69 @@
 angular.module('proteoWebApp')
 .controller('OrfCtrl', function ($scope, $http, $routeParams, $rootScope, $uibModal) {
 
+  // Base path for API
+  var abp = '/api/data/'+$routeParams.projectName+'/dataset/'+
+    $routeParams.datasetName+'/orf/'+$routeParams.orfName;
 
+  // Handle errors while fetching data
+  function handleErrors(err){
+    console.log(err);
+  }
 
+  //**************************************************************************
+  // State and parameters
+  //**************************************************************************
+  var StateObj = function(){
+    this.isOpen = true;
+    this.toggle = function (){this.isOpen = !this.isOpen;};
+    this.infoOpen = false;
+    this.toggleInfo = function (){this.infoOpen = !this.infoOpen;};
+    this.isPresent = false;
+  };
 
+  // State for the analysis panels
+  $scope.state = {
+    disopred: new StateObj(),
+    itasser: new StateObj(),
+    tmhmm: new StateObj(),
+    topcons: new StateObj()
+  };
+
+  // Page title, aka ORF name
+  $scope.orfName = $routeParams.orfName;
+
+  // Controls spacing between amino acids
+  $scope.graphSpacing = 10;
+
+  // Position of scrolling for analyses
+  $scope.posX = 0;
+
+  // 3D model modal window
+  $scope.spawnModelModal = function(pdb){
+    $uibModal.open({
+      animation: true,
+      templateUrl: 'modelModal.html',
+      controller: 'ModelModalCtrl',
+      size: 'lg',
+      resolve: {
+        pdb: function () {return pdb;}
+      }
+    });
+  };
 
   //**************************************************************************
   // MetaData
   //**************************************************************************
-
-  $http.get('/api/data/'+$routeParams.projectName+'/dataset/'+
-    $routeParams.datasetName+'/orf/'+$routeParams.orfName+
-    '/analysis/meta/').then(function(response){
+  $http.get(abp + '/analysis/meta/').then(function(response){
     $scope.metadata = response.data;
-  }, function(error){
-    console.log(error);
-    //TODO: Show message
-  });
+  }, handleErrors);
 
   //**************************************************************************
   // Images
   //**************************************************************************
-  $scope.imgBasePath = '/api/data/'+$routeParams.projectName+'/dataset/'+
-    $routeParams.datasetName+'/orf/'+$routeParams.orfName+
-    '/analysis/images/';
+  var imgBasePath = abp + '/analysis/images/';
 
-  // Get images using auth tokens
+  // Get images using auth tokens, standard <img> tag does not use tokens
   var getImageDataURL = function(imgObj, url, imageType = 'image/jpeg'){
     $http.get(url, {responseType: 'arraybuffer'}).then(function(res){
       let blob = new Blob([res.data], {type: imageType});
@@ -36,110 +74,38 @@ angular.module('proteoWebApp')
     });
   };
 
-  $http.get('/api/data/'+$routeParams.projectName+'/dataset/'+
-    $routeParams.datasetName+'/orf/'+$routeParams.orfName+
-    '/analysis/images/').then(function(response){
+  $http.get(imgBasePath).then(function(response){
       $scope.images = response.data;
       $scope.images.forEach(function(img){
-        getImageDataURL(img, $scope.imgBasePath+img.name);
+        getImageDataURL(img, imgBasePath + img.name);
       });
-  }, function(error){
-    console.log(error);
-    //TODO: Show message
-  });
-
-  //**************************************************************************
-  // State
-  //**************************************************************************
-  $scope.state = {
-    disopred:{
-      isOpen: true,
-      toggle: function (){this.isOpen = !this.isOpen;},
-      infoOpen: false,
-      toggleInfo: function (){this.infoOpen = !this.infoOpen;},
-      isPresent: false
-    },
-    itasser:{
-      isOpen: true,
-      toggle: function (){this.isOpen = !this.isOpen;},
-      infoOpen: false,
-      toggleInfo: function (){this.infoOpen = !this.infoOpen;},
-      isPresent: false
-    },
-    tmhmm:{
-      isOpen: true,
-      toggle: function (){this.isOpen = !this.isOpen;},
-      infoOpen: false,
-      toggleInfo: function (){this.infoOpen = !this.infoOpen;},
-      isPresent: false
-    },
-    topcons:{
-      isOpen: true,
-      toggle: function (){this.isOpen = !this.isOpen;},
-      infoOpen: false,
-      toggleInfo: function (){this.infoOpen = !this.infoOpen;},
-      isPresent: false
-    }
-  };
-
-  $scope.orfName = $routeParams.orfName;
-  $scope.graphSpacing = 10;
-
-  //**************************************************************************
-  // Model Modal
-  //**************************************************************************
-  $scope.spawnModelModal = function(pdb){
-    var modalInstance = $uibModal.open({
-    animation: true,
-    templateUrl: 'modelModal.html',
-    controller: 'ModelModalCtrl',
-    size: 'lg',
-    resolve: {
-      pdb: function () {
-        return pdb;
-      }
-    }
-    });
-
-  };
-
-  //**************************************************************************
-  // Scrolling controls
-  //**************************************************************************
-  $scope.posX = 0;
-  $scope.moveX = function (pixels) {
-    $scope.posX = $scope.posX + pixels;
-  };
+  }, handleErrors);
 
   //**************************************************************************
   // DISOPRED3
   //**************************************************************************
-  $http.get('/api/data/' + $routeParams.projectName +'/dataset/'+ $routeParams.datasetName + '/orf/' +
-  $routeParams.orfName + '/analysis/disopred3')
+  $http.get(abp + '/analysis/disopred3')
   .then(function(data){
     $scope.disoGraphData = data.data;
     $scope.state.disopred.isPresent = true;
-
-  });
+  }, handleErrors);
 
   //**************************************************************************
   // ITASSER
   //**************************************************************************
-  $http.get('/api/data/' + $routeParams.projectName +'/dataset/'+ $routeParams.datasetName + '/orf/' +
-  $routeParams.orfName + '/analysis/itasser/models')
+  $http.get(abp + '/analysis/itasser/models')
   .then(function(data){
     $scope.itasserModels = data.data;
     $scope.state.itasser.isPresent = true;
 
+    // Get PDB files for each model
     $scope.itasserModels.forEach(function(model){
-      $http.get('/api/data/' + $routeParams.projectName +'/dataset/'+ $routeParams.datasetName + '/orf/' +
-      $routeParams.orfName + '/analysis/itasser/models/'+model.name)
+      $http.get(abp + '/analysis/itasser/models/' + model.name)
       .then(function(data){
 
         model.data = data.data;
         // Assume there exists an HTML div with id 'gldiv'
         var element = $('#gldiv-'+model.name);
-
         // Viewer config - properties 'defaultcolors' and 'callback'
         var config = {defaultcolors: $3Dmol.rasmolElementColors };
         // Create GLViewer within 'gldiv'
@@ -150,53 +116,43 @@ angular.module('proteoWebApp')
         myviewer.setStyle({}, {cartoon: {color: 'spectrum'}});
         myviewer.zoomTo();
         myviewer.render();
-
-
       });
-    });
-  });
+    }, handleErrors);
+  }, handleErrors);
 
-  $http.get('/api/data/' + $routeParams.projectName +'/dataset/'+ $routeParams.datasetName + '/orf/' +
-  $routeParams.orfName + '/analysis/itasser/predictions')
+  $http.get(abp + '/analysis/itasser/predictions')
   .then(function(response){
     $scope.itasserSsGraphData = response.data;
-
     $scope.itasserAlignGraphData = response.data.align;
-
-  });
+  }, handleErrors);
 
   //**************************************************************************
   // TMHMM
   //**************************************************************************
-  $http.get('/api/data/' + $routeParams.projectName +'/dataset/'+ $routeParams.datasetName + '/orf/' +
-    $routeParams.orfName + '/analysis/tmhmm')
+  $http.get(abp + '/analysis/tmhmm')
     .then(function(data){
       $scope.tmhmmGraphData = data.data;
       $scope.state.tmhmm.isPresent = true;
-    });
+    }, handleErrors);
 
   //**************************************************************************
   // topcons
   //**************************************************************************
-  $http.get('/api/data/' + $routeParams.projectName +'/dataset/'+ $routeParams.datasetName + '/orf/' +
-    $routeParams.orfName + '/analysis/topcons')
+  $http.get(abp + '/analysis/topcons')
     .then(function(data){
       $scope.topconsGraphData = data.data;
       $scope.state.topcons.isPresent = true;
-    });
+    }, handleErrors);
 })
 
 //**************************************************************************
 // Modal window controller
 //**************************************************************************
 .controller('ModelModalCtrl', function ($scope, $uibModalInstance, pdb) {
-
   $scope.pdb = pdb;
-
   $scope.ok = function () {
     $uibModalInstance.close();
   };
-
   $scope.cancel = function () {
     $uibModalInstance.dismiss('cancel');
   };

@@ -39,6 +39,11 @@ Running `npm test` will run the unit tests with karma.
     │   │   ├── meta.json                           # Metadata file describing dataset
     │   │   ├── [orf name 1]                        # ORF folder, name is arbitrary but must be unique
     │   │   │   ├── meta.json                       # Metadata file describing ORF
+    │   │   │   ├── images                          # Images folder
+    │   │   │   │   ├── [imageName1].{jpg,png}      # Image file
+    │   │   │   │   ├── [imageName1].json           # Image caption and title
+    │   │   │   │   ├── [imageName2].{jpg,png}      
+    │   │   │   │   └── [imageName2].json           
     │   │   │   ├── disopred3                       # Disopred 3 analysis folder
     │   │   │   │   ├── disopred.seq                # Sequence file
     │   │   │   │   ├── disopred.seq.diso           # Disorder file
@@ -62,19 +67,68 @@ Running `npm test` will run the unit tests with karma.
     └── ...                                         # etc. more projects
 
 ### Metadata
-
-Metadata files for Datasets and ORFs are formatted such as:
-
+Metadata JSON files are formatted such as:
 `
     {
-    "dateCreated": "06-06-15",
-    "organism": "phage"
+    "property": "value",
+    "property2": "value"
     }
 `
-`
-{
-	"dateCreated": "06-06-15",
-	"start": 45,
-	"end": 456
-}
-`
+Metadata files should always be names meta.json, except for images where they take the name of the image they refer to ([imageName].jpg <-> [imageName].json).
+Date values should be in any format accepted by javascript Date().
+
+#### Projects
+
+  Project name is taken from project folder name.
+  Available properties for metadata files are:
+    - dateCreated
+    - description
+    - owner
+
+#### Datasets
+
+  Project name is taken from dataset folder name.
+  Available properties for metadata files are:
+    - dateCreated
+    - organism
+
+#### ORFs
+
+  Project name is taken from ORF folder name.
+  Available properties for metadata files are:
+    - dateCreated
+    - start
+    - end
+    - sysName
+    - author
+    - description
+
+
+#### Analyses
+
+  Available properties for metadata files are:
+    - dateCreated
+    - dateModified
+    - author
+    - other
+
+  Other property takes a list of objects such as:
+  `
+    [
+      {
+        "name": "name of property 1",
+        "value": "value for property"
+      },
+      {
+        "name": "name of property 2",
+        "value": "value for property"
+      },
+      ...
+    ]
+  `
+
+#### Images
+
+  Available properties for metadata files are:
+    - title
+    - caption
