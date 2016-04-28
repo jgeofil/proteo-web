@@ -118,6 +118,7 @@ angular.module('proteoWebApp')
           .attr('transform', 'rotate(-90)')
           .text('Beta');
 
+
       }
     };
   });

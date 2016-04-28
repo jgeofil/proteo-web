@@ -1,28 +1,24 @@
 <navbar></navbar>
 
-<div class="container-fluid">
+<div class="container-fluid" id="orf-panel">
   <div class="row">
     <div class="col-lg-1"></div>
     <div class="col-lg-3">
       <div class="panel panel-default orf-panel">
-        <div class="panel-heading orf-panel-heading">
-        </div>
-
+        <div class="panel-heading orf-panel-heading"></div>
         <div class="panel-body orf-panel-body">
 
           <h2>{{orfName}}</h2>
           <hr>
           <orf-metadata-display md-metadata="metadata"></orf-metadata-display>
           <hr>
-
           <orf-image-carousel oic-images="images"></orf-image-carousel>
+
         </div>
       </div>
     </div>
 
-
     <div class="col-lg-7">
-
 
       <!-- Disopred panel ****************************************************** -->
       <div class="panel panel-default orf-panel">
@@ -37,7 +33,7 @@
           <span class="glyphicon glyphicon-plus pull-right"
                 ng-show="state.disopred.isOpen && state.disopred.isPresent"
                 ng-class="{'text-success': state.disopred.infoOpen}"
-                ng-click="state.disopred.toggleInfo()"><span>
+                ng-click="state.disopred.toggleInfo()"></span>
         </div>
 
         <ul class="list-group" ng-show="state.disopred.isOpen && state.disopred.isPresent && state.disopred.infoOpen">
@@ -57,6 +53,7 @@
             <diso-graph-line ng-if="disoGraphData"
                               graph-data="disoGraphData.data"
                               graph-spacing="graphSpacing"></diso-graph-line>
+
           </div>
         </div>
 
@@ -75,7 +72,7 @@
           <span class="glyphicon glyphicon-plus pull-right"
                 ng-show="state.tmhmm.isOpen && state.tmhmm.isPresent"
                 ng-class="{'text-success': state.tmhmm.infoOpen}"
-                ng-click="state.tmhmm.toggleInfo()"><span>
+                ng-click="state.tmhmm.toggleInfo()"></span>
         </div>
 
         <ul class="list-group" ng-show="state.tmhmm.isOpen && state.tmhmm.isPresent && state.tmhmm.infoOpen">
@@ -114,7 +111,7 @@
           <span class="glyphicon glyphicon-plus pull-right"
                 ng-show="state.topcons.isOpen && state.topcons.isPresent"
                 ng-class="{'text-success': state.topcons.infoOpen}"
-                ng-click="state.topcons.toggleInfo()"><span>
+                ng-click="state.topcons.toggleInfo()"></span>
         </div>
 
         <ul class="list-group" ng-show="state.topcons.isOpen && state.topcons.isPresent && state.topcons.infoOpen">
@@ -136,8 +133,8 @@
                                 graph-data="topconsGraphData"
                                 graph-spacing="graphSpacing"> </topcons-graph>
           </div>
-          </div>
         </div>
+      </div>
 
       <!-- I-Tasser panel ****************************************************** -->
       <div class="panel panel-default orf-panel">
@@ -152,14 +149,14 @@
           <span class="glyphicon glyphicon-plus pull-right"
                 ng-show="state.itasser.isOpen && state.itasser.isPresent"
                 ng-class="{'text-success': state.itasser.infoOpen}"
-                ng-click="state.itasser.toggleInfo()"><span>
+                ng-click="state.itasser.toggleInfo()"></span>
         </div>
 
         <ul class="list-group" ng-show="state.itasser.isOpen && state.itasser.isPresent && state.itasser.infoOpen">
-           <li class="list-group-item meta-active">
-             <metadata-display md-metadata="itasserSsGraphData.metadata"></metadata-display>
-           </li>
-         </ul>
+          <li class="list-group-item meta-active">
+            <metadata-display md-metadata="itasserSsGraphData.metadata"></metadata-display>
+          </li>
+        </ul>
 
         <div class="panel-body orf-panel-body"
               ng-show="state.itasser.isOpen && state.itasser.isPresent">
@@ -217,10 +214,6 @@
 
     </div>
   </div>
-
-
-
-
 </div>
 
 <footer></footer>

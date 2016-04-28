@@ -2,7 +2,7 @@
 //TODO: include D3 in a more Angular way
 /* jshint undef: false*/
 angular.module('proteoWebApp')
-.controller('OrfCtrl', function ($scope, $http, $routeParams, $rootScope, $uibModal) {
+.controller('OrfCtrl', function ($scope, $http, $routeParams, $rootScope, $uibModal, $timeout, $window) {
 
   // Base path for API
   var abp = '/api/data/'+$routeParams.projectName+'/dataset/'+
@@ -40,6 +40,13 @@ angular.module('proteoWebApp')
 
   // Position of scrolling for analyses
   $scope.posX = 0;
+  var redrawn = 0;
+  $scope.$watch('posX', function(){
+    if(redrawn < 2){
+        $('#orf-panel').hide().show(0);
+        redrawn += 1;
+    }
+  });
 
   // 3D model modal window
   $scope.spawnModelModal = function(pdb){
@@ -143,6 +150,8 @@ angular.module('proteoWebApp')
       $scope.topconsGraphData = data.data;
       $scope.state.topcons.isPresent = true;
     }, handleErrors);
+
+
 })
 
 //**************************************************************************

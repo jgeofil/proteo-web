@@ -5,7 +5,7 @@ angular.module('proteoWebApp')
 .directive('tmhmmGraph', function (d3Helper) {
   return {
     templateUrl: 'components/graphing/tmhmmGraph/tmhmmGraph.html',
-    restrict: 'EA',
+    restrict: 'E',
     scope: {
       graphData: '='
     },
