@@ -1,6 +1,0 @@
->P1;target
-sequence:target: : : : : : : :
-MNKEHILAQKEVLTPIEYEHYVKHL-FDI---GEITKELYIELSSD---L--*
->P1;2odbB
-structure:2odbB: : : : : : : :
-----------EISAPQNFQHRV-HTSFD-PKEGK-----FVGLPPQWQNILD*
