@@ -58,8 +58,10 @@ angular.module('proteoWebApp')
 
   var setProperty = function(data, property){
     data = data.map(function(d){
-      d[property] = d.meta[property];
-      return d;
+      if(d.hasOwnProperty('meta')){
+        d[property] = d.meta[property];
+        return d;
+      }
     });
   };
 

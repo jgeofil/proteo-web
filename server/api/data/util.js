@@ -38,6 +38,7 @@ export function readMetaData(path){
     file.dateCreated =  new Date(file.dateCreated);
   }catch(er){
     console.log("Error reading metaData file: " + er)
+    file = {};
   }
   return file;
 }
