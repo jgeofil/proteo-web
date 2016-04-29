@@ -46,7 +46,7 @@
             <td data-title="'Description'" class="col-lg-4">{{row.meta.description}}</td>
             <td data-title="'Owner'" class="col-lg-2">{{row.meta.owner}}</td>
             <td data-title="'Datasets'" sortable="'quantity'" class="col-lg-1 text-center">{{row.datasets.length}}</td>
-            <td data-title="'Created'" sortable="'meta.dateCreated'" class="col-lg-1 text-center">{{row.meta.dateCreated | date:'MM/dd/yyyy'}}</td>
+            <td data-title="'Created'" sortable="'meta.dateCreated'" class="col-lg-1 text-center">{{row.meta.dateCreated | date:'MM/dd/yyyy' : 'UTC'}}</td>
           </tr>
         </table>
       </div>
@@ -60,7 +60,7 @@
               <a ng-click="getOrfs(row.name)">{{row.name}}</a></td>
             <td data-title="'Organism'" filter="{'organism': 'text'}" sortable="'organism'" class="col-lg-3 text-center">{{row.organism}}</td>
             <td data-title="'Orfs'" sortable="'quantity'" class="col-lg-1 text-center">{{row.orfs.length}}</td>
-            <td data-title="'Date Created'" sortable="'meta.dateCreated'" class="col-lg-2 text-center">{{row.meta.dateCreated | date:'MM/dd/yyyy'}}</td>
+            <td data-title="'Date Created'" sortable="'meta.dateCreated'" class="col-lg-2 text-center">{{row.meta.dateCreated | date:'MM/dd/yyyy': 'UTC'}}</td>
           </tr>
         </table>
       </div>
@@ -98,7 +98,7 @@
             <td data-title="'End'" sortable="'meta.end'" class="col-lg-1 text-center">
               {{row.meta.end}}
             </td>
-            <td data-title="'Date Created'" sortable="'meta.dateCreated'" class="col-lg-2 text-center">{{row.meta.dateCreated | date:'MM/dd/yyyy'}}</td>
+            <td data-title="'Date Created'" sortable="'meta.dateCreated'" class="col-lg-2 text-center">{{row.meta.dateCreated | date:'MM/dd/yyyy': 'UTC'}}</td>
           </tr>
         </table>
       </div>
