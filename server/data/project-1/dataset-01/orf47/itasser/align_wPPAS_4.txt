@@ -1,6 +1,0 @@
->P1;target
-sequence:target: : : : : : : :
-MNKEHILAQK---EVLTPIEYEHYVKHL-FDI---GEIT---KELYIEL--SSDL-*
->P1;1eesB
-structure:1eesB: : : : : : : :
--------GSKERPEISLPSDFEHTI-HVGFD-AVTGEFTGIPEQ-WARLLQTSNIT*

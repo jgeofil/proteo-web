@@ -1,6 +1,0 @@
->P1;target
-sequence:target: : : : : : : :
-------------MNKEHILAQKEVL--TPIEYEHYVKHLFDIGEITKELYIELSSDL--------*
->P1;1ulyA1
-structure:1ulyA1: : : : : : : :
-LEDTRRKILKLLRNKETISQLSEILGKTPQTIYHHIEKLKEAGLV--EVKRTEKGNLVEKYYGRT*
