@@ -70,6 +70,23 @@ function AuthService($location, $http, $cookies, $q, appConfig, Util, User) {
     },
 
     /**
+     * Create a new user
+     *
+     * @param  {Object}   user     - user info
+     * @param  {Function} callback - optional, function(error, user)
+     * @return {Promise}
+     */
+    createUserAsAdmin(user, callback) {
+      return User.save(user,
+        function() {
+          return safeCb(callback)(null, user);
+        },
+        function(err) {
+          return safeCb(callback)(err);
+        }).$promise;
+    },
+
+    /**
      * Change password
      *
      * @param  {String}   oldPassword

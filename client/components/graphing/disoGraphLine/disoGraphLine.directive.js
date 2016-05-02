@@ -23,6 +23,9 @@ angular.module('proteoWebApp')
 
         // SVG canvas
         var svg = d3Helper.getSvgCanvas('#diso-graph',si);
+        svg.on("mousewheel.zoom", null)
+      .on("DOMMouseScroll.zoom", null) // disables older versions of Firefox
+      .on("wheel.zoom", null) // disables newer versions of Firefox
 
         //**********************************************************************
         // Shading zone
