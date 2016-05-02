@@ -3,7 +3,7 @@
 (function() {
 
 angular.module('proteoWebApp.admin')
-  .controller('AdminController', function(User, $scope, $http, $timeout, socket, NgTableParams){
+  .controller('AdminController', function(User, $scope, $http, $timeout, socket, NgTableParams, ngToast){
 
     $scope.groups = [];
 
@@ -27,22 +27,33 @@ angular.module('proteoWebApp.admin')
       $scope.userTableParams = new NgTableParams(userTableParameters, userTableSetting);
     };
 
+    // Create new group
     $scope.addGroup = function(group){
-      $http.post('/api/groups/', {name: group}).then(function(response){
-        //TODO: inform user
+      $http.post('/api/groups/', {name: group}).then(function(){
+        ngToast.create({
+          className: 'success',
+          content: 'Group <b>'+group+'</b> created!',
+          timeout: 3000
+        });
       }, function(error){
-        console.log(error);
-        //TODO: Show message
+        ngToast.create({
+          className: 'danger',
+          content: '<b>Error creating group... Names can not be duplicate.</b>',
+          timeout: 5000
+        });
       });
       $scope.newGroup = '';
     };
 
     $scope.removeGroup = function(groupId){
-      $http.delete('/api/groups/' + groupId).then(function(response){
-        //TODO: inform user
+      $http.delete('/api/groups/' + groupId).then(function(){
+
       }, function(error){
-        console.log(error);
-        //TODO: Show message
+        ngToast.create({
+          className: 'danger',
+          content: '<b>Error removing group: </b>' + error.statusText,
+          timeout: 5000
+        });
       });
     };
 
@@ -51,7 +62,11 @@ angular.module('proteoWebApp.admin')
       $http.post('/api/data/update', {}).then(function(response){
         $timeout(function(){$scope.updating = false;}, 1000);
 
-        //TODO: inform user
+        ngToast.create({
+          className: 'success',
+          content: 'Database was updated successfully!',
+          timeout: 3000
+        });
       }, function(error){
         console.log(error);
         //TODO: Show message

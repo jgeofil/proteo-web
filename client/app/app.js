@@ -14,7 +14,10 @@ angular.module('proteoWebApp', [
   'ngAnimate',
   'ngScrollable',
   'ngTable',
-  'angularSpinner'
+  'angularSpinner',
+  'ngToast',
+  'angulartics', 'angulartics.google.analytics',
+  'angucomplete-alt'
 ])
   .config(function($routeProvider, $locationProvider) {
     $routeProvider

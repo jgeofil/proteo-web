@@ -2,7 +2,7 @@
 //TODO: include D3 in a more Angular way
 /* jshint undef: false*/
 angular.module('proteoWebApp')
-.controller('MainController', function ($scope, $http, $location, $routeParams, $timeout , $rootScope, NgTableParams) {
+.controller('MainController', function ($scope, $http, $location, $routeParams, $timeout , $rootScope, NgTableParams, Datatree) {
 
   // If data is being loaded from server
   $scope.dataIsLoading = true;
@@ -31,7 +31,7 @@ angular.module('proteoWebApp')
   };
 
   // Get projects
-  $http.get('/api/data').then(function(response){
+  Datatree.getProjectList().then(function(response){
     $timeout(function(){
       $scope.data.projects = true;
       $scope.table.projects = new NgTableParams(tableParameters, {data: response.data});
