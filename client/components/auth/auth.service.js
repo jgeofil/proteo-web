@@ -31,6 +31,7 @@ function AuthService($location, $http, $cookies, $q, appConfig, Util, User) {
           return currentUser.$promise;
         })
         .then(user => {
+          ga('set', 'userId', user._id);
           safeCb(callback)(null, user);
           return user;
         })
@@ -121,6 +122,7 @@ function AuthService($location, $http, $cookies, $q, appConfig, Util, User) {
         currentUser.$promise : currentUser;
       return $q.when(value)
         .then(user => {
+          ga('set', 'userId', user._id);
           safeCb(callback)(user);
           return user;
         }, () => {

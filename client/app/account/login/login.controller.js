@@ -7,10 +7,11 @@ class LoginController {
   submitted = false;
   //end-non-standard
 
-  constructor(Auth, $location, version) {
+  constructor(Auth, $location, version, $analytics) {
     this.Auth = Auth;
     this.$location = $location;
     this.version = version.getVersion();
+    this.$analytics = $analytics;
   }
 
   login(form) {
@@ -21,7 +22,8 @@ class LoginController {
         email: this.user.email,
         password: this.user.password
       })
-      .then(() => {
+      .then((us) => {
+        ga('set', 'userId', us._id);
         // Logged in, redirect to home
         this.$location.path('/');
       })
