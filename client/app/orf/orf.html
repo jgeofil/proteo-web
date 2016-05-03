@@ -47,7 +47,7 @@
           <p class="orf-title-vertical">Disorder pred.</p>
           <hr class="orf-hr">
 
-          <div ng-scrollable="{scrollX:'bottom',scrollY:'none'}"
+          <div ng-scrollable="scrollConf"
                 class="scrollarea"
                 spy-x="posX">
             <diso-graph-line ng-if="disoGraphData"
@@ -87,7 +87,7 @@
           <p class="orf-title-vertical">Transmembrane pred.</p>
           <hr class="orf-hr">
 
-          <div ng-scrollable="{scrollX:'bottom',scrollY:'none'}"
+          <div ng-scrollable="scrollConf"
                 class="scrollarea"
                 spy-x="posX">
             <tmhmm-graph ng-if="tmhmmGraphData"
@@ -125,7 +125,7 @@
 
           <p class="orf-title-vertical">Topcons predictions</p>
           <hr class="orf-hr">
-          <div ng-scrollable="{scrollX:'bottom',scrollY:'none'}"
+          <div ng-scrollable="scrollConf"
                 class="scrollarea"
                 spy-x="posX">
 
@@ -164,7 +164,7 @@
           <p class="orf-title-vertical">Secondary structure</p>
           <hr class="orf-hr">
 
-          <div ng-scrollable="{scrollX:'bottom',scrollY:'none'}"
+          <div ng-scrollable="scrollConf"
                 class="scrollarea"
                 spy-x="posX">
             <itasser-ss-graph ng-if="itasserSsGraphData"
@@ -176,7 +176,7 @@
           <p class="orf-title-vertical">Top 10 threading templates</p>
           <hr class="orf-hr">
 
-          <div ng-scrollable="{scrollX:'bottom',scrollY:'none'}"
+          <div ng-scrollable="scrollConf"
                 class="scrollarea"
                 spy-x="posX">
             <itasser-align-graph ng-if="itasserAlignGraphData"

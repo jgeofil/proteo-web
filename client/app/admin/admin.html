@@ -1,40 +1,66 @@
 <navbar></navbar>
 
 <div class="container">
-  <h2>Data</h2>
-  <h4 class="small">After adding data files, click here to update database.</h4>
-  <button class="btn btn-primary" ng-click="updateData()">Update data  <i ng-class="{'fa fa-refresh fa-spin': updating}"></i></button>
 
-  <h2>Users</h2>
-
-  <table ng-table="userTableParams" class="table table-condensed table-bordered table-striped" show-filter="true">
-    <tr ng-repeat="row in $data track by $index">
-      <td data-title="'Name'" filter="{name: 'text'}" sortable="'name'" class="col-lg-4">
-        {{row.name}}
-        <a ng-show="row.email != 'admin@example.com'" ng-click="delete(row)" class="glyphicon glyphicon-remove pull-right text-danger"></a>
-      </td>
-      <td data-title="'ID'" filter="{_id: 'text'}" class="col-lg-4">{{row._id}}</td>
-      <td data-title="'Email'" filter="{email: 'text'}" sortable="'email'" class="col-lg-4">{{row.email}}</td>
-    </tr>
-  </table>
-
-  <h2>Permission groups</h2>
-  <div class="input-group">
-    <input ng-model="newGroup" type="text" class="form-control" placeholder="Enter new group name..">
-    <span class="input-group-btn">
-      <button ng-click="addGroup(newGroup)" class="btn btn-primary" type="button">Add!</button>
-    </span>
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      Data
+    </div>
+    <div class="panel-body">
+      <h4 class="small">After adding data files, click here to update database.</h4>
+      <button class="btn btn-primary" ng-click="updateData()">Update data  <i ng-class="{'fa fa-refresh fa-spin': updating}"></i></button>
+    </div>
   </div>
-  <br>
-  <ul class="list-group user-list">
-    <li class="list-group-item" ng-repeat="group in groups">
-      <div class="user-info">
-          <a ng-href="/group/{{group._id}}"><strong>{{group.name}}</strong></a>
-          <a ng-click="removeGroup(group._id)" class="glyphicon glyphicon-remove pull-right text-danger"></a>
-          <br>
-          <span class="text-muted">Datasets: <span class="badge">{{group.permissions.length}}</span></span><br>
-          <span class="text-muted">Users: <span class="badge">{{group.users.length}}</span></span>
+
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      Users
+    </div>
+    <div class="panel-body">
+
+      <table ng-table="userTableParams" class="table table-condensed table-bordered table-striped" show-filter="true">
+        <tr ng-repeat="row in $data track by $index">
+          <td data-title="'Name'" filter="{name: 'text'}" sortable="'name'" class="col-lg-4">
+            {{row.name}}
+            <a ng-show="row.email != 'admin@example.com'" ng-click="delete(row)" class="glyphicon glyphicon-remove pull-right text-danger"></a>
+          </td>
+          <td data-title="'ID'" filter="{_id: 'text'}" class="col-lg-4">{{row._id}}</td>
+          <td data-title="'Email'" filter="{email: 'text'}" sortable="'email'" class="col-lg-4">{{row.email}}</td>
+        </tr>
+      </table>
+    </div>
+  </div>
+
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      Permission groups
+    </div>
+    <div class="panel-body">
+
+      <div class="input-group">
+        <input ng-model="newGroup" type="text" class="form-control" placeholder="Enter new group name..">
+        <span class="input-group-btn">
+          <button ng-click="addGroup(newGroup)" class="btn btn-primary" type="button">Add!</button>
+        </span>
       </div>
-    </li>
-  </ul>
+      <br>
+      <ul class="list-group user-list">
+        <li class="list-group-item" ng-repeat="group in groups">
+          <div class="user-info">
+              <a ng-href="/group/{{group._id}}"><strong>{{group.name}}</strong></a>
+              <a ng-click="removeGroup(group._id)" class="glyphicon glyphicon-remove pull-right text-danger"></a>
+              <br>
+              <span class="text-muted">Datasets: <span class="badge">{{group.permissions.length}}</span></span><br>
+              <span class="text-muted">Users: <span class="badge">{{group.users.length}}</span></span>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+
+
+
+
+
 </div>

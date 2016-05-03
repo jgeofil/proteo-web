@@ -2,7 +2,7 @@
 //TODO: include D3 in a more Angular way
 /* jshint undef: false*/
 angular.module('proteoWebApp')
-  .directive('disoGraphLine', function (d3Helper) {
+  .directive('disoGraphLine', function (d3Helper, $timeout) {
     return {
       templateUrl: 'components/graphing/disoGraphLine/disoGraphLine.html',
       restrict: 'E',
@@ -23,9 +23,9 @@ angular.module('proteoWebApp')
 
         // SVG canvas
         var svg = d3Helper.getSvgCanvas('#diso-graph',si);
-        svg.on("mousewheel.zoom", null)
-      .on("DOMMouseScroll.zoom", null) // disables older versions of Firefox
-      .on("wheel.zoom", null) // disables newer versions of Firefox
+
+        svg.on(".zoom", null);
+
 
         //**********************************************************************
         // Shading zone

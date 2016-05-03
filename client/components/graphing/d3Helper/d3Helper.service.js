@@ -27,10 +27,12 @@ angular.module('proteoWebApp')
     };
 
     this.getSvgCanvas = function(name, sizing){
-      return d3.select(name).append('svg')
+      var elem = d3.select(name);
+      var svg = elem.append('svg')
         .attr('width', sizing.width + sizing.margins.left + sizing.margins.right)
         .attr('height', sizing.height + sizing.margins.top + sizing.margins.bottom)
         .append('g')
         .attr('transform', 'translate(' + sizing.margins.left + ',' + sizing.margins.top + ')');
+      return svg;
     };
   });

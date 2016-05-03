@@ -16,6 +16,14 @@ angular.module('proteoWebApp')
   //**************************************************************************
   // State and parameters
   //**************************************************************************
+
+  // Ng-scrollable config
+  $scope.scrollConf = {
+    scrollX:'bottom',
+    useBothWheelAxes: true
+  };
+
+
   var StateObj = function(){
     this.isOpen = true;
     this.toggle = function (){this.isOpen = !this.isOpen;};
