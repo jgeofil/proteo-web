@@ -2,158 +2,160 @@
 
 <div class="container">
 
-  <div class="row">
-    <div class="col-lg-12">
-      <h1>{{groupName}}  <small>Permission group</small></h1>
-      <hr>
-    </div>
-  </div>
 
   <div class="row">
 
-    <div class="col-lg-4">
+    <div class="panel panel-default">
 
-      <h3>Add existing user</h3>
-
-      <div class="form-group">
-        <label>User email</label>
-        <angucomplete-alt id="userauto"
-              placeholder="Type and select email..."
-              pause="100"
-              selected-object="quickAddUser"
-              local-data="users"
-              search-fields="email"
-              title-field="email"
-              decscription-field="name"
-              minlength="1"
-              clear-selected="true"
-              input-class="form-control form-control-small"/>
+      <div class="panel-heading">
+        {{groupName}}  <small>Permission group</small>
       </div>
+      <div class="panel-body">
+        <div class="col-lg-4">
 
-    </div>
+          <h3>Add existing user</h3>
 
-    <div class="col-lg-4">
+          <div class="form-group">
+            <label>User email</label>
+            <angucomplete-alt id="userauto"
+                  placeholder="Type and select email..."
+                  pause="100"
+                  selected-object="quickAddUser"
+                  local-data="users"
+                  search-fields="email"
+                  title-field="email"
+                  decscription-field="name"
+                  minlength="1"
+                  clear-selected="true"
+                  input-class="form-control form-control-small"/>
+          </div>
 
-      <h3>Create and add user</h3>
-
-      <form class="form" name="createAddForm" ng-submit="createAndAddUser(createAddForm)" novalidate>
-
-        <div class="form-group" ng-class="{ 'has-success': createAddForm.name.$valid && createSubmitted,
-                                            'has-error': createAddForm.name.$invalid && createSubmitted }">
-          <label>Name</label>
-
-          <input type="text" name="name" class="form-control" ng-model="createUser.name"
-                 required/>
-          <p class="help-block" ng-show="createAddForm.name.$error.required && createSubmitted">
-            A name is required
-          </p>
         </div>
 
-        <div class="form-group" ng-class="{ 'has-success': createAddForm.email.$valid && createSubmitted,
-                                            'has-error': createAddForm.email.$invalid && createSubmitted }">
-          <label>Email</label>
+        <div class="col-lg-4">
 
-          <input type="email" name="email" class="form-control" ng-model="createUser.email"
-                 required
-                 mongoose-error/>
-          <p class="help-block" ng-show="createAddForm.email.$error.email && createSubmitted">
-            Doesn't look like a valid email.
-          </p>
-          <p class="help-block" ng-show="createAddForm.email.$error.required && createSubmitted">
-            What's your email address?
-          </p>
-          <p class="help-block" ng-show="createAddForm.email.$error.mongoose">
-            {{ createErrors.email }}
-          </p>
+          <h3>Create and add user</h3>
+
+          <form class="form" name="createAddForm" ng-submit="createAndAddUser(createAddForm)" novalidate>
+
+            <div class="form-group" ng-class="{ 'has-success': createAddForm.name.$valid && createSubmitted,
+                                                'has-error': createAddForm.name.$invalid && createSubmitted }">
+              <label>Name</label>
+
+              <input type="text" name="name" class="form-control" ng-model="createUser.name"
+                     required/>
+              <p class="help-block" ng-show="createAddForm.name.$error.required && createSubmitted">
+                A name is required
+              </p>
+            </div>
+
+            <div class="form-group" ng-class="{ 'has-success': createAddForm.email.$valid && createSubmitted,
+                                                'has-error': createAddForm.email.$invalid && createSubmitted }">
+              <label>Email</label>
+
+              <input type="email" name="email" class="form-control" ng-model="createUser.email"
+                     required
+                     mongoose-error/>
+              <p class="help-block" ng-show="createAddForm.email.$error.email && createSubmitted">
+                Doesn't look like a valid email.
+              </p>
+              <p class="help-block" ng-show="createAddForm.email.$error.required && createSubmitted">
+                What's your email address?
+              </p>
+              <p class="help-block" ng-show="createAddForm.email.$error.mongoose">
+                {{ createErrors.email }}
+              </p>
+            </div>
+
+            <div class="form-group" ng-class="{ 'has-success': createAddForm.password.$valid && createSubmitted,
+                                                'has-error': createAddForm.password.$invalid && createSubmitted }">
+              <label>Password</label>
+
+              <input type="password" name="password" class="form-control" ng-model="createUser.password"
+                     ng-minlength="3"
+                     required
+                     mongoose-error/>
+              <p class="help-block"
+                 ng-show="(createAddForm.password.$error.minlength || createAddForm.password.$error.required) && createSubmitted">
+                Password must be at least 3 characters.
+              </p>
+              <p class="help-block" ng-show="createAddForm.password.$error.mongoose">
+                {{ createErrors.password }}
+              </p>
+            </div>
+
+            <div class="form-group" ng-class="{ 'has-success': createAddForm.confirmPassword.$valid && createSubmitted,
+                                                'has-error': createAddForm.confirmPassword.$invalid && createSubmitted }">
+              <label>Confirm Password</label>
+              <input type="password" name="confirmPassword" class="form-control" ng-model="createUser.confirmPassword"
+                     match="createUser.password"
+                     ng-minlength="3" required/>
+              <p class="help-block"
+                 ng-show="createAddForm.confirmPassword.$error.match && createSubmitted">
+                Passwords must match.
+              </p>
+            </div>
+
+            <div>
+              <button class="btn btn-sm btn-primary" type="submit"
+                      ng-class="{ 'disabled': !createAddForm.$valid}">
+                Create and add user
+              </button>
+            </div>
+
+          </form>
         </div>
 
-        <div class="form-group" ng-class="{ 'has-success': createAddForm.password.$valid && createSubmitted,
-                                            'has-error': createAddForm.password.$invalid && createSubmitted }">
-          <label>Password</label>
+        <div class="col-lg-4">
 
-          <input type="password" name="password" class="form-control" ng-model="createUser.password"
-                 ng-minlength="3"
-                 required
-                 mongoose-error/>
-          <p class="help-block"
-             ng-show="(createAddForm.password.$error.minlength || createAddForm.password.$error.required) && createSubmitted">
-            Password must be at least 3 characters.
-          </p>
-          <p class="help-block" ng-show="createAddForm.password.$error.mongoose">
-            {{ createErrors.password }}
-          </p>
+          <h3>Add permission</h3>
+
+          <div class="form-group">
+            <label>Project name</label>
+            <angucomplete-alt id="ex1"
+                  placeholder="Type and select name..."
+                  pause="100"
+                  selected-object="addPerm"
+                  local-data="projects"
+                  search-fields="name"
+                  title-field="name"
+                  minlength="1"
+                  clear-selected="true"
+                  input-class="form-control form-control-small"/>
+          </div>
+
         </div>
 
-        <div class="form-group" ng-class="{ 'has-success': createAddForm.confirmPassword.$valid && createSubmitted,
-                                            'has-error': createAddForm.confirmPassword.$invalid && createSubmitted }">
-          <label>Confirm Password</label>
-          <input type="password" name="confirmPassword" class="form-control" ng-model="createUser.confirmPassword"
-                 match="createUser.password"
-                 ng-minlength="3" required/>
-          <p class="help-block"
-             ng-show="createAddForm.confirmPassword.$error.match && createSubmitted">
-            Passwords must match.
-          </p>
+        <hr>
+
+        <div class="row">
+
+          <div class="col-lg-8">
+            <h3>Users in group</h3>
+            <table ng-table="userTableParams" class="table table-condensed table-bordered table-striped" show-filter="true">
+              <tr ng-repeat="row in $data track by $index">
+                <td data-title="'Name'" filter="{name: 'text'}" sortable="'name'" class="col-lg-4">
+                  {{row.name}} <a ng-click="removeUser(row._id)" class="glyphicon glyphicon-remove pull-right text-danger"></a>
+                </td>
+                <td data-title="'ID'" filter="{_id: 'text'}" class="col-lg-4">{{row._id}}</td>
+                <td data-title="'Email'" filter="{email: 'text'}" sortable="'email'" class="col-lg-4">{{row.email}}</td>
+              </tr>
+            </table>
+          </div>
+
+          <div class="col-lg-4">
+            <h3>Permissions in group</h3>
+            <table ng-table="permTableParams" class="table table-condensed table-bordered table-striped" show-filter="true">
+              <tr ng-repeat="row in $data track by $index">
+                <td data-title="'Name'" filter="{'name': 'text'}" sortable="'name'" class="col-lg-7">
+                  {{row.name}}<a ng-click="removePerm(row.name)" class="glyphicon glyphicon-remove pull-right text-danger"></a>
+                </td>
+              </tr>
+            </table>
+          </div>
+
         </div>
-
-        <div>
-          <button class="btn btn-sm btn-primary" type="submit"
-                  ng-class="{ 'disabled': !createAddForm.$valid}">
-            Create and add user
-          </button>
-        </div>
-
-      </form>
-    </div>
-
-    <div class="col-lg-4">
-
-      <h3>Add permission</h3>
-
-      <div class="form-group">
-        <label>Project name</label>
-        <angucomplete-alt id="ex1"
-              placeholder="Type and select name..."
-              pause="100"
-              selected-object="addPerm"
-              local-data="projects"
-              search-fields="name"
-              title-field="name"
-              minlength="1"
-              clear-selected="true"
-              input-class="form-control form-control-small"/>
       </div>
-
-    </div>
-
-  </div>
-
-  <hr>
-
-  <div class="row">
-
-    <div class="col-lg-8">
-      <h3>Users in group</h3>
-      <table ng-table="userTableParams" class="table table-condensed table-bordered table-striped" show-filter="true">
-        <tr ng-repeat="row in $data track by $index">
-          <td data-title="'Name'" filter="{name: 'text'}" sortable="'name'" class="col-lg-4">
-            {{row.name}} <a ng-click="removeUser(row._id)" class="glyphicon glyphicon-remove pull-right text-danger"></a>
-          </td>
-          <td data-title="'ID'" filter="{_id: 'text'}" class="col-lg-4">{{row._id}}</td>
-          <td data-title="'Email'" filter="{email: 'text'}" sortable="'email'" class="col-lg-4">{{row.email}}</td>
-        </tr>
-      </table>
-    </div>
-
-    <div class="col-lg-4">
-      <h3>Permissions in group</h3>
-      <table ng-table="permTableParams" class="table table-condensed table-bordered table-striped" show-filter="true">
-        <tr ng-repeat="row in $data track by $index">
-          <td data-title="'Name'" filter="{'name': 'text'}" sortable="'name'" class="col-lg-7">
-            {{row.name}}<a ng-click="removePerm(row.name)" class="glyphicon glyphicon-remove pull-right text-danger"></a>
-          </td>
-        </tr>
-      </table>
     </div>
 
   </div>
