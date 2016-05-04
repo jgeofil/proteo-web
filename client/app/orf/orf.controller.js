@@ -20,7 +20,8 @@ angular.module('proteoWebApp')
   // Ng-scrollable config
   $scope.scrollConf = {
     scrollX:'bottom',
-    useBothWheelAxes: true
+    useBothWheelAxes: true,
+    preventKeyEvents: false
   };
 
 

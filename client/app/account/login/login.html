@@ -2,18 +2,22 @@
 
 <div class="container">
   <div class="row">
-    <div class="col-sm-3">
+    <div class="col-sm-4">
     </div>
-    <div class="col-sm-6">
+    <div class="col-sm-4">
       <img src="/assets/images/logo_proteo_EN_text.png" class="login-logo">
       <h3 class="login-text text-center">Web platform<br><small>Version {{vm.version}}</small><h3>
     </div>
-    <div class="col-sm-3">
+    <div class="col-sm-4">
     </div>
-    <div class="col-sm-12">
+  </div>
+
+  <div class="row">
+    <div class="col-sm-4">
+
+    </div>
+    <div class="col-sm-4">
       <h2>Login</h2>
-    </div>
-    <div class="col-sm-12">
       <form class="form" name="form" ng-submit="vm.login(form)" novalidate>
 
         <div class="form-group">
@@ -40,7 +44,7 @@
         </div>
 
         <div>
-          <button class="btn btn-inverse btn-lg btn-login" type="submit">
+          <button class="btn btn-primary btn-lg btn-login" type="submit">
             Login
           </button>
           <a class="btn btn-default btn-lg btn-register" href="/signup">
