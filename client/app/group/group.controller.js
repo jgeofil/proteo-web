@@ -1,7 +1,8 @@
 'use strict';
 
 angular.module('proteoWebApp')
-  .controller('GroupCtrl', function ($scope, $http, $routeParams, NgTableParams, socket, Auth, ngToast, Datatree, User) {
+  .controller('GroupCtrl', function ($scope, $http, $routeParams, NgTableParams,
+     socket, Auth, ngToast, Datatree, User, $timeout) {
 
     $scope.group = {};
 
@@ -170,8 +171,10 @@ angular.module('proteoWebApp')
       userTableSetting.data = data.users;
       permTableSetting.data = permLtoObj(data);
       //socket.syncUpdates('Group', )
-      $scope.userTableParams = new NgTableParams(userTableParameters, userTableSetting);
-      $scope.permTableParams = new NgTableParams(permTableParameters, permTableSetting);
+      $timeout(function () {
+        $scope.userTableParams = new NgTableParams(userTableParameters, userTableSetting);
+        $scope.permTableParams = new NgTableParams(permTableParameters, permTableSetting);
+      });
     }
 
     socket.syncUpdates('group', [], function(ev, it){
