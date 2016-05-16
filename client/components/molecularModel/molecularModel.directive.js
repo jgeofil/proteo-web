@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('proteoWebApp')
-  .directive('molecularModel', function () {
+  .directive('molecularModel', function ($timeout) {
     return {
       templateUrl: 'components/molecularModel/molecularModel.html',
       restrict: 'EA',
@@ -10,6 +10,7 @@ angular.module('proteoWebApp')
       },
       link: function (scope, element, attrs) {
         var me = $('#model-modal');
+        var width = element.parent.offsetWidth;
 
         scope.style = 'cartoon';
 
@@ -23,6 +24,7 @@ angular.module('proteoWebApp')
         model.removeAtoms(h);
         myviewer.setBackgroundColor(0xffffff);
         myviewer.setStyle({}, {cartoon: {color: 'spectrum'}});
+        myviewer.setWidth(width);
         myviewer.zoomTo();
         myviewer.render();
 
@@ -40,6 +42,9 @@ angular.module('proteoWebApp')
           }
           myviewer.render();
         });
+
+        scope.viewer = myviewer;
+
 
       }
     };
