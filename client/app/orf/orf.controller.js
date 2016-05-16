@@ -24,6 +24,19 @@ angular.module('proteoWebApp')
     preventKeyEvents: false
   };
 
+  var containerIds = ['#scroll1', '#scroll2', '#scroll3', '#scroll4', '#scroll5'];
+  containerIds.forEach(function(id){
+    $(id).scroll(function() {
+      containerIds.forEach(function(idTo){
+        if(idTo !== id){
+          $(idTo).scrollLeft($(id).scrollLeft());
+        }
+      });
+    });
+  });
+
+
+
 
   var StateObj = function(){
     this.isOpen = true;
