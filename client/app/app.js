@@ -12,7 +12,6 @@ angular.module('proteoWebApp', [
   'validation.match',
   'ui.bootstrap',
   'ngAnimate',
-  'ngScrollable',
   'ngTable',
   'angularSpinner',
   'ngToast',

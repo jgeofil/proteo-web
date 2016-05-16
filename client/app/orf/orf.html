@@ -47,9 +47,7 @@
           <p class="orf-title-vertical">Disorder pred.</p>
           <hr class="orf-hr">
 
-          <div ng-scrollable="scrollConf"
-                class="scrollarea"
-                spy-x="posX">
+          <div id="scroll1" class="orf-scroll">
             <diso-graph-line ng-if="disoGraphData"
                               graph-data="disoGraphData.data"
                               graph-spacing="graphSpacing"></diso-graph-line>
@@ -87,9 +85,7 @@
           <p class="orf-title-vertical">Transmembrane pred.</p>
           <hr class="orf-hr">
 
-          <div ng-scrollable="scrollConf"
-                class="scrollarea"
-                spy-x="posX">
+          <div id="scroll2" class="orf-scroll">
             <tmhmm-graph ng-if="tmhmmGraphData"
                           graph-data="tmhmmGraphData"
                           graph-height="100"
@@ -125,10 +121,7 @@
 
           <p class="orf-title-vertical">Topcons predictions</p>
           <hr class="orf-hr">
-          <div ng-scrollable="scrollConf"
-                class="scrollarea"
-                spy-x="posX">
-
+          <div id="scroll3" class="orf-scroll">
                 <topcons-graph ng-if="topconsGraphData"
                                 graph-data="topconsGraphData"
                                 graph-spacing="graphSpacing"> </topcons-graph>
@@ -164,9 +157,7 @@
           <p class="orf-title-vertical">Secondary structure</p>
           <hr class="orf-hr">
 
-          <div ng-scrollable="scrollConf"
-                class="scrollarea"
-                spy-x="posX">
+          <div id="scroll4" class="orf-scroll">
             <itasser-ss-graph ng-if="itasserSsGraphData"
                               graph-data-ss="itasserSsGraphData.ss"
                               graph-height="150"
@@ -176,9 +167,7 @@
           <p class="orf-title-vertical">Top 10 threading templates</p>
           <hr class="orf-hr">
 
-          <div ng-scrollable="scrollConf"
-                class="scrollarea"
-                spy-x="posX">
+          <div id="scroll5" class="orf-scroll">
             <itasser-align-graph ng-if="itasserAlignGraphData"
                                   graph-data="itasserAlignGraphData"
                                   seq-count="10"
@@ -221,6 +210,6 @@
 
 <script type="text/ng-template" id="modelModal.html">
     <div class="modal-body">
-      <molecular-model mm-pdb="pdb" class="large-mm-model"></molecular-model>
+      <molecular-model mm-pdb="pdb"></molecular-model>
     </div>
 </script>

@@ -25,7 +25,6 @@ module.exports = function(config) {
       'client/bower_components/angular-bootstrap/ui-bootstrap-tpls.js',
       'client/bower_components/angular-animate/angular-animate.js',
       'client/bower_components/d3/d3.js',
-      'client/bower_components/ngScrollable/min/ng-scrollable.min.js',
       'client/bower_components/ng-table/dist/ng-table.min.js',
       'client/bower_components/spin.js/spin.js',
       'client/bower_components/angular-spinner/angular-spinner.js',
