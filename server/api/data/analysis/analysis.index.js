@@ -2,7 +2,7 @@
 
 var express = require('express');
 var controller = require('./analysis.controller');
-var disopred = require('./disopred.controller');
+var disopred = require('./disopred/disopred.controller');
 var itasser = require('./itasser.controller');
 var tmhmm = require('./tmhmm.controller');
 var topcons = require('./topcons.controller');

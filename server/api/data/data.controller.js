@@ -6,12 +6,17 @@ import Group from './../group/group.model';
 import User from './../user/user.model';
 import Data from './data.model';
 
+import Disopred from './analysis/disopred/disopred.model';
+
 var mongoose = require('bluebird').promisifyAll(require('mongoose'));
 
 var fs = require('fs');
 var path = require('path');
 var chokidar = require('chokidar'); //To watch for data file changes
 var util = require('./util');
+
+var disoLoad = require('./analysis/disopred/disopred.load')
+
 
 // Location of data folder
 var DATA_PATH = config.data;
@@ -77,6 +82,7 @@ function readOrfs(dataset){
       if (err) console.log("Error saving new ORF: " + err)
       else{
         dataset.orfs.push(orfSaved._id);
+        loadAnalyses(orfSaved);
         if(count >= orfs.length){
           dataset.save(function(err){
             if(err) console.log("Error saving ORFs to dataset: " + err)
@@ -110,7 +116,9 @@ function updateData(){
   Data.Project.find({}).removeAsync().then(function(){
     Data.Dataset.find({}).removeAsync().then(function(){
       Data.Orf.find({}).removeAsync().then(function(){
-        readProjects();
+        Disopred.find({}).removeAsync().then(function(){
+          readProjects();
+        })
       })
     })
   })
@@ -146,6 +154,32 @@ function getAnalyses (path) {
     analyses[dir] = true;
   })
   return analyses;
+}
+
+function loadAnalyses(orf){
+  if (orf.analyses.hasOwnProperty("disopred")) {
+    loadDisopred(orf);
+  }
+}
+
+/**
+ * Loads a disopred analysis into an Orf using its path
+ * @param {Object} orf The Orf
+ * @return {null}
+ */
+function loadDisopred(orf){
+  disoLoad.load(orf.path, function(result){
+    if(result !== null){
+      util.readMetaDataAsync(path.join(orf.path, 'meta.json'), function(meta){
+        result.metadata = meta;
+        Disopred.create(result, function(err, disoObj){
+          if(err){
+            console.log(err);
+          }
+        })
+      })
+    }
+  })
 }
 
 // Gets a list of available data sets
