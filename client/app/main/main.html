@@ -68,7 +68,7 @@
           </div>
 
           <div ng-show="data.orfs">
-            <h4>Available orfs</h4>
+            <h4>Available orfs - <small>{{table.orfs.total()}} in dataset</small></h4>
             <p ng-click="resetData()" ng-show="dataSelect">
               <a><span class="glyphicon glyphicon-arrow-left"></span></span>  Return</a>
             </p>
@@ -103,6 +103,7 @@
                 <td data-title="'Date Created'" sortable="'meta.dateCreated'" class="col-lg-2 text-center">{{row.meta.dateCreated | date:'MM/dd/yyyy': 'UTC'}}</td>
               </tr>
             </table>
+            <small class="pull-right">{{table.orfs.total()}} ORFs in dataset</small>
           </div>
         </div>
       </div>
