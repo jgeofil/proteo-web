@@ -175,6 +175,9 @@ function loadDisopred(orf){
         Disopred.create(result, function(err, disoObj){
           if(err){
             console.log(err);
+          }else {
+            orf.analysis.disopred = disoObj._id;
+            orf.save();
           }
         })
       })
@@ -182,7 +185,7 @@ function loadDisopred(orf){
   })
 }
 
-// Gets a list of available data sets
+// Gets a list of available
 export function index(req, res) {
   Group.find({users: mongoose.Types.ObjectId(req.user._id)}, function(err,groups){
     if(err){
@@ -211,42 +214,31 @@ export function index(req, res) {
 
 // Gets a list of available orfs
 export function orfs(req, res) {
-  Data.Project.findOne({name: req.params.projectId}, function(err, project){
-    if(project && !err){
-      Data.Dataset.findOne({project: project._id, name: req.params.dataId}, function(err, dataset){
-        if(dataset && !err){
-          Data.Orf.find({dataset: dataset._id}, function(err, orfs){
-            if(!err){
-              res.status(200).json(orfs);
-            }else{
-              res.status(500).send("Error reading ORFs.");
-            }
-          })
-        }else{
-          res.status(403).send("Dataset not found.");
-        }
-      })
-    }else{
-      res.status(403).send("Project not found.");
-    }
-  })
+  var subPath = path.join(DATA_PATH, req.params.projectId, req.params.dataId);
+
+  Data.Orf
+    .find({dirname: subPath})
+    .populate('analysis.disopred', 'stats')
+    .exec(function(err, orfs){
+      if(!err){
+        res.status(200).json(orfs);
+      }else{
+        res.status(500).send("Error reading ORFs.");
+      }
+    })
 }
 
 
 export function datasets(req, res) {
-  Data.Project.findOne({name: req.params.projectId}, function(err, project){
-    if(project && !err){
-      Data.Dataset.find({project: project._id}).populate('orfs').exec(function(err, datasets){
-        if(!err){
-          res.status(200).json(datasets);
-        }else{
-          res.status(500).send("Error reading datasets.");
-        }
-      })
+  var subPath = path.join(DATA_PATH, req.params.projectId);
+
+  Data.Dataset.find({dirname: subPath}).populate('orfs').exec(function(err, datasets){
+    if(!err){
+      res.status(200).json(datasets);
     }else{
-      res.status(403).send("Project not found.");
+      res.status(500).send("Error reading datasets.");
     }
-  });
+  })
 }
 
 export function update(req, res){

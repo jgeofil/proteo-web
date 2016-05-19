@@ -1,0 +1,11 @@
+<h4>Available datasets</h4>
+<br>
+<table ng-table="table.datasets" class="table table-condensed table-bordered table-striped" show-filter="true">
+  <tr ng-repeat="row in $data">
+    <td  data-title="'Name'" filter="{name: 'text'}" sortable="'name'" class="col-lg-5">
+      <a ng-click="getOrfs(row.name)">{{row.name}}</a></td>
+    <td data-title="'Organism'" filter="{'organism': 'text'}" sortable="'organism'" class="col-lg-3 text-center">{{row.organism}}</td>
+    <td data-title="'Orfs'" sortable="'quantity'" class="col-lg-1 text-center">{{row.orfs.length}}</td>
+    <td data-title="'Date Created'" sortable="'meta.dateCreated'" class="col-lg-2 text-center">{{row.meta.dateCreated | date:'MM/dd/yyyy': 'UTC'}}</td>
+  </tr>
+</table>

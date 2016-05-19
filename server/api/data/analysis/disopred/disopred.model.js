@@ -26,7 +26,6 @@ var DisopredSchema = new mongoose.Schema({
 });
 
 DisopredSchema.pre('save', function(next) {
-
   this.stats.percentAboveThreshold = calculateAboveThreshold(this);
   next();
 });

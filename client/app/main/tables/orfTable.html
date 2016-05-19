@@ -1,0 +1,71 @@
+<h4>Available orfs - <small>{{table.orfs.total()}} in dataset</small></h4>
+
+<table ng-table="table.orfs"
+        class="table table-condensed table-bordered table-striped"
+        show-filter="true">
+
+  <tr ng-repeat="row in $data">
+
+    <td data-title="'Name'"
+        filter="{name: 'text'}"
+        sortable="'name'"
+        class="col-lg-4">
+      <a href="/orf/{{selectedProject}}/{{selectedDataset}}/{{row.name}}">
+        {{row.name}}
+      </a>
+    </td>
+
+    <td data-title="'Disopred'"
+        sortable="'disopred'"
+        class="col-lg-1 text-center">
+      <span class="glyphicon present-icon"
+            ng-class="analysisClass(row.analyses.disopred, disopredIsPositive(row))"></span>
+    </td>
+
+    <td data-title="'I-Tasser'"
+        sortable="'itasser'"
+        class="col-lg-1 text-center">
+      <span class="glyphicon present-icon"
+            ng-class="analysisClass(row.analyses.itasser)"></span>
+    </td>
+
+    <td data-title="'TMHMM'"
+        sortable="'tmhmm'"
+          class="col-lg-1 text-center">
+      <span class="glyphicon present-icon"
+            ng-class="analysisClass(row.analyses.tmhmm)"></span>
+    </td>
+
+    <td data-title="'Topcons'"
+        sortable="'topcons'"
+        class="col-lg-1 text-center">
+      <span class="glyphicon present-icon"
+            ng-class="analysisClass(row.analyses.topcons)"></span>
+    </td>
+
+    <td data-title="'Start'"
+        sortable="'meta.start'"
+        class="col-lg-1 text-center">
+      {{row.meta.start}}
+    </td>
+
+    <td data-title="'End'"
+        sortable="'meta.end'"
+        class="col-lg-1 text-center">
+      {{row.meta.end}}
+    </td>
+
+    <td data-title="'Date Created'"
+        sortable="'meta.dateCreated'"
+        class="col-lg-2 text-center">
+      {{row.meta.dateCreated | date:'MM/dd/yyyy': 'UTC'}}
+    </td>
+  </tr>
+</table>
+
+<small class="pull-right">{{table.orfs.total()}} ORFs in dataset</small>
+
+<span class="glyphicon glyphicon-remove text-muted"></span>  Analysis absent
+<span class="glyphicon glyphicon-ok text-info"></span>  Analysis available without conclusion
+<span class="glyphicon glyphicon-plus text-success"></span>  Analysis result favourable
+<span class="glyphicon glyphicon-minus text-danger"></span>  Analysis result negative

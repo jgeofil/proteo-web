@@ -145,5 +145,35 @@ angular.module('proteoWebApp')
     });
   }
 
+  //****************************************************************************
+  // Analyses
+  //****************************************************************************
+  $scope.analysisClass = function (analysisState, outcome){
+    if(outcome !== undefined){
+      return {
+        'glyphicon-remove text-muted': !analysisState,
+        'glyphicon-plus text-success': analysisState && outcome(),
+        'glyphicon-minus text-danger': analysisState && !outcome()
+      };
+    }else{
+      return {
+        'glyphicon-remove text-muted': !analysisState,
+        'glyphicon-ok text-info': analysisState,
+      };
+    }
+  };
+  //****************************************************************************
+  // Disopred
+
+  $scope.disopredThreshold = 0.01;
+
+  // Disopred outcomeFunction
+  $scope.disopredIsPositive = function(row){
+    if(row.analysis.disopred){
+      return function(){return row.analysis.disopred.stats.percentAboveThreshold > $scope.disopredThreshold;};
+    }else{
+      return function(){return false;};
+    }
+  };
 
 });
