@@ -103,7 +103,7 @@ angular.module('proteoWebApp')
   $http.get(abp + '/analysis/disopred3')
   .then(function(data){
     $scope.disoGraphData = data.data;
-    console.log(data.data)
+    
     $scope.state.disopred.isPresent = true;
   }, handleErrors);
 

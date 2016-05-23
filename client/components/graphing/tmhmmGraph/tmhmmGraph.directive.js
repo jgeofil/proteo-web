@@ -11,7 +11,7 @@ angular.module('proteoWebApp')
     },
     link: function (scope, element, attrs) {
       //Length of the sequence alignement
-      var seqln = scope.graphData.prob.length-1;
+      var seqln = scope.graphData.data.length-1;
 
       // Size and margins
       var si = d3Helper.getSizing(120, 10, 25, seqln);
@@ -20,7 +20,7 @@ angular.module('proteoWebApp')
       //Scales and domain
       var x = d3.scale.linear().range([0, si.width]);
       var yProb = d3.scale.linear().range([conHeight,0]);
-      x.domain(d3.extent(scope.graphData.prob, function(d) { return d.pos; }));
+      x.domain(d3.extent(scope.graphData.data, function(d) { return d.pos; }));
       yProb.domain([0,1]);
       var range = x(1)-x(0);
 
@@ -41,17 +41,17 @@ angular.module('proteoWebApp')
 
       svg.append('path')
       .attr('class', 'line')
-      .attr('d', memLine(scope.graphData.prob))
+      .attr('d', memLine(scope.graphData.data))
       .style('stroke-width', 1)
       .style('stroke', 'red') ;
       svg.append('path')
       .attr('class', 'line')
-      .attr('d', inLine(scope.graphData.prob))
+      .attr('d', inLine(scope.graphData.data))
       .style('stroke-width', 1)
       .style('stroke', 'blue') ;
       svg.append('path')
       .attr('class', 'line')
-      .attr('d', outLine(scope.graphData.prob))
+      .attr('d', outLine(scope.graphData.data))
       .style('stroke-width', 1)
       .style('stroke', 'grey');
 
@@ -85,7 +85,7 @@ angular.module('proteoWebApp')
       .enter().append('svg:rect')
       .attr('x', function(d) { return x(d.start)-range/2; })
       .attr('y', function(d){
-        switch(d.type){
+        switch(d.dom){
           case 'TMhelix':
           return si.height-15;
           case 'inside':
@@ -96,7 +96,7 @@ angular.module('proteoWebApp')
       })
       .attr('width', function(d) { return x(d.end)-x(d.start)+range; })
       .attr('height', function(d){
-        switch(d.type){
+        switch(d.dom){
           case 'TMhelix':
           return 10;
           case 'inside':
@@ -106,7 +106,7 @@ angular.module('proteoWebApp')
         }
       })
       .attr('class', function(d){
-        switch(d.type){
+        switch(d.dom){
           case 'TMhelix':
           return 'tmhmm-helix';
           case 'inside':
@@ -152,51 +152,3 @@ angular.module('proteoWebApp')
     }
   };
 });
-
-
-
-
-/**
-var legend = svg.append('g')
-.attr('class', 'legend')
-.attr('x', 20)
-.attr('y', si.height+25)
-.attr('height', 100)
-.attr('width', 100);
-
-legend.selectAll('g')
-.data([
-{
-name: 'TM-Helix',
-color: 'red'
-},
-{
-name: 'Inside',
-color: 'blue'
-},
-{
-name: 'Outside',
-color: 'grey'
-}
-])
-.enter()
-.append('g')
-.each(function(d, i) {
-var g = d3.select(this);
-g.append('rect')
-.attr('x', 20+100*i)
-.attr('y', si.height+25)
-.attr('width', 10)
-.attr('height', 10)
-.style('fill', d.color);
-
-g.append('text')
-.attr('x', 20+100*i+15)
-.attr('y', si.height+35)
-.attr('height',30)
-.attr('width',100)
-.style('fill', d.color)
-.text(d.name);
-
-});
-**/

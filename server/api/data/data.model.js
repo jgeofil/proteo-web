@@ -30,7 +30,8 @@ var OrfSchema = new mongoose.Schema({
   dataset: {type: mongoose.Schema.Types.ObjectId, ref: 'Dataset'},
   analyses: {},
   analysis: {
-    disopred: {type: mongoose.Schema.Types.ObjectId, ref: 'Disopred', default: null}
+    disopred: {type: mongoose.Schema.Types.ObjectId, ref: 'Disopred', default: null},
+    tmhmm: {type: mongoose.Schema.Types.ObjectId, ref: 'Tmhmm', default: null}
   },
   meta: {}
 });

@@ -70,16 +70,29 @@
                 {{disopredThreshold}}
               </div>
             </div>
-            <div class="col-lg-6">
-              <h4>Itasser</h4>
 
-            </div>
-            <div class="col-lg-6">
-              <h4>TMHMM</h4>
-
-            </div>
             <div class="col-lg-6">
               <h4>Topcons</h4>
+
+              <div class="form-group">
+                <label>Number of predicted TMHs</label>
+                <div class="form-group">
+                  <input type="checkbox" ng-model="tmhmm.TMH.checked"> Min:
+                  <input type="number" min="0" ng-model="tmhmm.TMH.value">
+                <div class="input-group">
+                <label>Exp number of AAs in TMHs</label>
+                <div class="form-group">
+                  <input type="checkbox" ng-model="tmhmm.AAInTMH.checked"> Min:
+                  <input type="number" min="0" ng-model="tmhmm.AAInTMH.value">
+                <div class="input-group">
+                <label>Exp number, first 60 AAs</label>
+                <div class="form-group">
+                  <input type="checkbox" ng-model="tmhmm.AAFirst60.checked"> Max:
+                  <input type="number" min="0" ng-model="tmhmm.AAFirst60.value">
+                <div class="input-group">
+              </div>
+            </div>
+
 
             </div>
           </div>

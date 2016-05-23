@@ -6,7 +6,6 @@ import Group from './../group/group.model';
 import User from './../user/user.model';
 import Data from './data.model';
 
-import Disopred from './analysis/disopred/disopred.model';
 
 var mongoose = require('bluebird').promisifyAll(require('mongoose'));
 
@@ -15,7 +14,11 @@ var path = require('path');
 var chokidar = require('chokidar'); //To watch for data file changes
 var util = require('./util');
 
+import Disopred from './analysis/disopred/disopred.model';
 var disoLoad = require('./analysis/disopred/disopred.load')
+
+import Tmhmm from './analysis/tmhmm/tmhmm.model';
+var tmhmmLoad = require('./analysis/tmhmm/tmhmm.load')
 
 
 // Location of data folder
@@ -117,7 +120,9 @@ function updateData(){
     Data.Dataset.find({}).removeAsync().then(function(){
       Data.Orf.find({}).removeAsync().then(function(){
         Disopred.find({}).removeAsync().then(function(){
-          readProjects();
+          Tmhmm.find({}).removeAsync().then(function(){
+            readProjects();
+          })
         })
       })
     })
@@ -159,6 +164,7 @@ function getAnalyses (path) {
 function loadAnalyses(orf){
   if (orf.analyses.hasOwnProperty("disopred")) {
     loadDisopred(orf);
+    loadTmhmm(orf);
   }
 }
 
@@ -170,13 +176,36 @@ function loadAnalyses(orf){
 function loadDisopred(orf){
   disoLoad.load(orf.path, function(result){
     if(result !== null){
-      util.readMetaDataAsync(path.join(orf.path, 'meta.json'), function(meta){
+      util.readMetaDataAsync(path.join(orf.path, 'disopred', 'meta.json'), function(meta){
         result.metadata = meta;
         Disopred.create(result, function(err, disoObj){
           if(err){
             console.log(err);
           }else {
             orf.analysis.disopred = disoObj._id;
+            orf.save();
+          }
+        })
+      })
+    }
+  })
+}
+
+/**
+ * Loads a tmhmm analysis into an Orf using its path
+ * @param {Object} orf The Orf
+ * @return {null}
+ */
+function loadTmhmm(orf){
+  tmhmmLoad.load(orf.path, function(result){
+    if(result !== null){
+      util.readMetaDataAsync(path.join(orf.path, 'tmhmm','meta.json'), function(meta){
+        result.metadata = meta;
+        Tmhmm.create(result, function(err, tmhObj){
+          if(err){
+            console.log(err);
+          }else {
+            orf.analysis.tmhmm = tmhObj._id;
             orf.save();
           }
         })
@@ -219,6 +248,7 @@ export function orfs(req, res) {
   Data.Orf
     .find({dirname: subPath})
     .populate('analysis.disopred', 'stats')
+    .populate('analysis.tmhmm', 'stats')
     .exec(function(err, orfs){
       if(!err){
         res.status(200).json(orfs);
