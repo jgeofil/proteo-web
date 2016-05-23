@@ -152,8 +152,8 @@ angular.module('proteoWebApp')
     if(outcome !== undefined){
       return {
         'glyphicon-remove text-muted': !analysisState,
-        'glyphicon-plus text-success': analysisState && outcome(),
-        'glyphicon-minus text-danger': analysisState && !outcome()
+        'glyphicon-plus text-success': analysisState && outcome,
+        'glyphicon-minus text-danger': analysisState && !outcome
       };
     }else{
       return {
@@ -161,6 +161,13 @@ angular.module('proteoWebApp')
         'glyphicon-ok text-info': analysisState,
       };
     }
+  };
+
+  //****************************************************************************
+  // Settings
+  $scope.settings = {
+    isOpen: false,
+    toggle: function (){$scope.settings.isOpen = !$scope.settings.isOpen;}
   };
   //****************************************************************************
   // Disopred
@@ -170,10 +177,11 @@ angular.module('proteoWebApp')
   // Disopred outcomeFunction
   $scope.disopredIsPositive = function(row){
     if(row.analysis.disopred){
-      return function(){return row.analysis.disopred.stats.percentAboveThreshold > $scope.disopredThreshold;};
+      return row.analysis.disopred.stats.percentAboveThreshold > $scope.disopredThreshold;
     }else{
-      return function(){return false;};
+      return false;
     }
+    $scope.$apply();
   };
 
 });

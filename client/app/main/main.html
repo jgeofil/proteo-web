@@ -51,13 +51,39 @@
       </div>
 
       <div class="panel panel-default">
-        <div class="panel-heading">
+        <div class="panel-heading" ng-click="settings.toggle()">
           Filter settings
+          <span class="glyphicon pull-right"
+                ng-class="{'glyphicon-chevron-down': settings.isOpen,
+                            'glyphicon-chevron-right': !settings.isOpen}"></span>
         </div>
-        <div class="panel-body">
+        <div class="panel-body" ng-show="settings.isOpen">
+          <div class="row">
+            <div class="col-lg-6">
 
-          <input ng-model="disopredThreshold" type="range" min="0.001" max="1" step="0.001"/>
-          {{disopredThreshold}}
+              <h4>Disopred</h4>
+
+              <div class="form-group">
+                <label>Percent of residues above threshold</label>
+
+                <input ng-model="disopredThreshold" type="range" min="0.01" max="1" step="0.001"/>
+                {{disopredThreshold}}
+              </div>
+            </div>
+            <div class="col-lg-6">
+              <h4>Itasser</h4>
+
+            </div>
+            <div class="col-lg-6">
+              <h4>TMHMM</h4>
+
+            </div>
+            <div class="col-lg-6">
+              <h4>Topcons</h4>
+
+            </div>
+          </div>
+
         </div>
       </div>
 
