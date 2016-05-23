@@ -31,6 +31,62 @@
             </li>
           </ol>
 
+          <div class="panel panel-default" ng-show="data.orfs">
+            <div class="panel-heading" ng-click="settings.toggle()">
+              Result settings
+              <span class="glyphicon pull-right"
+                    ng-class="{'glyphicon-chevron-down': settings.isOpen,
+                                'glyphicon-chevron-right': !settings.isOpen}"></span>
+            </div>
+            <div class="panel-body" ng-show="settings.isOpen">
+              <div class="row">
+                <div class="col-lg-6">
+                  <h4>Disopred</h4>
+
+                  <div class="form-group">
+                    <label>Percent of residues above threshold</label>
+
+                    <input ng-model="disopredThreshold" type="range" min="0.01" max="1" step="0.001"/>
+                    {{disopredThreshold}}
+                  </div>
+                </div>
+
+                <div class="col-lg-6">
+                  <h4>Topcons</h4>
+
+                  <form class="form">
+
+                    <div class="form-group">
+                      <label>Number of predicted TMHs</label>
+                      <div class="checkbox">
+                        <input type="checkbox" ng-model="tmhmm.TMH.checked">Set minimum
+                      </div>
+                      <input type="number" class="form-control" min="0" ng-model="tmhmm.TMH.value">
+                    </div>
+                    <div class="form-group">
+                      <label>Exp number of AAs in TMHs</label>
+                      <div class="checkbox">
+                        <input type="checkbox" ng-model="tmhmm.AAInTMH.checked">Set minimum
+                      </div>
+                      <input type="number" class="form-control" min="0" ng-model="tmhmm.AAInTMH.value">
+                    </div>
+                    <div class="form-group">
+                      <label>Exp number, first 60 AAs</label>
+                      <div class="checkbox">
+                        <input type="checkbox" ng-model="tmhmm.AAFirst60.checked">Set maximum
+                      </div>
+                      <input type="number" class="form-control" min="0" ng-model="tmhmm.AAFirst60.value">
+                    </div>
+
+                  </form>
+                </div>
+
+              </div>
+            </div>
+
+          </div>
+
+
           <div class="loading-spinner" ng-show="dataIsLoading">
             <span us-spinner="{radius:30, width:8, length: 16}" spinner-on="dataIsLoading"></span>
           </div>
@@ -45,56 +101,6 @@
 
           <div ng-show="data.orfs">
             <ng-include src="'app/main/tables/orfTable.html'"></ng-include>
-          </div>
-
-        </div>
-      </div>
-
-      <div class="panel panel-default">
-        <div class="panel-heading" ng-click="settings.toggle()">
-          Filter settings
-          <span class="glyphicon pull-right"
-                ng-class="{'glyphicon-chevron-down': settings.isOpen,
-                            'glyphicon-chevron-right': !settings.isOpen}"></span>
-        </div>
-        <div class="panel-body" ng-show="settings.isOpen">
-          <div class="row">
-            <div class="col-lg-6">
-
-              <h4>Disopred</h4>
-
-              <div class="form-group">
-                <label>Percent of residues above threshold</label>
-
-                <input ng-model="disopredThreshold" type="range" min="0.01" max="1" step="0.001"/>
-                {{disopredThreshold}}
-              </div>
-            </div>
-
-            <div class="col-lg-6">
-              <h4>Topcons</h4>
-
-              <div class="form-group">
-                <label>Number of predicted TMHs</label>
-                <div class="form-group">
-                  <input type="checkbox" ng-model="tmhmm.TMH.checked"> Min:
-                  <input type="number" min="0" ng-model="tmhmm.TMH.value">
-                <div class="input-group">
-                <label>Exp number of AAs in TMHs</label>
-                <div class="form-group">
-                  <input type="checkbox" ng-model="tmhmm.AAInTMH.checked"> Min:
-                  <input type="number" min="0" ng-model="tmhmm.AAInTMH.value">
-                <div class="input-group">
-                <label>Exp number, first 60 AAs</label>
-                <div class="form-group">
-                  <input type="checkbox" ng-model="tmhmm.AAFirst60.checked"> Max:
-                  <input type="number" min="0" ng-model="tmhmm.AAFirst60.value">
-                <div class="input-group">
-              </div>
-            </div>
-
-
-            </div>
           </div>
 
         </div>
