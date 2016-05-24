@@ -21,6 +21,7 @@ var TmhmmSchema = new mongoose.Schema({
     }
   ],
   stats: {
+    sequenceLength: Number,
     numberPredictedTMH: Number,
     expectedNumberAAInTMH: Number,
     expectedNumberAAFirst60: Number,
@@ -31,10 +32,15 @@ var TmhmmSchema = new mongoose.Schema({
 });
 
 TmhmmSchema.pre('save', function(next) {
+  //Producde sequence string
   var s = this.data.map(function (a) {
     return a.amino;
   });
   this.sequence = s.join('');
+
+  //Calculate sequence length
+  this.stats.sequenceLength = this.sequence.length;
+
   next();
 });
 

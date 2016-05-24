@@ -1,3 +1,4 @@
+
 <h4>Available orfs - <small>{{table.orfs.total()}} in dataset</small></h4>
 
 <table ng-table="table.orfs"
@@ -9,7 +10,7 @@
     <td data-title="'Name'"
         filter="{name: 'text'}"
         sortable="'name'"
-        class="col-lg-4">
+        class="col-lg-3">
       <a href="/orf/{{selectedProject}}/{{selectedDataset}}/{{row.name}}">
         {{row.name}}
       </a>
@@ -40,7 +41,17 @@
         sortable="'topcons'"
         class="col-lg-1 text-center">
       <span class="glyphicon present-icon"
+            uib-tooltip-html="Length mismatch between analyses"
             ng-class="analysisClass(row.analyses.topcons)"></span>
+    </td>
+
+    <td data-title="'Length'"
+        sortable="'seqLength'"
+        class="col-lg-1 text-center">
+      <span ng-if="row.seqLength !== 0">{{row.seqLength}}</span>
+      <span ng-if="row.seqLength === 0"
+            class="glyphicon glyphicon-warning-sign"
+            uib-tooltip="Length mismatch between analyses"></span>
     </td>
 
     <td data-title="'Start'"

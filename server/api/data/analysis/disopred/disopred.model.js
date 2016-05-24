@@ -19,6 +19,7 @@ var DisopredSchema = new mongoose.Schema({
   ],
   sequence: String,
   stats: {
+    sequenceLength: Number,
     percentAboveThreshold: Number,
   },
   metadata: {},
@@ -27,6 +28,9 @@ var DisopredSchema = new mongoose.Schema({
 
 DisopredSchema.pre('save', function(next) {
   this.stats.percentAboveThreshold = calculateAboveThreshold(this);
+  //Calculate sequence length
+  this.stats.sequenceLength = this.sequence.length;
+
   next();
 });
 

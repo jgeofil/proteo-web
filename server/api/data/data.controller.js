@@ -35,9 +35,6 @@ function getDirectories(srcpath) {
   }
 }
 
-// Limit updates to one per 5 seconds
-var triggered = false;
-
 function readDatasets(project){
   // Read directories
   var datasets = getDirectories(project.path)
@@ -127,30 +124,9 @@ function updateData(){
       })
     })
   })
-
-  triggered = false;
-}
-
-function triggerUpdate(){
-  if(triggered === false){
-    triggered = true;
-    setTimeout(updateData, 5000);
-  }
 }
 
 updateData();
-/**
-// Watch data folder for changes
-chokidar.watch(DATA_PATH, {
-  ignoreInitial: true,
-  awaitWriteFinish: true,
-  ignored: /[\/\\]\./
-})
-.on('all', (event, path) => {
-  console.log(event, path);
-  triggerUpdate();
-});
-**/
 
 function getAnalyses (path) {
   var analyses = {};
@@ -247,8 +223,8 @@ export function orfs(req, res) {
 
   Data.Orf
     .find({dirname: subPath})
-    .populate('analysis.disopred', 'stats')
-    .populate('analysis.tmhmm', 'stats')
+    .populate('analysis.disopred', 'stats sequence')
+    .populate('analysis.tmhmm', 'stats sequence')
     .exec(function(err, orfs){
       if(!err){
         res.status(200).json(orfs);

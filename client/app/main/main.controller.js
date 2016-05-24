@@ -99,6 +99,7 @@ angular.module('proteoWebApp')
     $http.get('/api/data/'+$scope.selectedProject+'/dataset/'+dataset).then(function(response){
 
       $timeout(function(){
+        console.log(response.data)
         dataSort(response.data);
         $scope.table.orfs = new NgTableParams(tableParameters, {data: response.data});
         $scope.data.orfs = true;
