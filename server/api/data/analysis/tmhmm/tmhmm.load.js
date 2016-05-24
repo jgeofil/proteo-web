@@ -1,8 +1,5 @@
 'use strict';
 
-import _ from 'lodash';
-import config from '../../../config/environment';
-
 //var util = require('./util');
 var path = require('path');
 var fs = require('fs');
@@ -10,18 +7,9 @@ var lineReader = require('linebyline');
 var asy = require('async');
 var glob = require("glob");
 
-// Location of data folder
-var dataPath = config.data;
+export function load(orfpath, callback){
 
-function getLineReader(path){
-  return lineReader.createInterface({
-    input: fs.createReadStream(path)
-  });
-}
-
-// Get JSON formatted tmhmm
-export function getTmhmm(req, res){
-  var subPath = path.join(dataPath, req.params.projectId, req.params.dataId, req.params.orfId, 'tmhmm');
+  var subPath = path.join(orfpath, 'tmhmm');
 
   var longFilePath = path.join(subPath, 'tmhmm.long');
   var plpFilePath = path.join(subPath, 'tmhmm.plp');
@@ -34,7 +22,7 @@ export function getTmhmm(req, res){
       var rl = lineReader(longFilePath);
 
       var lines = []; // Lines read from file
-      var data = {}; // Data output
+      var data = {stats:{}}; // Data output
 
       rl
       .on('error', function (err) {
@@ -43,15 +31,35 @@ export function getTmhmm(req, res){
       .on('line', function (line) {
         if(line[0]!=='#'){ // ignore first lines
           lines.push(line.split(/\s+/).filter(function(el) {return el.length !== 0}));
+        }else{
+          var l = line.split(/\s+/).filter(function(el) {return el.length !== 0});
+                      console.log(l)
+          switch (l[5]) {
+
+            case 'TMHs:':
+              data.stats.numberPredictedTMH = Number(l[6]);
+              break;
+            case 'AAs':
+              data.stats.expectedNumberAAInTMH = Number(l[8]);
+              break;
+            case '60':
+              data.stats.expectedNumberAAFirst60 = Number(l[7]);
+              break;
+            case 'N-in:':
+              data.stats.totalProbNin = Number(l[6]);
+              break;
+            default:
+
+          }
         }
       })
       .on('close', function (){
         // List of strings to object
         data.domains = lines.map(function(line){
           return {
-            name: line[0],
-            version: line[1],
-            type: line[2],
+            //name: line[0],
+            //version: line[1],
+            dom: line[2],
             start: Number(line[3]),
             end: Number(line[4])
           }
@@ -78,13 +86,13 @@ export function getTmhmm(req, res){
           lines.push(line.split(/\s+/).filter(function(el) {return el.length !== 0}));
         }else if (first){
           line = line.split(" ")
-          data.name = line[1];
+          //data.name = line[1];
           first = false;
         }
       })
       .on('close', function (){
         // List of strings to object
-        data.prob = lines.map(function(line){
+        data.data = lines.map(function(line){
           return {
             pos: Number(line[0]),
             amino: line[1],
@@ -99,10 +107,11 @@ export function getTmhmm(req, res){
   ], function (err, result) {
 
     if(result && ! err){
-      result.metadata = req.params.metadata;
-      res.status(200).json(result);
+      result.metadata = {};
+      result.path = subPath;
+      callback(result);
     }else{
-      res.status(404).send("Not found");
+      callback(null)
     }
 
   });

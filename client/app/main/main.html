@@ -2,6 +2,7 @@
 
 <div class="container">
   <div class="row row-offcanvas row-offcanvas-left">
+
     <div class="col-lg-12">
       <div class="alert alert-warning" role="alert">
         <b>ProteoBIF</b> est toujours en développement.
@@ -11,6 +12,7 @@
           Pour plus d'information, <a href="/devel">cliquez-ici</a>.
       </div>
     </div>
+
     <div class="col-lg-12">
 
       <div class="panel panel-default">
@@ -29,85 +31,80 @@
             </li>
           </ol>
 
+          <div class="panel panel-default" ng-show="data.orfs">
+            <div class="panel-heading" ng-click="settings.toggle()">
+              Result settings
+              <span class="glyphicon pull-right"
+                    ng-class="{'glyphicon-chevron-down': settings.isOpen,
+                                'glyphicon-chevron-right': !settings.isOpen}"></span>
+            </div>
+            <div class="panel-body" ng-show="settings.isOpen">
+              <div class="row">
+                <div class="col-lg-6">
+                  <h4>Disopred</h4>
+
+                  <div class="form-group">
+                    <label>Percent of residues above threshold</label>
+
+                    <input ng-model="disopredThreshold" type="range" min="0.01" max="1" step="0.001"/>
+                    {{disopredThreshold}}
+                  </div>
+                </div>
+
+                <div class="col-lg-6">
+                  <h4>Topcons</h4>
+
+                  <form class="form">
+
+                    <div class="form-group">
+                      <label>Number of predicted TMHs</label>
+                      <div class="checkbox">
+                        <input type="checkbox" ng-model="tmhmm.TMH.checked">Set minimum
+                      </div>
+                      <input type="number" class="form-control" min="0" ng-model="tmhmm.TMH.value">
+                    </div>
+                    <div class="form-group">
+                      <label>Exp number of AAs in TMHs</label>
+                      <div class="checkbox">
+                        <input type="checkbox" ng-model="tmhmm.AAInTMH.checked">Set minimum
+                      </div>
+                      <input type="number" class="form-control" min="0" ng-model="tmhmm.AAInTMH.value">
+                    </div>
+                    <div class="form-group">
+                      <label>Exp number, first 60 AAs</label>
+                      <div class="checkbox">
+                        <input type="checkbox" ng-model="tmhmm.AAFirst60.checked">Set maximum
+                      </div>
+                      <input type="number" class="form-control" min="0" ng-model="tmhmm.AAFirst60.value">
+                    </div>
+
+                  </form>
+                </div>
+
+              </div>
+            </div>
+
+          </div>
+
+
           <div class="loading-spinner" ng-show="dataIsLoading">
             <span us-spinner="{radius:30, width:8, length: 16}" spinner-on="dataIsLoading"></span>
           </div>
 
           <div ng-show="data.projects && !selectedProject">
-            <h4>Available projects</h4>
-            <small class="text-muted">
-              Authorization must be requested for projects marked with the <span class="glyphicon glyphicon-lock"></span> icon.</small>
-            <br>
-            <br>
-            <table ng-table="table.projects" class="table table-condensed table-bordered table-striped" show-filter="true">
-              <tr ng-repeat="row in $data">
-                <td  data-title="'Name'" filter="{name: 'text'}" sortable="'name'" class="col-lg-2">
-                  <a ng-if="row.authorized" ng-click="getDatasets(row.name)">{{row.name}}</a>
-                  <span ng-if="!row.authorized" class="text-muted"><span class="glyphicon glyphicon-lock"></span>  {{row.name}}</span>
-                </td>
-                <td data-title="'Description'" class="col-lg-4">{{row.meta.description}}</td>
-                <td data-title="'Owner'" class="col-lg-2">{{row.meta.owner}}</td>
-                <td data-title="'Datasets'" sortable="'quantity'" class="col-lg-1 text-center">{{row.datasets.length}}</td>
-                <td data-title="'Created'" sortable="'meta.dateCreated'" class="col-lg-1 text-center">{{row.meta.dateCreated | date:'MM/dd/yyyy' : 'UTC'}}</td>
-              </tr>
-            </table>
+            <ng-include src="'app/main/tables/projectTable.html'"></ng-include>
           </div>
 
           <div ng-show="data.datasets && !selectedDataset">
-            <h4>Available datasets</h4>
-            <br>
-            <table ng-table="table.datasets" class="table table-condensed table-bordered table-striped" show-filter="true">
-              <tr ng-repeat="row in $data">
-                <td  data-title="'Name'" filter="{name: 'text'}" sortable="'name'" class="col-lg-5">
-                  <a ng-click="getOrfs(row.name)">{{row.name}}</a></td>
-                <td data-title="'Organism'" filter="{'organism': 'text'}" sortable="'organism'" class="col-lg-3 text-center">{{row.organism}}</td>
-                <td data-title="'Orfs'" sortable="'quantity'" class="col-lg-1 text-center">{{row.orfs.length}}</td>
-                <td data-title="'Date Created'" sortable="'meta.dateCreated'" class="col-lg-2 text-center">{{row.meta.dateCreated | date:'MM/dd/yyyy': 'UTC'}}</td>
-              </tr>
-            </table>
+            <ng-include src="'app/main/tables/datasetTable.html'"></ng-include>
           </div>
 
           <div ng-show="data.orfs">
-            <h4>Available orfs</h4>
-            <p ng-click="resetData()" ng-show="dataSelect">
-              <a><span class="glyphicon glyphicon-arrow-left"></span></span>  Return</a>
-            </p>
-
-            <table ng-table="table.orfs" class="table table-condensed table-bordered table-striped" show-filter="true">
-              <tr ng-repeat="row in $data">
-                <td data-title="'Name'" filter="{name: 'text'}" sortable="'name'" class="col-lg-4">
-                  <a href="/orf/{{selectedProject}}/{{selectedDataset}}/{{row.name}}">{{row.name}}</a>
-                </td>
-                <td data-title="'Disopred'" sortable="'disopred'" class="col-lg-1 text-center">
-                  <span class="glyphicon present-icon"
-                        ng-class="{'glyphicon-ok text-success': row.analyses.disopred, 'glyphicon-remove text-warning': !row.analyses.disopred}"></span>
-                </td>
-                <td data-title="'I-Tasser'" sortable="'itasser'" class="col-lg-1 text-center">
-                  <span class="glyphicon present-icon"
-                        ng-class="{'glyphicon-ok text-success': row.analyses.itasser, 'glyphicon-remove text-warning': !row.analyses.itasser}"></span>
-                </td>
-                <td data-title="'TMHMM'" sortable="'tmhmm'" class="col-lg-1 text-center">
-                  <span class="glyphicon present-icon"
-                        ng-class="{'glyphicon-ok text-success': row.analyses.tmhmm, 'glyphicon-remove text-warning': !row.analyses.tmhmm}"></span>
-                </td>
-                <td data-title="'Topcons'" sortable="'topcons'" class="col-lg-1 text-center">
-                  <span class="glyphicon present-icon"
-                        ng-class="{'glyphicon-ok text-success': row.analyses.topcons, 'glyphicon-remove text-warning': !row.analyses.topcons}"></span>
-                </td>
-                <td data-title="'Start'" sortable="'meta.start'" class="col-lg-1 text-center">
-                  {{row.meta.start}}
-                </td>
-                <td data-title="'End'" sortable="'meta.end'" class="col-lg-1 text-center">
-                  {{row.meta.end}}
-                </td>
-                <td data-title="'Date Created'" sortable="'meta.dateCreated'" class="col-lg-2 text-center">{{row.meta.dateCreated | date:'MM/dd/yyyy': 'UTC'}}</td>
-              </tr>
-            </table>
+            <ng-include src="'app/main/tables/orfTable.html'"></ng-include>
           </div>
+
         </div>
       </div>
-
-
 
     </div>
   </div>

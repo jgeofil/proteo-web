@@ -99,6 +99,7 @@ angular.module('proteoWebApp')
     $http.get('/api/data/'+$scope.selectedProject+'/dataset/'+dataset).then(function(response){
 
       $timeout(function(){
+        console.log(response.data)
         dataSort(response.data);
         $scope.table.orfs = new NgTableParams(tableParameters, {data: response.data});
         $scope.data.orfs = true;
@@ -145,5 +146,74 @@ angular.module('proteoWebApp')
     });
   }
 
+  //****************************************************************************
+  // Analyses
+  //****************************************************************************
+  $scope.analysisClass = function (analysisState, outcome){
+    if(outcome !== undefined){
+      return {
+        'glyphicon-remove text-muted': !analysisState,
+        'glyphicon-plus text-success': analysisState && outcome,
+        'glyphicon-minus text-danger': analysisState && !outcome
+      };
+    }else{
+      return {
+        'glyphicon-remove text-muted': !analysisState,
+        'glyphicon-ok text-info': analysisState,
+      };
+    }
+  };
+
+  //****************************************************************************
+  // Settings
+  $scope.settings = {
+    isOpen: false,
+    toggle: function (){$scope.settings.isOpen = !$scope.settings.isOpen;}
+  };
+
+  //****************************************************************************
+  // Disopred
+  $scope.disopredThreshold = 0.01;
+
+  // Disopred outcomeFunction
+  $scope.disopredIsPositive = function(row){
+    if(row.analysis.disopred){
+      return row.analysis.disopred.stats.percentAboveThreshold > $scope.disopredThreshold;
+    }else{
+      return false;
+    }
+    $scope.$apply();
+  };
+
+  //****************************************************************************
+  // TMHMM
+  $scope.tmhmm = {
+    TMH: {
+      checked: false,
+      value: 0
+    },
+    AAInTMH: {
+      checked: true,
+      value: 18
+    },
+    AAFirst60: {
+      checked: true,
+      value: 10
+    },
+  };
+
+  // Disopred outcomeFunction
+  $scope.tmhmmIsPositive = function(row){
+    if(row.analysis.tmhmm){
+      var r = row.analysis.tmhmm.stats;
+      var res =  (!$scope.tmhmm.TMH.checked || r.numberPredictedTMH >= $scope.tmhmm.TMH.value) &&
+      (!$scope.tmhmm.AAInTMH.checked || r.expectedNumberAAInTMH >= $scope.tmhmm.AAInTMH.value) &&
+      (!$scope.tmhmm.AAFirst60.checked || r.expectedNumberAAFirst60 <= $scope.tmhmm.AAFirst60.value);
+      return res;
+    }else{
+      return false;
+    }
+    $scope.$apply();
+  };
 
 });

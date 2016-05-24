@@ -35,9 +35,6 @@ angular.module('proteoWebApp')
     });
   });
 
-
-
-
   var StateObj = function(){
     this.isOpen = true;
     this.toggle = function (){this.isOpen = !this.isOpen;};
@@ -59,16 +56,6 @@ angular.module('proteoWebApp')
 
   // Controls spacing between amino acids
   $scope.graphSpacing = 10;
-
-  // Position of scrolling for analyses
-  $scope.posX = 0;
-  var redrawn = 0;
-  $scope.$watch('posX', function(){
-    if(redrawn < 2){
-        $('#orf-panel').hide().show(0);
-        redrawn += 1;
-    }
-  });
 
   // 3D model modal window
   $scope.spawnModelModal = function(pdb){
@@ -116,6 +103,7 @@ angular.module('proteoWebApp')
   $http.get(abp + '/analysis/disopred3')
   .then(function(data){
     $scope.disoGraphData = data.data;
+    console.log(data.data)
     $scope.state.disopred.isPresent = true;
   }, handleErrors);
 
@@ -161,6 +149,7 @@ angular.module('proteoWebApp')
   $http.get(abp + '/analysis/tmhmm')
     .then(function(data){
       $scope.tmhmmGraphData = data.data;
+      console.log(data.data)
       $scope.state.tmhmm.isPresent = true;
     }, handleErrors);
 
@@ -170,6 +159,7 @@ angular.module('proteoWebApp')
   $http.get(abp + '/analysis/topcons')
     .then(function(data){
       $scope.topconsGraphData = data.data;
+      console.log(data.data)
       $scope.state.topcons.isPresent = true;
     }, handleErrors);
 

@@ -2,9 +2,9 @@
 
 var express = require('express');
 var controller = require('./analysis.controller');
-var disopred = require('./disopred.controller');
+var disopred = require('./disopred/disopred.controller');
 var itasser = require('./itasser.controller');
-var tmhmm = require('./tmhmm.controller');
+var tmhmm = require('./tmhmm/tmhmm.controller');
 var topcons = require('./topcons.controller');
 var images = require('./images.controller');
 var util = require('./../util');
@@ -20,7 +20,7 @@ router.get('/itasser/models', itasser.listModels);
 router.get('/itasser/models/:modelName', itasser.getModel);
 router.get('/itasser/predictions', util.fetchMetadataAsync('itasser'), itasser.getPredictions);
 
-router.get('/tmhmm/', util.fetchMetadataAsync('tmhmm'), tmhmm.getTmhmm);
+router.get('/tmhmm/', util.fetchMetadataAsync('tmhmm'), tmhmm.tmhmm);
 
 router.get('/topcons/', util.fetchMetadataAsync('topcons'), topcons.getTopcons);
 

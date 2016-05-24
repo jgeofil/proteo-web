@@ -6,12 +6,20 @@ import Group from './../group/group.model';
 import User from './../user/user.model';
 import Data from './data.model';
 
+
 var mongoose = require('bluebird').promisifyAll(require('mongoose'));
 
 var fs = require('fs');
 var path = require('path');
 var chokidar = require('chokidar'); //To watch for data file changes
 var util = require('./util');
+
+import Disopred from './analysis/disopred/disopred.model';
+var disoLoad = require('./analysis/disopred/disopred.load')
+
+import Tmhmm from './analysis/tmhmm/tmhmm.model';
+var tmhmmLoad = require('./analysis/tmhmm/tmhmm.load')
+
 
 // Location of data folder
 var DATA_PATH = config.data;
@@ -26,9 +34,6 @@ function getDirectories(srcpath) {
     return [];
   }
 }
-
-// Limit updates to one per 5 seconds
-var triggered = false;
 
 function readDatasets(project){
   // Read directories
@@ -77,6 +82,7 @@ function readOrfs(dataset){
       if (err) console.log("Error saving new ORF: " + err)
       else{
         dataset.orfs.push(orfSaved._id);
+        loadAnalyses(orfSaved);
         if(count >= orfs.length){
           dataset.save(function(err){
             if(err) console.log("Error saving ORFs to dataset: " + err)
@@ -110,34 +116,17 @@ function updateData(){
   Data.Project.find({}).removeAsync().then(function(){
     Data.Dataset.find({}).removeAsync().then(function(){
       Data.Orf.find({}).removeAsync().then(function(){
-        readProjects();
+        Disopred.find({}).removeAsync().then(function(){
+          Tmhmm.find({}).removeAsync().then(function(){
+            readProjects();
+          })
+        })
       })
     })
   })
-
-  triggered = false;
-}
-
-function triggerUpdate(){
-  if(triggered === false){
-    triggered = true;
-    setTimeout(updateData, 5000);
-  }
 }
 
 updateData();
-/**
-// Watch data folder for changes
-chokidar.watch(DATA_PATH, {
-  ignoreInitial: true,
-  awaitWriteFinish: true,
-  ignored: /[\/\\]\./
-})
-.on('all', (event, path) => {
-  console.log(event, path);
-  triggerUpdate();
-});
-**/
 
 function getAnalyses (path) {
   var analyses = {};
@@ -148,7 +137,60 @@ function getAnalyses (path) {
   return analyses;
 }
 
-// Gets a list of available data sets
+function loadAnalyses(orf){
+  if (orf.analyses.hasOwnProperty("disopred")) {
+    loadDisopred(orf);
+    loadTmhmm(orf);
+  }
+}
+
+/**
+ * Loads a disopred analysis into an Orf using its path
+ * @param {Object} orf The Orf
+ * @return {null}
+ */
+function loadDisopred(orf){
+  disoLoad.load(orf.path, function(result){
+    if(result !== null){
+      util.readMetaDataAsync(path.join(orf.path, 'disopred', 'meta.json'), function(meta){
+        result.metadata = meta;
+        Disopred.create(result, function(err, disoObj){
+          if(err){
+            console.log(err);
+          }else {
+            orf.analysis.disopred = disoObj._id;
+            orf.save();
+          }
+        })
+      })
+    }
+  })
+}
+
+/**
+ * Loads a tmhmm analysis into an Orf using its path
+ * @param {Object} orf The Orf
+ * @return {null}
+ */
+function loadTmhmm(orf){
+  tmhmmLoad.load(orf.path, function(result){
+    if(result !== null){
+      util.readMetaDataAsync(path.join(orf.path, 'tmhmm','meta.json'), function(meta){
+        result.metadata = meta;
+        Tmhmm.create(result, function(err, tmhObj){
+          if(err){
+            console.log(err);
+          }else {
+            orf.analysis.tmhmm = tmhObj._id;
+            orf.save();
+          }
+        })
+      })
+    }
+  })
+}
+
+// Gets a list of available
 export function index(req, res) {
   Group.find({users: mongoose.Types.ObjectId(req.user._id)}, function(err,groups){
     if(err){
@@ -177,42 +219,32 @@ export function index(req, res) {
 
 // Gets a list of available orfs
 export function orfs(req, res) {
-  Data.Project.findOne({name: req.params.projectId}, function(err, project){
-    if(project && !err){
-      Data.Dataset.findOne({project: project._id, name: req.params.dataId}, function(err, dataset){
-        if(dataset && !err){
-          Data.Orf.find({dataset: dataset._id}, function(err, orfs){
-            if(!err){
-              res.status(200).json(orfs);
-            }else{
-              res.status(500).send("Error reading ORFs.");
-            }
-          })
-        }else{
-          res.status(403).send("Dataset not found.");
-        }
-      })
-    }else{
-      res.status(403).send("Project not found.");
-    }
-  })
+  var subPath = path.join(DATA_PATH, req.params.projectId, req.params.dataId);
+
+  Data.Orf
+    .find({dirname: subPath})
+    .populate('analysis.disopred', 'stats sequence')
+    .populate('analysis.tmhmm', 'stats sequence')
+    .exec(function(err, orfs){
+      if(!err){
+        res.status(200).json(orfs);
+      }else{
+        res.status(500).send("Error reading ORFs.");
+      }
+    })
 }
 
 
 export function datasets(req, res) {
-  Data.Project.findOne({name: req.params.projectId}, function(err, project){
-    if(project && !err){
-      Data.Dataset.find({project: project._id}).populate('orfs').exec(function(err, datasets){
-        if(!err){
-          res.status(200).json(datasets);
-        }else{
-          res.status(500).send("Error reading datasets.");
-        }
-      })
+  var subPath = path.join(DATA_PATH, req.params.projectId);
+
+  Data.Dataset.find({dirname: subPath}).populate('orfs').exec(function(err, datasets){
+    if(!err){
+      res.status(200).json(datasets);
     }else{
-      res.status(403).send("Project not found.");
+      res.status(500).send("Error reading datasets.");
     }
-  });
+  })
 }
 
 export function update(req, res){

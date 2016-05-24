@@ -1,7 +1,6 @@
 'use strict';
 
 import _ from 'lodash';
-import config from '../../../config/environment';
 
 //var util = require('./util');
 var path = require('path');
@@ -10,14 +9,38 @@ var fasta = require('bionode-fasta');
 var lineReader = require('linebyline');
 var asy = require('async');
 
-// Location of data folder
-var dataPath = config.data;
 
+var readDisoFile = function(path, callback){
+  var rl = lineReader(path);
+
+  var lines = [];
+  var data = {};
+
+  rl
+  .on('error', function (err) {
+    return callback(err, data);
+  })
+  .on('line', function (line) {
+    if(line[0]!== '#'){
+      lines.push(line.split(' ').filter(function(el) {return el.length !== 0}));
+    }
+  })
+  .on('close', function (){
+    data.values = lines.map(function(line){
+      var val = isNaN(Number(line[3])) ? 0 :  Number(line[3]);
+      return val;
+    });
+    data.symbol = lines.map(function(line){
+      return line[2];
+    });
+    callback(null, data);
+  });
+};
 
 // Get JSON formatted DISOPRED3 output
-export function disopred3(req, res){
+export function load(orfpath, callback){
 
-  var subPath = path.join(dataPath, req.params.projectId, req.params.dataId, req.params.orfId, 'disopred');
+  var subPath = path.join(orfpath, 'disopred');
 
   var seqFilePath = path.join(subPath, 'disopred' + '.seq');
   var disoFilePath = path.join(subPath, 'disopred' + '.seq.diso');
@@ -51,6 +74,7 @@ export function disopred3(req, res){
     if(result && ! err){
       var seqList = result.seq.split('');
 
+
       result.diso.values.forEach(function(d,i){
         formatted.push({
           pos: i+1,
@@ -66,37 +90,11 @@ export function disopred3(req, res){
         })
       });
 
-      res.status(200).json({seq: result.seq, data: formatted, metadata: req.params.metadata});
+      callback({sequence: result.seq, data: formatted, metadata: {}, path: subPath});
     }else{
-      res.status(404).send("Not found");
+      callback(null);
     }
 
   });
 
 }
-
-var readDisoFile = function(path, callback){
-  var rl = lineReader(path);
-
-  var lines = [];
-  var data = {};
-
-  rl
-  .on('error', function (err) {
-    return callback(err, data);
-  })
-  .on('line', function (line) {
-    if(line[0]!== '#'){
-      lines.push(line.split(' ').filter(function(el) {return el.length !== 0}));
-    }
-  })
-  .on('close', function (){
-    data.values = lines.map(function(line){
-      return Number(line[3]);
-    });
-    data.symbol = lines.map(function(line){
-      return line[2];
-    });
-    callback(null, data);
-  });
-};
