@@ -12,45 +12,44 @@ angular.module('proteoWebApp')
         graphData: '='
       },
       link: function (scope, element, attrs) {
-        //Length of the sequence alignement
-        console.log(scope.graphData)
-        var seqln = scope.graphData.sequence[0].length;
-        console.log(seqln)
+        if(scope.graphData.sequence.length > 0){
+          //Length of the sequence alignement
+          var seqln = scope.graphData.sequence[0].length;
 
+          // Size and margins
+          var si = d3Helper.getSizing(35, 25, 20, seqln);
 
-        // Size and margins
-        var si = d3Helper.getSizing(35, 25, 20, seqln);
+          // Scales and domains
+          var x = d3.scale.linear().range([0, si.width]);
+          x.domain([1,seqln]);
+          var step = x(0)-x(1);
 
-        // Scales and domains
-        var x = d3.scale.linear().range([0, si.width]);
-        x.domain([1,seqln]);
-        var step = x(0)-x(1);
+          // Create SVG D3 container
+          var svg = d3Helper.getSvgCanvas('#primary-sequence-graph',si);
+          // Sub-containers
+          var header = svg.append('g').attr('class', 'primary-sequence-header');
+          var body = svg.append('g').attr('class', 'primary-sequence-body');
 
-        // Create SVG D3 container
-        var svg = d3Helper.getSvgCanvas('#primary-sequence-graph',si);
-        // Sub-containers
-        var header = svg.append('g').attr('class', 'primary-sequence-header');
-        var body = svg.append('g').attr('class', 'primary-sequence-body');
+          //**********************************************************************
+          // Axes
+          var xAxis = d3.svg.axis().scale(x).orient('bottom');
+          svg.append('g')
+            .attr('class', 'x axis')
+            .attr('transform', 'translate(0,' + (si.height) + ')')
+            .call(xAxis);
 
-        //**********************************************************************
-        // Axes
-        var xAxis = d3.svg.axis().scale(x).orient('bottom');
-        svg.append('g')
-          .attr('class', 'x axis')
-          .attr('transform', 'translate(0,' + (si.height) + ')')
-          .call(xAxis);
+          //**********************************************************************
+          // Main sequence
+          header.selectAll('text')
+            .data(scope.graphData.sequence[0].split('')).enter()
+            .append('text')
+              .attr('class', 'itasser-sequence-amino')
+              .attr('text-anchor', 'middle')
+              .attr('x', function(d,i){return x(i+1);})
+              .attr('y',  -15)
+              .text(function(d){return d;});
 
-        //**********************************************************************
-        // Main sequence
-        header.selectAll('text')
-          .data(scope.graphData.sequence[0].split('')).enter()
-          .append('text')
-            .attr('class', 'itasser-sequence-amino')
-            .attr('text-anchor', 'middle')
-            .attr('x', function(d,i){return x(i+1);})
-            .attr('y',  -15)
-            .text(function(d){return d;});
-
+        }
       }
     };
   });
