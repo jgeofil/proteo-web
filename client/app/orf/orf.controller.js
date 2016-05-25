@@ -45,6 +45,7 @@ angular.module('proteoWebApp')
 
   // State for the analysis panels
   $scope.state = {
+    primary: new StateObj(),
     disopred: new StateObj(),
     itasser: new StateObj(),
     tmhmm: new StateObj(),
@@ -71,10 +72,12 @@ angular.module('proteoWebApp')
   };
 
   //**************************************************************************
-  // MetaData
+  // ORF
   //**************************************************************************
-  $http.get(abp + '/analysis/meta/').then(function(response){
-    $scope.metadata = response.data;
+  $http.get(abp).then(function(response){
+    $scope.metadata = response.data.meta;
+    $scope.orfObj = response.data;
+    $scope.state.primary.isPresent = true;
   }, handleErrors);
 
   //**************************************************************************
@@ -103,7 +106,6 @@ angular.module('proteoWebApp')
   $http.get(abp + '/analysis/disopred3')
   .then(function(data){
     $scope.disoGraphData = data.data;
-    console.log(data.data)
     $scope.state.disopred.isPresent = true;
   }, handleErrors);
 
@@ -149,7 +151,6 @@ angular.module('proteoWebApp')
   $http.get(abp + '/analysis/tmhmm')
     .then(function(data){
       $scope.tmhmmGraphData = data.data;
-      console.log(data.data)
       $scope.state.tmhmm.isPresent = true;
     }, handleErrors);
 
@@ -159,7 +160,6 @@ angular.module('proteoWebApp')
   $http.get(abp + '/analysis/topcons')
     .then(function(data){
       $scope.topconsGraphData = data.data;
-      console.log(data.data)
       $scope.state.topcons.isPresent = true;
     }, handleErrors);
 

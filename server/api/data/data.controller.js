@@ -234,6 +234,23 @@ export function orfs(req, res) {
     })
 }
 
+// Gets one ORF by name
+export function oneOrf(req, res) {
+  var subPath = path.join(DATA_PATH, req.params.projectId, req.params.dataId, req.params.orfId);
+
+  Data.Orf
+    .findOne({path: subPath})
+    .populate('analysis.disopred', 'stats sequence')
+    .populate('analysis.tmhmm', 'stats sequence')
+    .exec(function(err, orf){
+      if(!err && orf){
+        res.status(200).json(orf);
+      }else{
+        res.status(500).send("Error reading ORFs.");
+      }
+    })
+}
+
 
 export function datasets(req, res) {
   var subPath = path.join(DATA_PATH, req.params.projectId);

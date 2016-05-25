@@ -20,6 +20,31 @@
 
     <div class="col-lg-7">
 
+
+      <!-- Primary sequence panel ****************************************** -->
+      <div class="panel panel-default orf-panel">
+        <div class="panel-heading orf-panel-heading"
+              ng-class="{'panel-disabled': !state.primary.isPresent}">
+          <span class="glyphicon"
+                ng-click="state.primary.toggle()"
+                ng-class="{'glyphicon-chevron-down': state.primary.isOpen && state.primary.isPresent,
+                            'glyphicon-chevron-right': !state.primary.isOpen && state.primary.isPresent,
+                            'glyphicon-remove': !state.primary.isPresent}"></span>
+          Sequence and annotation
+          <span class="glyphicon glyphicon-plus pull-right"
+                ng-show="state.primary.isOpen && state.primary.isPresent"
+                ng-class="{'text-success': state.primary.infoOpen}"
+                ng-click="state.primary.toggleInfo()"></span>
+        </div>
+
+        <div class="panel-body orf-panel-body"
+              ng-show="state.primary.isOpen && state.primary.isPresent">
+
+          <primary-sequence-graph ng-if="orfObj" graph-data="orfObj"></primary-sequence-graph>
+        </div>
+
+      </div>
+
       <!-- Disopred panel ****************************************************** -->
       <div class="panel panel-default orf-panel">
         <div class="panel-heading orf-panel-heading"
