@@ -74,6 +74,16 @@ export function fetchMetadataAsync(analysis) {
 }
 
 
+export function getDirectories(srcpath) {
+  try{
+    return fs.readdirSync(srcpath).filter(function(file) {
+      return fs.statSync(path.join(srcpath, file)).isDirectory();
+    });
+  }catch(er){
+    console.log("Error getting directories: " + er)
+    return [];
+  }
+}
 
 
 
