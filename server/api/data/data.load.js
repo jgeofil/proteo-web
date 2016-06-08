@@ -4,13 +4,16 @@ import config from '../../config/environment';
 
 var fs = require('fs');
 var path = require('path');
+var mongoose = require('bluebird').promisifyAll(require('mongoose'));
 
 import Data from './data.model';
 import Disopred from './analysis/disopred/disopred.model';
 import Tmhmm from './analysis/tmhmm/tmhmm.model';
+import Model from './analysis/models/models.model';
 
 var tmhmmLoad = require('./analysis/tmhmm/tmhmm.load');
 var disoLoad = require('./analysis/disopred/disopred.load');
+var modelsLoad = require('./analysis/models/models.load');
 
 var util = require('./util');
 
@@ -111,14 +114,18 @@ function readProjects() {
  * @return {null} Data is refreshed from files.
  */
 function updateData(){
+
   // Remove all existing entries and create new ones
   Data.Project.find({}).removeAsync().then(function(){
   Data.Dataset.find({}).removeAsync().then(function(){
   Data.Orf.find({}).removeAsync().then(function(){
+  Data.Gridchunk.find({}).removeAsync().then(function(){
+  Data.Gridfile.find({}).removeAsync().then(function(){
   Disopred.find({}).removeAsync().then(function(){
   Tmhmm.find({}).removeAsync().then(function(){
+  Model.find({}).removeAsync().then(function(){
     readProjects();
-  })})})})});
+  })})})})})})})});
 }
 
 /**
@@ -146,6 +153,9 @@ function loadAnalyses(orf){
   }
   if (orf.analyses.hasOwnProperty("tmhmm")) {
     loadAnalysis(orf, tmhmmLoad.load, 'tmhmm', Tmhmm);
+  }
+  if (orf.analyses.hasOwnProperty("models")) {
+    loadAnalysis(orf, modelsLoad.load, 'models', Model);
   }
 }
 

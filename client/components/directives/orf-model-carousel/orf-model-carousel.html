@@ -1,0 +1,16 @@
+
+<div ng-repeat="im in omcModels track by $index" ng-show="$index == current()">
+  <div class="img-fluid img-thumbnail omc-container-parent">
+    <div id="omc-model-{{im.shortName}}" class="omc-container"></div>
+  </div>
+
+  <div class="text-center">
+    <span class="glyphicon glyphicon-arrow-left pull-left" ng-click="left()"></span>
+    <span>{{$index+1}}/{{omcModels.length}}</span>
+    <span class="glyphicon glyphicon-arrow-right pull-right" ng-click="right()"></span>
+  </div>
+
+  <h4>{{im.meta.title}}</h4>
+  <p>{{im.meta.caption}}</p>
+
+</div>

@@ -42,7 +42,6 @@ export function getList(req, res){
             shortName: str.split('.')[0]
           }
         });
-        console.log(files)
         callback(null, files);
       });
     },
@@ -78,6 +77,6 @@ export function getList(req, res){
 // Get image files
 export function getImage(req, res){
   var subPath = path.join(dataPath, req.params.projectId, req.params.dataId, req.params.orfId, 'images', req.params.imageName);
-  console.log(subPath)
+
   res.sendFile(subPath);
 }

@@ -7,12 +7,16 @@ var itasser = require('./itasser.controller');
 var tmhmm = require('./tmhmm/tmhmm.controller');
 var topcons = require('./topcons.controller');
 var images = require('./images.controller');
+var models = require('./models/models.controller');
 var util = require('./../util');
 
 var router = express.Router({mergeParams: true});
 
 router.get('/images/', images.getList);
 router.get('/images/:imageName', images.getImage);
+
+router.get('/models/', models.getList);
+router.get('/models/:modelName', models.getModels);
 
 router.get('/disopred3/', util.fetchMetadataAsync('disopred'), disopred.disopred3);
 

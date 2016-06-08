@@ -104,6 +104,31 @@ angular.module('proteoWebApp')
   }, handleErrors);
 
   //**************************************************************************
+  // Models
+  //**************************************************************************
+  $http.get(abp + '/analysis/models')
+  .then(function(data){
+    var count = 0;
+    $scope.models = data.data.data;
+
+    // Get PDB files for each model
+    $scope.models.forEach(function(model){
+      $http.get(abp + '/analysis/models/' + model.shortName)
+      .then(function(md){
+
+        model.data = md.data;
+        count +=1;
+        if(count === $scope.models.length-1){
+          console.log(count)
+          console.log($scope.models.length)
+          $scope.modelsLoaded = true;
+        }
+      });
+    }, handleErrors);
+
+  }, handleErrors);
+
+  //**************************************************************************
   // DISOPRED3
   //**************************************************************************
   $http.get(abp + '/analysis/disopred3')
