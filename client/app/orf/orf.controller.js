@@ -2,7 +2,7 @@
 //TODO: include D3 in a more Angular way
 /* jshint undef: false*/
 angular.module('proteoWebApp')
-.controller('OrfCtrl', function ($scope, $http, $routeParams, $rootScope, $uibModal) {
+.controller('OrfCtrl', function ($scope, $http, $routeParams, $rootScope, $uibModal, Download) {
 
   // Base path for API
   var abp = '/api/data/'+$routeParams.projectName+'/dataset/'+
@@ -24,7 +24,7 @@ angular.module('proteoWebApp')
     preventKeyEvents: false
   };
 
-  var containerIds = ['#scroll1', '#scroll2', '#scroll3', '#scroll4', '#scroll5'];
+  var containerIds = ['#scroll1', '#scroll2', '#scroll3', '#scroll4', '#scroll5', '#scroll6'];
   containerIds.forEach(function(id){
     $(id).scroll(function() {
       containerIds.forEach(function(idTo){
@@ -88,20 +88,17 @@ angular.module('proteoWebApp')
   //**************************************************************************
   var imgBasePath = abp + '/analysis/images/';
 
-  // Get images using auth tokens, standard <img> tag does not use tokens
-  var getImageDataURL = function(imgObj, url, imageType = 'image/jpeg'){
-    $http.get(url, {responseType: 'arraybuffer'}).then(function(res){
-      let blob = new Blob([res.data], {type: imageType});
-      imgObj.url = (window.URL || window.webkitURL).createObjectURL(blob);
-    });
-  };
-
   $http.get(imgBasePath).then(function(response){
       $scope.images = response.data;
       $scope.images.forEach(function(img){
-        getImageDataURL(img, imgBasePath + img.name);
+        Download.getLink(imgBasePath + img.name, 'image/jpeg').then(function(link){
+          img.url = link;
+          Download.triggerDownloadFromUrl(img.url, 'image/jpeg', 'portat.jpg');
+        });
       });
   }, handleErrors);
+
+
 
   //**************************************************************************
   // Models
