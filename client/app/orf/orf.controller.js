@@ -2,7 +2,7 @@
 //TODO: include D3 in a more Angular way
 /* jshint undef: false*/
 angular.module('proteoWebApp')
-.controller('OrfCtrl', function ($scope, $http, $routeParams, $rootScope, $uibModal, $timeout, $window) {
+.controller('OrfCtrl', function ($scope, $http, $routeParams, $rootScope, $uibModal) {
 
   // Base path for API
   var abp = '/api/data/'+$routeParams.projectName+'/dataset/'+
@@ -119,13 +119,10 @@ angular.module('proteoWebApp')
         model.data = md.data;
         count +=1;
         if(count === $scope.models.length-1){
-          console.log(count)
-          console.log($scope.models.length)
           $scope.modelsLoaded = true;
         }
       });
     }, handleErrors);
-
   }, handleErrors);
 
   //**************************************************************************

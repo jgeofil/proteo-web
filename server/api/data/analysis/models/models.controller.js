@@ -15,7 +15,10 @@ var gfs = new Grid(conn.db);
 // Location of data folder
 var dataPath = config.data;
 
-// Get JSON formatted list of all available models
+/**
+ * Get list of all available experimental models for the ORF.
+ * @return {null} request is answered.
+ */
 export function getList(req, res){
   var subPath = path.join(dataPath, req.params.projectId, req.params.dataId, req.params.orfId, 'models');
 
@@ -29,12 +32,14 @@ export function getList(req, res){
 
 }
 
-// Get model file
+/**
+ * Get a specific PDB experimental model file.
+ * @return {null} request is answered.
+ */
 export function getModels(req, res){
   var subPath = path.join(dataPath, req.params.projectId, req.params.dataId, req.params.orfId, 'models');
 
   Models.findOne({path: subPath}, function(err,models){
-    console.log(models)
     if(!err && models){
       var found = false;
       models.data.forEach(function(mod){
@@ -42,9 +47,6 @@ export function getModels(req, res){
           found = true;
           var readstream = gfs.createReadStream({
             _id: mod.pdbId
-          });
-          req.on('error', function(err) {
-            res.send(500, err);
           });
           readstream.on('error', function (err) {
             res.send(500, err);
@@ -59,6 +61,5 @@ export function getModels(req, res){
       res.status(404).send("Not found");
     }
   });
-
 
 }
