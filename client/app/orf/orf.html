@@ -212,8 +212,10 @@
                 </div>
                 <h5>
                   {{model.name}}
-                  <span class="glyphicon glyphicon-plus itasser-model-glyph pull-right"
+                  <span class="glyphicon glyphicon-plus model-glyph pull-right"
                         ng-click="spawnModelModal(model.data)"></span>
+                  <span class="glyphicon glyphicon-download model-glyph pull-right"
+                        ng-click="downData(model.data, 'text/plain', 'model.pdb')"></span>
                 </h5>
                 <h4>
                   <small>CScore: {{model.cscore}}</small><br>

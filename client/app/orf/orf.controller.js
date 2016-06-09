@@ -4,6 +4,8 @@
 angular.module('proteoWebApp')
 .controller('OrfCtrl', function ($scope, $http, $routeParams, $rootScope, $uibModal, Download) {
 
+  $scope.downData = Download.triggerDownloadFromData;
+
   // Base path for API
   var abp = '/api/data/'+$routeParams.projectName+'/dataset/'+
     $routeParams.datasetName+'/orf/'+$routeParams.orfName;
@@ -93,7 +95,6 @@ angular.module('proteoWebApp')
       $scope.images.forEach(function(img){
         Download.getLink(imgBasePath + img.name, 'image/jpeg').then(function(link){
           img.url = link;
-          Download.triggerDownloadFromUrl(img.url, 'image/jpeg', 'portat.jpg');
         });
       });
   }, handleErrors);

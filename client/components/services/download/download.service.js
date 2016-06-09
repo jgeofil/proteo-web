@@ -46,7 +46,8 @@ angular.module('proteoWebApp')
      * @param {String} filname Filename.
      * @return {null}
      */
-    this.triggerDownloadFromBlob = function(blob, filename){
+    this.triggerDownloadFromData = function(data, type, filename){
+      var blob = new Blob([data], { type: type });
       FileSaver.saveAs(blob, filename);
     };
 
