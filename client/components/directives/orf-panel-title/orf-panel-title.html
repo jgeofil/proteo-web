@@ -1,0 +1,10 @@
+<span class="glyphicon"
+      ng-click="optState.toggle()"
+      ng-class="{'glyphicon-chevron-down': optState.isOpen && optState.isPresent,
+                  'glyphicon-chevron-right': !optState.isOpen && optState.isPresent,
+                  'glyphicon-remove': !optState.isPresent}"></span>
+{{optTitle}}
+<span class="glyphicon glyphicon-plus pull-right panel-glyph"
+      ng-show="optState.isOpen && optState.isPresent"
+      ng-class="{'text-success': optState.infoOpen}"
+      ng-click="optState.toggleInfo()"></span>

@@ -26,16 +26,11 @@
       <div class="panel panel-default orf-panel">
         <div class="panel-heading orf-panel-heading"
               ng-class="{'panel-disabled': !state.primary.isPresent}">
-          <span class="glyphicon"
-                ng-click="state.primary.toggle()"
-                ng-class="{'glyphicon-chevron-down': state.primary.isOpen && state.primary.isPresent,
-                            'glyphicon-chevron-right': !state.primary.isOpen && state.primary.isPresent,
-                            'glyphicon-remove': !state.primary.isPresent}"></span>
-          Sequence and annotation
-          <span class="glyphicon glyphicon-plus pull-right"
-                ng-show="state.primary.isOpen && state.primary.isPresent"
-                ng-class="{'text-success': state.primary.infoOpen}"
-                ng-click="state.primary.toggleInfo()"></span>
+
+          <orf-panel-title  opt-title="'Sequence and annotations'"
+                            opt-state="state.primary">
+          </orf-panel-title>
+
         </div>
 
         <div class="panel-body orf-panel-body"
@@ -51,33 +46,16 @@
       <div class="panel panel-default orf-panel">
         <div class="panel-heading orf-panel-heading"
               ng-class="{'panel-disabled': !state.disopred.isPresent}">
-          <span class="glyphicon"
-                ng-click="state.disopred.toggle()"
-                ng-class="{'glyphicon-chevron-down': state.disopred.isOpen && state.disopred.isPresent,
-                            'glyphicon-chevron-right': !state.disopred.isOpen && state.disopred.isPresent,
-                            'glyphicon-remove': !state.disopred.isPresent}"></span>
-          DISOPRED3
-          <span class="glyphicon glyphicon-plus pull-right panel-glyph"
-                ng-show="state.disopred.isOpen && state.disopred.isPresent"
-                ng-class="{'text-success': state.disopred.infoOpen}"
-                ng-click="state.disopred.toggleInfo()"></span>
-          <span uib-dropdown class="pull-right">
-            <span uib-dropdown-toggle class="glyphicon glyphicon-download-alt pull-right panel-glyph">
-            </span>
-            <ul class="dropdown-menu" uib-dropdown-menu>
-              <li ng-repeat="ch in config.disopred.files">
-                <a href ng-click="downUrl(pathToFile(config.disopred.path, ch.name),ch.type ,ch.file)">{{ch.title}}</a>
-              </li>
-            </ul>
-          </span>
+          <orf-panel-title  opt-title="'DISOPRED'"
+                            opt-state="state.disopred">
+          </orf-panel-title>
+          <file-download-button fdb-files="config.disopred.files"
+                                fdb-analysis-path="config.disopred.path">
+          </file-download-button>
         </div>
-
-        <ul class="list-group" ng-show="state.disopred.isOpen && state.disopred.isPresent && state.disopred.infoOpen">
-          <li class="list-group-item meta-active">
-            <metadata-display md-metadata="disoGraphData.metadata"></metadata-display>
-          </li>
-        </ul>
-
+        <metadata-display md-state="state.disopred"
+                          md-metadata="disoGraphData.metadata">
+        </metadata-display>
         <div class="panel-body orf-panel-body"
               ng-show="state.disopred.isOpen && state.disopred.isPresent">
           <p class="orf-title-vertical">Disorder pred.</p>
@@ -97,23 +75,13 @@
       <div class="panel panel-default orf-panel">
         <div class="panel-heading orf-panel-heading"
               ng-class="{'panel-disabled': !state.tmhmm.isPresent}">
-          <span class="glyphicon"
-                ng-click="state.tmhmm.toggle()"
-                ng-class="{'glyphicon-chevron-down': state.tmhmm.isOpen && state.tmhmm.isPresent,
-                            'glyphicon-chevron-right': !state.tmhmm.isOpen && state.tmhmm.isPresent,
-                            'glyphicon-remove': !state.tmhmm.isPresent}"></span>
-          TMHMM
-          <span class="glyphicon glyphicon-plus pull-right"
-                ng-show="state.tmhmm.isOpen && state.tmhmm.isPresent"
-                ng-class="{'text-success': state.tmhmm.infoOpen}"
-                ng-click="state.tmhmm.toggleInfo()"></span>
+          <orf-panel-title  opt-title="'TMHMM'"
+                            opt-state="state.tmhmm">
+          </orf-panel-title>
         </div>
-
-        <ul class="list-group" ng-show="state.tmhmm.isOpen && state.tmhmm.isPresent && state.tmhmm.infoOpen">
-           <li class="list-group-item meta-active">
-             <metadata-display md-metadata="tmhmmGraphData.metadata"></metadata-display>
-           </li>
-         </ul>
+       <metadata-display md-state="state.tmhmm"
+                         md-metadata="tmhmmGraphData.metadata">
+       </metadata-display>
 
         <div class="panel-body orf-panel-body"
               ng-show="state.tmhmm.isOpen && state.tmhmm.isPresent">
@@ -134,23 +102,13 @@
       <div class="panel panel-default orf-panel">
         <div  class="panel-heading orf-panel-heading"
               ng-class="{'panel-disabled': !state.topcons.isPresent}">
-          <span class="glyphicon"
-                ng-click="state.topcons.toggle()"
-                ng-class="{'glyphicon-chevron-down': state.topcons.isOpen && state.topcons.isPresent,
-                            'glyphicon-chevron-right': !state.topcons.isOpen && state.topcons.isPresent,
-                            'glyphicon-remove': !state.topcons.isPresent}"></span>
-          Topcons
-          <span class="glyphicon glyphicon-plus pull-right"
-                ng-show="state.topcons.isOpen && state.topcons.isPresent"
-                ng-class="{'text-success': state.topcons.infoOpen}"
-                ng-click="state.topcons.toggleInfo()"></span>
+          <orf-panel-title  opt-title="'TOPCONS'"
+                            opt-state="state.topcons">
+          </orf-panel-title>
         </div>
-
-        <ul class="list-group" ng-show="state.topcons.isOpen && state.topcons.isPresent && state.topcons.infoOpen">
-           <li class="list-group-item meta-active">
-            <metadata-display md-metadata="topconsGraphData.metadata"></metadata-display>
-           </li>
-        </ul>
+        <metadata-display md-state="state.topcons"
+                          md-metadata="topconsGraphData.metadata">
+        </metadata-display>
 
         <div class="panel-body orf-panel-body"
               ng-show="state.topcons.isOpen && state.topcons.isPresent">
@@ -169,23 +127,13 @@
       <div class="panel panel-default orf-panel">
         <div class="panel-heading orf-panel-heading"
               ng-class="{'panel-disabled': !state.itasser.isPresent}">
-          <span class="glyphicon"
-                ng-click="state.itasser.toggle()"
-                ng-class="{'glyphicon-chevron-down': state.itasser.isOpen && state.itasser.isPresent,
-                            'glyphicon-chevron-right': !state.itasser.isOpen && state.itasser.isPresent,
-                            'glyphicon-remove': !state.itasser.isPresent}"></span>
-          I-Tasser
-          <span class="glyphicon glyphicon-plus pull-right"
-                ng-show="state.itasser.isOpen && state.itasser.isPresent"
-                ng-class="{'text-success': state.itasser.infoOpen}"
-                ng-click="state.itasser.toggleInfo()"></span>
+          <orf-panel-title  opt-title="'I-tasser'"
+                            opt-state="state.itasser">
+          </orf-panel-title>
         </div>
-
-        <ul class="list-group" ng-show="state.itasser.isOpen && state.itasser.isPresent && state.itasser.infoOpen">
-          <li class="list-group-item meta-active">
-            <metadata-display md-metadata="itasserSsGraphData.metadata"></metadata-display>
-          </li>
-        </ul>
+        <metadata-display md-state="state.itasser"
+                          md-metadata="itasserSsGraphData.metadata">
+        </metadata-display>
 
         <div class="panel-body orf-panel-body"
               ng-show="state.itasser.isOpen && state.itasser.isPresent">

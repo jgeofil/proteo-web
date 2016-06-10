@@ -31,10 +31,6 @@ angular.module('proteoWebApp')
     }
   };
 
-  $scope.pathToFile = function(p, n){
-    return p + '/file/'+ n;
-  };
-
 
 
   // Handle errors while fetching data
