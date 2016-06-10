@@ -44,7 +44,7 @@ Running `npm test` will run the unit tests with karma.
     │   │   │   │   ├── [imageName1].json           # Image caption and title
     │   │   │   │   ├── [imageName2].{jpg,png}      
     │   │   │   │   └── [imageName2].json           
-    │   │   │   ├── disopred3                       # Disopred 3 analysis folder
+    │   │   │   ├── disopred                       # Disopred 3 analysis folder
     │   │   │   │   ├── disopred.seq                # Sequence file
     │   │   │   │   ├── disopred.seq.diso           # Disorder file
     │   │   │   │   └── disopred.seq.pbdat          # Protein binding file

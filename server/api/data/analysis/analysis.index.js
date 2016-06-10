@@ -18,7 +18,8 @@ router.get('/images/:imageName', images.getImage);
 router.get('/models/', models.getList);
 router.get('/models/:modelName', models.getModels);
 
-router.get('/disopred3/', util.fetchMetadataAsync('disopred'), disopred.disopred3);
+router.get('/disopred/', util.fetchMetadataAsync('disopred'), disopred.disopred);
+router.get('/disopred/file/:fileName', disopred.original);
 
 router.get('/itasser/models', itasser.listModels);
 router.get('/itasser/models/:modelName', itasser.getModel);

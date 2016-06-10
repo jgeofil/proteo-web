@@ -57,10 +57,19 @@
                             'glyphicon-chevron-right': !state.disopred.isOpen && state.disopred.isPresent,
                             'glyphicon-remove': !state.disopred.isPresent}"></span>
           DISOPRED3
-          <span class="glyphicon glyphicon-plus pull-right"
+          <span class="glyphicon glyphicon-plus pull-right panel-glyph"
                 ng-show="state.disopred.isOpen && state.disopred.isPresent"
                 ng-class="{'text-success': state.disopred.infoOpen}"
                 ng-click="state.disopred.toggleInfo()"></span>
+          <span uib-dropdown class="pull-right">
+            <span uib-dropdown-toggle class="glyphicon glyphicon-download-alt pull-right panel-glyph">
+            </span>
+            <ul class="dropdown-menu" uib-dropdown-menu>
+              <li ng-repeat="ch in config.disopred.files">
+                <a href ng-click="downUrl(pathToFile(config.disopred.path, ch.name),ch.type ,ch.file)">{{ch.title}}</a>
+              </li>
+            </ul>
+          </span>
         </div>
 
         <ul class="list-group" ng-show="state.disopred.isOpen && state.disopred.isPresent && state.disopred.infoOpen">

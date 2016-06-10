@@ -5,10 +5,37 @@ angular.module('proteoWebApp')
 .controller('OrfCtrl', function ($scope, $http, $routeParams, $rootScope, $uibModal, Download) {
 
   $scope.downData = Download.triggerDownloadFromData;
+  $scope.downUrl = Download.triggerDownloadFromUrl;
 
   // Base path for API
   var abp = '/api/data/'+$routeParams.projectName+'/dataset/'+
     $routeParams.datasetName+'/orf/'+$routeParams.orfName;
+
+  $scope.config = {
+    disopred:{
+      path: abp + '/analysis/disopred',
+      files: [
+        {
+          title: 'Disorder',
+          name: 'diso',
+          type: 'text/plain',
+          file: 'disopred.seq.diso'
+        },
+        {
+          title: 'Binding',
+          name: 'pbdat',
+          type: 'text/plain',
+          file: 'disopred.seq.pbdat'
+        }
+      ]
+    }
+  };
+
+  $scope.pathToFile = function(p, n){
+    return p + '/file/'+ n;
+  };
+
+
 
   // Handle errors while fetching data
   function handleErrors(err){
@@ -126,7 +153,7 @@ angular.module('proteoWebApp')
   //**************************************************************************
   // DISOPRED3
   //**************************************************************************
-  $http.get(abp + '/analysis/disopred3')
+  $http.get(abp + '/analysis/disopred')
   .then(function(data){
     $scope.disoGraphData = data.data;
     $scope.state.disopred.isPresent = true;
