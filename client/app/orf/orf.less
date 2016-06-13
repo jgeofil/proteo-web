@@ -77,3 +77,32 @@ path {
   border-style: solid;
   margin-top: 0px;
 }
+
+/* The starting CSS styles for the enter animation */
+.orf-fade.ng-enter {
+  transition:1.0s linear all;
+  opacity:0;
+}
+
+/* The finishing CSS styles for the enter animation */
+.orf-fade.ng-enter.ng-enter-active {
+  opacity:1;
+  transition-delay: 0.5s
+}
+
+/* The starting CSS styles for the enter animation */
+.orf-opensmooth.ng-hide-remove {
+  transition:1.5s ease all;
+  max-height: 0;
+  padding-top: 0px;
+  padding-bottom: 0px;
+  overflow-y: hidden;
+}
+
+/* The finishing CSS styles for the enter animation */
+.orf-opensmooth.ng-hide-remove.ng-hide-remove-active {
+  max-height: 650px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  transition-delay: 0s
+}
