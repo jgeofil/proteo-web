@@ -235,3 +235,27 @@ export function getPredictions(req, res){
   });
 
 }
+
+/**
+ * Get I-TASSER output in original text format.
+ * @return {null} request is answered.
+ */
+export function original(req, res){
+
+  var subPath = path.join(dataPath, req.params.projectId, req.params.dataId, req.params.orfId, 'itasser');
+
+  switch (req.params.fileName) {
+    case 'seq.ss':
+      res.sendFile(path.join(subPath, 'seq.ss'));
+      break;
+    case 'coverage':
+      res.sendFile(path.join(subPath, 'coverage'));
+      break;
+    case 'cscore':
+      res.sendFile(path.join(subPath, 'cscore'));
+      break;
+    default:
+      res.status(404).send("Not found");
+  }
+
+}

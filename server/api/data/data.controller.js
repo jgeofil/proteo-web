@@ -6,6 +6,8 @@ import Group from './../group/group.model';
 import User from './../user/user.model';
 import Data from './data.model';
 
+var os = require('os');
+
 var dl = require('./data.load');
 dl.load();
 
@@ -70,6 +72,33 @@ export function oneOrf(req, res) {
     .exec(function(err, orf){
       if(!err && orf){
         res.status(200).json(orf);
+      }else{
+        res.status(500).send("Error reading ORFs.");
+      }
+    })
+}
+
+/**
+ * Get FASTA formatted sequence file for an ORF
+ * @return {null} request is answered.
+ */
+export function oneOrfSequence(req, res) {
+  var subPath = path.join(DATA_PATH, req.params.projectId, req.params.dataId, req.params.orfId);
+
+  Data.Orf
+    .findOne({path: subPath})
+    .exec(function(err, orf){
+      if(!err && orf){
+        var fasta = '';
+        orf.sequence.forEach(function(s,i){
+          fasta = fasta + ">" + req.params.orfId + '|v' + i + os.EOL;
+          var sp = s.match(/.{1,80}/g);
+          sp.forEach(function(p){
+            fasta = fasta + p + os.EOL
+          });
+        });
+
+        res.status(200).send(fasta);
       }else{
         res.status(500).send("Error reading ORFs.");
       }

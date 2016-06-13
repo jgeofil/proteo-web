@@ -23,7 +23,6 @@ export function getTopcons(req, res){
   var subPath = path.join(dataPath, req.params.projectId, req.params.dataId, req.params.orfId, 'topcons');
 
   var topFilePath = path.join(subPath, 'topcons.txt');
-  var plpFilePath = path.join(subPath, req.params.orfId+'.plp');
 
   asy.waterfall([
     //**************************************************************************
@@ -172,5 +171,23 @@ export function getTopcons(req, res){
     }
 
   });
+
+}
+
+/**
+ * Get tmhmm output in original text format.
+ * @return {null} request is answered.
+ */
+export function original(req, res){
+
+  var subPath = path.join(dataPath, req.params.projectId, req.params.dataId, req.params.orfId, 'topcons');
+
+  switch (req.params.fileName) {
+    case 'topcons.txt':
+      res.sendFile(path.join(subPath, 'topcons.txt'));
+      break;
+    default:
+      res.status(404).send("Not found");
+  }
 
 }

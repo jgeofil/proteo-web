@@ -34,10 +34,10 @@ export function original(req, res){
   var subPath = path.join(dataPath, req.params.projectId, req.params.dataId, req.params.orfId, 'disopred');
 
   switch (req.params.fileName) {
-    case 'diso':
+    case 'disopred.seq.diso':
       res.sendFile(path.join(subPath, 'disopred.seq.diso'));
       break;
-    case 'pbdat':
+    case 'disopred.seq.pbdat':
       res.sendFile(path.join(subPath, 'disopred.seq.pbdat'));
       break;
     default:

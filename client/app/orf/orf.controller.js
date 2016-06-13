@@ -12,20 +12,73 @@ angular.module('proteoWebApp')
     $routeParams.datasetName+'/orf/'+$routeParams.orfName;
 
   $scope.config = {
+    sequence:{
+      path: abp,
+      files: [
+        {
+          title: 'FASTA',
+          type: 'text/plain',
+          file: 'fasta'
+        }
+      ]
+    },
     disopred:{
       path: abp + '/analysis/disopred',
       files: [
         {
           title: 'Disorder',
-          name: 'diso',
           type: 'text/plain',
           file: 'disopred.seq.diso'
         },
         {
           title: 'Binding',
-          name: 'pbdat',
           type: 'text/plain',
           file: 'disopred.seq.pbdat'
+        }
+      ]
+    },
+    tmhmm:{
+      path: abp + '/analysis/tmhmm',
+      files: [
+        {
+          title: 'Domains',
+          type: 'text/plain',
+          file: 'tmhmm.long'
+        },
+        {
+          title: 'Residues',
+          type: 'text/plain',
+          file: 'tmhmm.plp'
+        }
+      ]
+    },
+    topcons:{
+      path: abp + '/analysis/topcons',
+      files: [
+        {
+          title: 'Topcons',
+          type: 'text/plain',
+          file: 'topcons.txt'
+        }
+      ]
+    },
+    itasser:{
+      path: abp + '/analysis/itasser/predictions',
+      files: [
+        {
+          title: 'Coverage',
+          type: 'text/plain',
+          file: 'coverage'
+        },
+        {
+          title: 'CScore',
+          type: 'text/plain',
+          file: 'cscore'
+        },
+        {
+          title: 'Secondary sequence',
+          type: 'text/plain',
+          file: 'seq.ss'
         }
       ]
     }

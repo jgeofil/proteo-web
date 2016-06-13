@@ -24,10 +24,13 @@ router.get('/disopred/file/:fileName', disopred.original);
 router.get('/itasser/models', itasser.listModels);
 router.get('/itasser/models/:modelName', itasser.getModel);
 router.get('/itasser/predictions', util.fetchMetadataAsync('itasser'), itasser.getPredictions);
+router.get('/itasser/predictions/file/:fileName', itasser.original);
 
 router.get('/tmhmm/', util.fetchMetadataAsync('tmhmm'), tmhmm.tmhmm);
+router.get('/tmhmm/file/:fileName', tmhmm.original);
 
 router.get('/topcons/', util.fetchMetadataAsync('topcons'), topcons.getTopcons);
+router.get('/topcons/file/:fileName', topcons.original);
 
 router.get('/meta/', util.fetchMetadataAsync(''), controller.metadata);
 router.get('/', controller.index);

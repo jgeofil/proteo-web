@@ -30,6 +30,10 @@
           <orf-panel-title  opt-title="'Sequence and annotations'"
                             opt-state="state.primary">
           </orf-panel-title>
+          <file-download-button fdb-files="config.sequence.files"
+                                fdb-analysis-path="config.sequence.path"
+                                ng-if="state.primary.isPresent">
+          </file-download-button>
 
         </div>
 
@@ -50,7 +54,8 @@
                             opt-state="state.disopred">
           </orf-panel-title>
           <file-download-button fdb-files="config.disopred.files"
-                                fdb-analysis-path="config.disopred.path">
+                                fdb-analysis-path="config.disopred.path"
+                                ng-if="state.disopred.isPresent">
           </file-download-button>
         </div>
         <metadata-display md-state="state.disopred"
@@ -78,6 +83,10 @@
           <orf-panel-title  opt-title="'TMHMM'"
                             opt-state="state.tmhmm">
           </orf-panel-title>
+          <file-download-button fdb-files="config.tmhmm.files"
+                                fdb-analysis-path="config.tmhmm.path"
+                                ng-if="state.tmhmm.isPresent">
+          </file-download-button>
         </div>
        <metadata-display md-state="state.tmhmm"
                          md-metadata="tmhmmGraphData.metadata">
@@ -105,6 +114,10 @@
           <orf-panel-title  opt-title="'TOPCONS'"
                             opt-state="state.topcons">
           </orf-panel-title>
+          <file-download-button fdb-files="config.topcons.files"
+                                fdb-analysis-path="config.topcons.path"
+                                ng-if="state.topcons.isPresent">
+          </file-download-button>
         </div>
         <metadata-display md-state="state.topcons"
                           md-metadata="topconsGraphData.metadata">
@@ -130,6 +143,10 @@
           <orf-panel-title  opt-title="'I-tasser'"
                             opt-state="state.itasser">
           </orf-panel-title>
+          <file-download-button fdb-files="config.itasser.files"
+                                fdb-analysis-path="config.itasser.path"
+                                ng-if="state.itasser.isPresent">
+          </file-download-button>
         </div>
         <metadata-display md-state="state.itasser"
                           md-metadata="itasserSsGraphData.metadata">

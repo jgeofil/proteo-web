@@ -1,9 +1,9 @@
 <span uib-dropdown class="pull-right">
-  <span uib-dropdown-toggle class="glyphicon glyphicon-download-alt pull-right panel-glyph">
+  <span uib-dropdown-toggle class="glyphicon glyphicon-download pull-right panel-glyph panel-glyph-max">
   </span>
   <ul class="dropdown-menu" uib-dropdown-menu>
     <li ng-repeat="ch in fdbFiles">
-      <a href ng-click="downUrl(pathToFile(fdbAnalysisPath, ch.name),ch.type ,ch.file)">{{ch.title}}</a>
+      <a href ng-click="downUrl(pathToFile(fdbAnalysisPath, ch.file),ch.type ,ch.file)">{{ch.title}}</a>
     </li>
   </ul>
 </span>
