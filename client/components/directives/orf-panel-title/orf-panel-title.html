@@ -5,6 +5,6 @@
                   'glyphicon-remove': !optState.isPresent}"></span>
 {{optTitle}}
 <span class="glyphicon glyphicon-plus pull-right panel-glyph"
-      ng-show="optState.isOpen && optState.isPresent"
+      ng-show="optState.isOpen && optState.isPresent && !optNoMeta"
       ng-class="{'text-success': optState.infoOpen}"
       ng-click="optState.toggleInfo()"></span>

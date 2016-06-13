@@ -7,7 +7,8 @@ angular.module('proteoWebApp')
       restrict: 'EA',
       scope: {
         optTitle: '=',
-        optState: '='
+        optState: '=',
+        optNoMeta: '='
       },
       link: function (scope, element, attrs) {
       }

@@ -28,7 +28,8 @@
               ng-class="{'panel-disabled': !state.primary.isPresent}">
 
           <orf-panel-title  opt-title="'Sequence and annotations'"
-                            opt-state="state.primary">
+                            opt-state="state.primary"
+                            opt-no-meta="true">
           </orf-panel-title>
           <file-download-button fdb-files="config.sequence.files"
                                 fdb-analysis-path="config.sequence.path"
