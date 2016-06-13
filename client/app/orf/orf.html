@@ -38,7 +38,7 @@
 
         </div>
 
-        <div class="panel-body orf-panel-body"
+        <div class="panel-body orf-panel-body orf-opensmooth"
               ng-show="state.primary.isOpen && state.primary.isPresent">
           <div id="scroll6" class="orf-scroll">
           <primary-sequence-graph ng-if="orfObj" graph-data="orfObj"></primary-sequence-graph>
@@ -62,9 +62,10 @@
         <metadata-display md-state="state.disopred"
                           md-metadata="disoGraphData.metadata">
         </metadata-display>
-        <div class="panel-body orf-panel-body"
+        <div class="panel-body orf-panel-body orf-opensmooth"
               ng-show="state.disopred.isOpen && state.disopred.isPresent">
-          <p class="orf-title-vertical">Disorder pred.</p>
+          <p class="orf-title-vertical orf-fade"
+              ng-if="state.disopred.isOpen && state.disopred.isPresent">Disorder pred.</p>
           <hr class="orf-hr">
 
           <div id="scroll1" class="orf-scroll">
@@ -93,10 +94,10 @@
                          md-metadata="tmhmmGraphData.metadata">
        </metadata-display>
 
-        <div class="panel-body orf-panel-body"
+        <div class="panel-body orf-panel-body orf-opensmooth"
               ng-show="state.tmhmm.isOpen && state.tmhmm.isPresent">
 
-          <p class="orf-title-vertical">Transmembrane pred.</p>
+          <p class="orf-title-vertical orf-fade" ng-if="state.tmhmm.isOpen && state.tmhmm.isPresent">Transmembrane pred.</p>
           <hr class="orf-hr">
 
           <div id="scroll2" class="orf-scroll">
@@ -124,10 +125,10 @@
                           md-metadata="topconsGraphData.metadata">
         </metadata-display>
 
-        <div class="panel-body orf-panel-body"
+        <div class="panel-body orf-panel-body orf-opensmooth"
               ng-show="state.topcons.isOpen && state.topcons.isPresent">
 
-          <p class="orf-title-vertical">Topcons predictions</p>
+          <p class="orf-title-vertical orf-fade" ng-if="state.topcons.isOpen && state.topcons.isPresent">Topcons predictions</p>
           <hr class="orf-hr">
           <div id="scroll3" class="orf-scroll">
                 <topcons-graph ng-if="topconsGraphData"
@@ -153,10 +154,10 @@
                           md-metadata="itasserSsGraphData.metadata">
         </metadata-display>
 
-        <div class="panel-body orf-panel-body"
+        <div class="panel-body orf-panel-body orf-opensmooth"
               ng-show="state.itasser.isOpen && state.itasser.isPresent">
 
-          <p class="orf-title-vertical">Secondary structure</p>
+          <p class="orf-title-vertical orf-fade" ng-if="state.itasser.isOpen && state.itasser.isPresent">Secondary structure</p>
           <hr class="orf-hr">
 
           <div id="scroll4" class="orf-scroll">
@@ -166,7 +167,7 @@
                               graph-spacing="graphSpacing"></itasser-ss-graph>
           </div>
 
-          <p class="orf-title-vertical">Top 10 threading templates</p>
+          <p class="orf-title-vertical orf-fade" ng-if="state.itasser.isOpen && state.itasser.isPresent">Top 10 threading templates</p>
           <hr class="orf-hr">
 
           <div id="scroll5" class="orf-scroll">
@@ -176,8 +177,8 @@
                                   graph-spacing="graphSpacing"></itasser-align-graph>
           </div>
 
-          <div ng-if="itasserModels.length > 0">
-            <p class="orf-title-vertical">Top final models predicted</p>
+          <div>
+            <p class="orf-title-vertical orf-fade" ng-if="state.itasser.isOpen && state.itasser.isPresent && itasserModels.length > 0">Top final models predicted</p>
             <hr class="orf-hr">
 
             <div clas="row">
