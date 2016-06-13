@@ -101,7 +101,9 @@ export function addSet(req, res) {
   Group.findByIdAsync(req.params.id)
     .then(handleEntityNotFound(res))
     .then(function(entity) {
-      entity.permissions.push(req.params.name);
+      if(entity.permissions.indexOf(req.params.name) === -1){
+        entity.permissions.push(req.params.name);
+      }
       return entity.saveAsync()
         .spread(updated => {
           return updated;
@@ -134,7 +136,9 @@ export function addUser(req, res) {
       Group.findById(req.params.id).exec(function(err, group){
         if(err || !group){ res.status(404).end();}
         else{
-          group.users.push(user._id);
+          if(group.users.indexOf(user._id) === -1){
+            group.users.push(user._id);
+          }
           group.save(function(err, saved){
             if(err){ res.status(500).end();}
             res.status(200).end();
