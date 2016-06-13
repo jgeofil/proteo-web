@@ -37,7 +37,7 @@ export function readMetaData(path){
     file = JSON.parse(fs.readFileSync(path));
     file.dateCreated =  new Date(file.dateCreated);
   }catch(er){
-    console.log("Error reading metaData file: " + er)
+    //console.log("Error reading metaData file: " + er)
     file = {};
   }
   return file;
@@ -46,14 +46,14 @@ export function readMetaData(path){
 // Read metaData for analyses
 export function readMetaDataAsync(path, callback){
   fs.readFile(path, function(err, data){
-    if (err) console.log("Error loading metaData file: " + err);
+    //if (err) console.log("Error loading metaData file: " + err);
     try{
       var file = JSON.parse(fs.readFileSync(path));
       file.dateCreated = new Date(file.dateCreated);
       file.dateModified = new Date(file.dateModified);
       callback(file);
     }catch(er){
-      console.log("Error reading metaData file: " + er)
+      //console.log("Error reading metaData file: " + er)
       callback({});
     }
   });
@@ -74,6 +74,16 @@ export function fetchMetadataAsync(analysis) {
 }
 
 
+export function getDirectories(srcpath) {
+  try{
+    return fs.readdirSync(srcpath).filter(function(file) {
+      return fs.statSync(path.join(srcpath, file)).isDirectory();
+    });
+  }catch(er){
+    console.log("Error getting directories: " + er)
+    return [];
+  }
+}
 
 
 

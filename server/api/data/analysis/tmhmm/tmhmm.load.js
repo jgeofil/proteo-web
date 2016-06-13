@@ -33,7 +33,6 @@ export function load(orfpath, callback){
           lines.push(line.split(/\s+/).filter(function(el) {return el.length !== 0}));
         }else{
           var l = line.split(/\s+/).filter(function(el) {return el.length !== 0});
-                      console.log(l)
           switch (l[5]) {
 
             case 'TMHs:':

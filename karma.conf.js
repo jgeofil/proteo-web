@@ -33,6 +33,9 @@ module.exports = function(config) {
       'client/bower_components/angulartics/src/angulartics.js',
       'client/bower_components/angulartics-google-analytics/lib/angulartics-google-analytics.js',
       'client/bower_components/angucomplete-alt/angucomplete-alt.js',
+      'client/bower_components/blob-polyfill/Blob.js',
+      'client/bower_components/file-saver.js/FileSaver.js',
+      'client/bower_components/angular-file-saver/dist/angular-file-saver.bundle.js',
       'client/bower_components/angular-mocks/angular-mocks.js',
       // endbower
       'node_modules/socket.io-client/socket.io.js',

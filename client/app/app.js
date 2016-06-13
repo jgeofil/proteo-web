@@ -16,7 +16,8 @@ angular.module('proteoWebApp', [
   'angularSpinner',
   'ngToast',
   'angulartics', 'angulartics.google.analytics',
-  'angucomplete-alt'
+  'angucomplete-alt',
+  'ngFileSaver'
 ])
   .config(function($routeProvider, $locationProvider) {
     $routeProvider

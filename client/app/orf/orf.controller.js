@@ -2,11 +2,89 @@
 //TODO: include D3 in a more Angular way
 /* jshint undef: false*/
 angular.module('proteoWebApp')
-.controller('OrfCtrl', function ($scope, $http, $routeParams, $rootScope, $uibModal, $timeout, $window) {
+.controller('OrfCtrl', function ($scope, $http, $routeParams, $rootScope, $uibModal, Download) {
+
+  $scope.downData = Download.triggerDownloadFromData;
+  $scope.downUrl = Download.triggerDownloadFromUrl;
 
   // Base path for API
   var abp = '/api/data/'+$routeParams.projectName+'/dataset/'+
     $routeParams.datasetName+'/orf/'+$routeParams.orfName;
+
+  $scope.config = {
+    sequence:{
+      path: abp,
+      files: [
+        {
+          title: 'FASTA',
+          type: 'text/plain',
+          file: 'fasta'
+        }
+      ]
+    },
+    disopred:{
+      path: abp + '/analysis/disopred',
+      files: [
+        {
+          title: 'Disorder',
+          type: 'text/plain',
+          file: 'disopred.seq.diso'
+        },
+        {
+          title: 'Binding',
+          type: 'text/plain',
+          file: 'disopred.seq.pbdat'
+        }
+      ]
+    },
+    tmhmm:{
+      path: abp + '/analysis/tmhmm',
+      files: [
+        {
+          title: 'Domains',
+          type: 'text/plain',
+          file: 'tmhmm.long'
+        },
+        {
+          title: 'Residues',
+          type: 'text/plain',
+          file: 'tmhmm.plp'
+        }
+      ]
+    },
+    topcons:{
+      path: abp + '/analysis/topcons',
+      files: [
+        {
+          title: 'Topcons',
+          type: 'text/plain',
+          file: 'topcons.txt'
+        }
+      ]
+    },
+    itasser:{
+      path: abp + '/analysis/itasser/predictions',
+      files: [
+        {
+          title: 'Coverage',
+          type: 'text/plain',
+          file: 'coverage'
+        },
+        {
+          title: 'CScore',
+          type: 'text/plain',
+          file: 'cscore'
+        },
+        {
+          title: 'Secondary sequence',
+          type: 'text/plain',
+          file: 'seq.ss'
+        }
+      ]
+    }
+  };
+
+
 
   // Handle errors while fetching data
   function handleErrors(err){
@@ -24,7 +102,7 @@ angular.module('proteoWebApp')
     preventKeyEvents: false
   };
 
-  var containerIds = ['#scroll1', '#scroll2', '#scroll3', '#scroll4', '#scroll5'];
+  var containerIds = ['#scroll1', '#scroll2', '#scroll3', '#scroll4', '#scroll5', '#scroll6'];
   containerIds.forEach(function(id){
     $(id).scroll(function() {
       containerIds.forEach(function(idTo){
@@ -45,6 +123,7 @@ angular.module('proteoWebApp')
 
   // State for the analysis panels
   $scope.state = {
+    primary: new StateObj(),
     disopred: new StateObj(),
     itasser: new StateObj(),
     tmhmm: new StateObj(),
@@ -71,10 +150,15 @@ angular.module('proteoWebApp')
   };
 
   //**************************************************************************
-  // MetaData
+  // ORF
   //**************************************************************************
-  $http.get(abp + '/analysis/meta/').then(function(response){
-    $scope.metadata = response.data;
+  $http.get(abp).then(function(response){
+    $scope.metadata = response.data.meta;
+    $scope.orfObj = response.data;
+    if($scope.orfObj.sequence.length > 0){
+      $scope.state.primary.isPresent = true;
+    }
+
   }, handleErrors);
 
   //**************************************************************************
@@ -82,28 +166,45 @@ angular.module('proteoWebApp')
   //**************************************************************************
   var imgBasePath = abp + '/analysis/images/';
 
-  // Get images using auth tokens, standard <img> tag does not use tokens
-  var getImageDataURL = function(imgObj, url, imageType = 'image/jpeg'){
-    $http.get(url, {responseType: 'arraybuffer'}).then(function(res){
-      let blob = new Blob([res.data], {type: imageType});
-      imgObj.url = (window.URL || window.webkitURL).createObjectURL(blob);
-    });
-  };
-
   $http.get(imgBasePath).then(function(response){
       $scope.images = response.data;
       $scope.images.forEach(function(img){
-        getImageDataURL(img, imgBasePath + img.name);
+        Download.getLink(imgBasePath + img.name, 'image/jpeg').then(function(link){
+          img.url = link;
+        });
       });
+  }, handleErrors);
+
+
+
+  //**************************************************************************
+  // Models
+  //**************************************************************************
+  $http.get(abp + '/analysis/models')
+  .then(function(data){
+    var count = 0;
+    $scope.models = data.data.data;
+
+    // Get PDB files for each model
+    $scope.models.forEach(function(model){
+      $http.get(abp + '/analysis/models/' + model.shortName)
+      .then(function(md){
+
+        model.data = md.data;
+        count +=1;
+        if(count === $scope.models.length-1){
+          $scope.modelsLoaded = true;
+        }
+      });
+    }, handleErrors);
   }, handleErrors);
 
   //**************************************************************************
   // DISOPRED3
   //**************************************************************************
-  $http.get(abp + '/analysis/disopred3')
+  $http.get(abp + '/analysis/disopred')
   .then(function(data){
     $scope.disoGraphData = data.data;
-    console.log(data.data)
     $scope.state.disopred.isPresent = true;
   }, handleErrors);
 
@@ -149,7 +250,6 @@ angular.module('proteoWebApp')
   $http.get(abp + '/analysis/tmhmm')
     .then(function(data){
       $scope.tmhmmGraphData = data.data;
-      console.log(data.data)
       $scope.state.tmhmm.isPresent = true;
     }, handleErrors);
 
@@ -159,7 +259,6 @@ angular.module('proteoWebApp')
   $http.get(abp + '/analysis/topcons')
     .then(function(data){
       $scope.topconsGraphData = data.data;
-      console.log(data.data)
       $scope.state.topcons.isPresent = true;
     }, handleErrors);
 

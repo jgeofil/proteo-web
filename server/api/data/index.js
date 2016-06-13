@@ -10,6 +10,8 @@ var router = express.Router({mergeParams: true});
 
 router.post('/update', auth.hasRole('admin'), controller.update);
 router.use('/:projectId/dataset/:dataId/orf/:orfId/analysis', auth.isAuthenticated(), util.isAuthorizedOnGroup ,require('./analysis/analysis.index.js'));
+router.use('/:projectId/dataset/:dataId/orf/:orfId/file/fasta', auth.isAuthenticated(), util.isAuthorizedOnGroup, controller.oneOrfSequence);
+router.use('/:projectId/dataset/:dataId/orf/:orfId', auth.isAuthenticated(), util.isAuthorizedOnGroup, controller.oneOrf);
 router.use('/:projectId/dataset/:dataId', auth.isAuthenticated(), util.isAuthorizedOnGroup, controller.orfs);
 router.use('/:projectId', auth.isAuthenticated(), util.isAuthorizedOnGroup, controller.datasets);
 router.get('/', auth.isAuthenticated(), controller.index);

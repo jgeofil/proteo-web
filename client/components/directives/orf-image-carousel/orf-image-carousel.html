@@ -1,5 +1,9 @@
 <div ng-repeat="im in oicImages track by $index" ng-show="$index == current()">
-  <img class="img-fluid img-thumbnail" ng-src="{{im.url}}"></img>
+  <div class="img-fluid img-thumbnail oic-container-parent">
+    <img class="oic-image img-fluid" ng-src="{{im.url}}"></img>
+
+
+  </div>
 
   <div class="text-center">
     <span class="glyphicon glyphicon-arrow-left pull-left" ng-click="left()"></span>

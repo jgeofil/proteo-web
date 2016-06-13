@@ -74,6 +74,9 @@
       <script src="bower_components/angulartics/src/angulartics.js"></script>
       <script src="bower_components/angulartics-google-analytics/lib/angulartics-google-analytics.js"></script>
       <script src="bower_components/angucomplete-alt/angucomplete-alt.js"></script>
+      <script src="bower_components/blob-polyfill/Blob.js"></script>
+      <script src="bower_components/file-saver.js/FileSaver.js"></script>
+      <script src="bower_components/angular-file-saver/dist/angular-file-saver.bundle.js"></script>
       <!-- endbower -->
       <script src="socket.io-client/socket.io.js"></script>
     <!-- endbuild -->
@@ -83,7 +86,7 @@
       <script src="app/admin/admin.module.js"></script>
       <script src="components/auth/auth.module.js"></script>
       <script src="components/util/util.module.js"></script>
-      <script src="components/auth/user.service.js"></script>
+      <script src="components/directives/metadata-display/metadata-display.directive.js"></script>
       <script src="app/admin/admin.controller.js"></script>
       <script src="app/account/account.js"></script>
       <script src="app/admin/admin.router.js"></script>
@@ -100,15 +103,19 @@
       <script src="components/auth/auth.service.js"></script>
       <script src="components/auth/interceptor.service.js"></script>
       <script src="components/auth/router.decorator.js"></script>
+      <script src="components/auth/user.service.js"></script>
+      <script src="components/directives/file-download-button/file-download-button.directive.js"></script>
       <script src="app/account/login/login.controller.js"></script>
-      <script src="components/directives/metadata-display/metadata-display.directive.js"></script>
       <script src="components/directives/orf-image-carousel/orf-image-carousel.directive.js"></script>
       <script src="components/directives/orf-metadata-display/orf-metadata-display.directive.js"></script>
+      <script src="components/directives/orf-model-carousel/orf-model-carousel.directive.js"></script>
+      <script src="components/directives/orf-panel-title/orf-panel-title.directive.js"></script>
       <script src="components/footer/footer.directive.js"></script>
       <script src="components/graphing/d3Helper/d3Helper.service.js"></script>
       <script src="components/graphing/disoGraphLine/disoGraphLine.directive.js"></script>
       <script src="components/graphing/itasserAlignGraph/itasserAlignGraph.directive.js"></script>
       <script src="components/graphing/itasserSsGraph/itasserSsGraph.directive.js"></script>
+      <script src="components/graphing/primarySequenceGraph/primarySequenceGraph.directive.js"></script>
       <script src="components/graphing/tmhmmGraph/tmhmmGraph.directive.js"></script>
       <script src="components/graphing/topconsGraph/topconsGraph.directive.js"></script>
       <script src="components/molecularModel/molecularModel.directive.js"></script>
@@ -116,6 +123,7 @@
       <script src="components/navbar/navbar.controller.js"></script>
       <script src="components/navbar/navbar.directive.js"></script>
       <script src="components/services/datatree/datatree.service.js"></script>
+      <script src="components/services/download/download.service.js"></script>
       <script src="components/socket/socket.service.js"></script>
       <script src="app/account/signup/signup.controller.js"></script>
       <script src="components/util/util.service.js"></script>

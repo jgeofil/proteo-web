@@ -8,8 +8,11 @@ var Disopred = require('./disopred.model');
 // Location of data folder
 var dataPath = config.data;
 
-// Get JSON formatted DISOPRED3 output
-export function disopred3(req, res){
+/**
+ * Get JSON formatted disopred output.
+ * @return {null} request is answered.
+ */
+export function disopred(req, res){
 
   var subPath = path.join(dataPath, req.params.projectId, req.params.dataId, req.params.orfId, 'disopred');
 
@@ -20,4 +23,25 @@ export function disopred3(req, res){
       res.status(404).send("Not found");
     }
   });
+}
+
+/**
+ * Get disopred output in original text format.
+ * @return {null} request is answered.
+ */
+export function original(req, res){
+
+  var subPath = path.join(dataPath, req.params.projectId, req.params.dataId, req.params.orfId, 'disopred');
+
+  switch (req.params.fileName) {
+    case 'disopred.seq.diso':
+      res.sendFile(path.join(subPath, 'disopred.seq.diso'));
+      break;
+    case 'disopred.seq.pbdat':
+      res.sendFile(path.join(subPath, 'disopred.seq.pbdat'));
+      break;
+    default:
+      res.status(404).send("Not found");
+  }
+
 }
