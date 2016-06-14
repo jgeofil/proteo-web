@@ -2,87 +2,19 @@
 //TODO: include D3 in a more Angular way
 /* jshint undef: false*/
 angular.module('proteoWebApp')
-.controller('OrfCtrl', function ($scope, $http, $routeParams, $rootScope, $uibModal, Download) {
+.controller('OrfCtrl', function ($scope, $http, $routeParams, $rootScope, $uibModal, Download, Orf) {
 
   $scope.downData = Download.triggerDownloadFromData;
   $scope.downUrl = Download.triggerDownloadFromUrl;
 
   // Base path for API
-  var abp = '/api/data/'+$routeParams.projectName+'/dataset/'+
+  $scope.abp = '/api/data/'+$routeParams.projectName+'/dataset/'+
     $routeParams.datasetName+'/orf/'+$routeParams.orfName;
 
-  $scope.config = {
-    sequence:{
-      path: abp,
-      files: [
-        {
-          title: 'FASTA',
-          type: 'text/plain',
-          file: 'fasta'
-        }
-      ]
-    },
-    disopred:{
-      path: abp + '/analysis/disopred',
-      files: [
-        {
-          title: 'Disorder',
-          type: 'text/plain',
-          file: 'disopred.seq.diso'
-        },
-        {
-          title: 'Binding',
-          type: 'text/plain',
-          file: 'disopred.seq.pbdat'
-        }
-      ]
-    },
-    tmhmm:{
-      path: abp + '/analysis/tmhmm',
-      files: [
-        {
-          title: 'Domains',
-          type: 'text/plain',
-          file: 'tmhmm.long'
-        },
-        {
-          title: 'Residues',
-          type: 'text/plain',
-          file: 'tmhmm.plp'
-        }
-      ]
-    },
-    topcons:{
-      path: abp + '/analysis/topcons',
-      files: [
-        {
-          title: 'Topcons',
-          type: 'text/plain',
-          file: 'topcons.txt'
-        }
-      ]
-    },
-    itasser:{
-      path: abp + '/analysis/itasser/predictions',
-      files: [
-        {
-          title: 'Coverage',
-          type: 'text/plain',
-          file: 'coverage'
-        },
-        {
-          title: 'CScore',
-          type: 'text/plain',
-          file: 'cscore'
-        },
-        {
-          title: 'Secondary sequence',
-          type: 'text/plain',
-          file: 'seq.ss'
-        }
-      ]
-    }
-  };
+  Orf.getFullOrf($scope.abp).then(function(resp){
+    $scope.oflOrf = resp;
+  });
+
 
 
 
@@ -91,50 +23,11 @@ angular.module('proteoWebApp')
     console.log(err);
   }
 
-  //**************************************************************************
-  // State and parameters
-  //**************************************************************************
 
-  // Ng-scrollable config
-  $scope.scrollConf = {
-    scrollX:'bottom',
-    useBothWheelAxes: true,
-    preventKeyEvents: false
-  };
-
-  var containerIds = ['#scroll1', '#scroll2', '#scroll3', '#scroll4', '#scroll5', '#scroll6'];
-  containerIds.forEach(function(id){
-    $(id).scroll(function() {
-      containerIds.forEach(function(idTo){
-        if(idTo !== id){
-          $(idTo).scrollLeft($(id).scrollLeft());
-        }
-      });
-    });
-  });
-
-  var StateObj = function(){
-    this.isOpen = true;
-    this.toggle = function (){this.isOpen = !this.isOpen;};
-    this.infoOpen = false;
-    this.toggleInfo = function (){this.infoOpen = !this.infoOpen;};
-    this.isPresent = false;
-  };
-
-  // State for the analysis panels
-  $scope.state = {
-    primary: new StateObj(),
-    disopred: new StateObj(),
-    itasser: new StateObj(),
-    tmhmm: new StateObj(),
-    topcons: new StateObj()
-  };
 
   // Page title, aka ORF name
   $scope.orfName = $routeParams.orfName;
 
-  // Controls spacing between amino acids
-  $scope.graphSpacing = 10;
 
   // 3D model modal window
   $scope.spawnModelModal = function(pdb){
@@ -152,7 +45,7 @@ angular.module('proteoWebApp')
   //**************************************************************************
   // ORF
   //**************************************************************************
-  $http.get(abp).then(function(response){
+  $http.get($scope.abp).then(function(response){
     $scope.metadata = response.data.meta;
     $scope.orfObj = response.data;
     if($scope.orfObj.sequence.length > 0){
@@ -164,7 +57,7 @@ angular.module('proteoWebApp')
   //**************************************************************************
   // Images
   //**************************************************************************
-  var imgBasePath = abp + '/analysis/images/';
+  var imgBasePath = $scope.abp + '/analysis/images/';
 
   $http.get(imgBasePath).then(function(response){
       $scope.images = response.data;
@@ -180,14 +73,14 @@ angular.module('proteoWebApp')
   //**************************************************************************
   // Models
   //**************************************************************************
-  $http.get(abp + '/analysis/models')
+  $http.get($scope.abp + '/analysis/models')
   .then(function(data){
     var count = 0;
     $scope.models = data.data.data;
 
     // Get PDB files for each model
     $scope.models.forEach(function(model){
-      $http.get(abp + '/analysis/models/' + model.shortName)
+      $http.get($scope.abp + '/analysis/models/' + model.shortName)
       .then(function(md){
 
         model.data = md.data;
@@ -202,7 +95,7 @@ angular.module('proteoWebApp')
   //**************************************************************************
   // DISOPRED3
   //**************************************************************************
-  $http.get(abp + '/analysis/disopred')
+  $http.get($scope.abp + '/analysis/disopred')
   .then(function(data){
     $scope.disoGraphData = data.data;
     $scope.state.disopred.isPresent = true;
@@ -211,14 +104,14 @@ angular.module('proteoWebApp')
   //**************************************************************************
   // ITASSER
   //**************************************************************************
-  $http.get(abp + '/analysis/itasser/models')
+  $http.get($scope.abp + '/analysis/itasser/models')
   .then(function(data){
     $scope.itasserModels = data.data;
     $scope.state.itasser.isPresent = true;
 
     // Get PDB files for each model
     $scope.itasserModels.forEach(function(model){
-      $http.get(abp + '/analysis/itasser/models/' + model.name)
+      $http.get($scope.abp + '/analysis/itasser/models/' + model.name)
       .then(function(data){
 
         model.data = data.data;
@@ -238,9 +131,8 @@ angular.module('proteoWebApp')
     }, handleErrors);
   }, handleErrors);
 
-  $http.get(abp + '/analysis/itasser/predictions')
+  $http.get($scope.abp + '/analysis/itasser/predictions')
   .then(function(response){
-        console.log(response)
     $scope.itasserSsGraphData = response.data;
     $scope.itasserAlignGraphData = response.data.align;
   }, handleErrors);
@@ -248,7 +140,7 @@ angular.module('proteoWebApp')
   //**************************************************************************
   // TMHMM
   //**************************************************************************
-  $http.get(abp + '/analysis/tmhmm')
+  $http.get($scope.abp + '/analysis/tmhmm')
     .then(function(data){
       $scope.tmhmmGraphData = data.data;
       $scope.state.tmhmm.isPresent = true;
@@ -257,9 +149,8 @@ angular.module('proteoWebApp')
   //**************************************************************************
   // topcons
   //**************************************************************************
-  $http.get(abp + '/analysis/topcons')
+  $http.get($scope.abp + '/analysis/topcons')
     .then(function(data){
-      console.log(data.data)
       $scope.topconsGraphData = data.data;
       $scope.state.topcons.isPresent = true;
     }, handleErrors);

@@ -89,11 +89,13 @@ export function fullOrf(req, res) {
     .findOne({path: subPath})
     .populate('analysis.disopred')
     .populate('analysis.tmhmm')
+    .populate('analysis.itasser')
+    .populate('analysis.topcons')
     //TODO: populate other analyses when they will be preloaded.
     .exec(function(err, orf){
       if(!err && orf){
 
-        
+
         res.status(200).json(orf);
       }else{
         res.status(500).send("Error reading ORF.");
