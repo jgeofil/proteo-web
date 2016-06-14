@@ -240,6 +240,7 @@ angular.module('proteoWebApp')
 
   $http.get(abp + '/analysis/itasser/predictions')
   .then(function(response){
+        console.log(response)
     $scope.itasserSsGraphData = response.data;
     $scope.itasserAlignGraphData = response.data.align;
   }, handleErrors);
@@ -258,6 +259,7 @@ angular.module('proteoWebApp')
   //**************************************************************************
   $http.get(abp + '/analysis/topcons')
     .then(function(data){
+      console.log(data.data)
       $scope.topconsGraphData = data.data;
       $scope.state.topcons.isPresent = true;
     }, handleErrors);

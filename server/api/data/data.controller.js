@@ -79,6 +79,29 @@ export function oneOrf(req, res) {
 }
 
 /**
+ * Get all available information for an ORF, including analysis results.
+ * @return {null} request is answered.
+ */
+export function fullOrf(req, res) {
+  var subPath = path.join(DATA_PATH, req.params.projectId, req.params.dataId, req.params.orfId);
+
+  Data.Orf
+    .findOne({path: subPath})
+    .populate('analysis.disopred')
+    .populate('analysis.tmhmm')
+    //TODO: populate other analyses when they will be preloaded.
+    .exec(function(err, orf){
+      if(!err && orf){
+
+        
+        res.status(200).json(orf);
+      }else{
+        res.status(500).send("Error reading ORF.");
+      }
+    })
+}
+
+/**
  * Get FASTA formatted sequence file for an ORF
  * @return {null} request is answered.
  */

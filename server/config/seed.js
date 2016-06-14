@@ -10,11 +10,13 @@ import Group from '../api/group/group.model';
 User.find({}).removeAsync()
   .then(() => {
     User.createAsync({
+      _id: 'test00000000000000000000',
       provider: 'local',
       name: 'Test User',
       email: 'test@example.com',
       password: 'test'
     }, {
+      _id: 'admin0000000000000000000',
       provider: 'local',
       role: 'admin',
       name: 'Admin',

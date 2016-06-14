@@ -7,6 +7,8 @@ import _ from 'lodash';
 
 import Disopred from './analysis/disopred/disopred.model';
 import Tmhmm from './analysis/tmhmm/tmhmm.model';
+import Topcons from './analysis/topcons/topcons.model';
+import Itasser from './analysis/itasser/itasser.model';
 
 var ProjectSchema = new mongoose.Schema({
   name: String,
@@ -36,7 +38,9 @@ var OrfSchema = new mongoose.Schema({
   analyses: {},
   analysis: {
     disopred: {type: mongoose.Schema.Types.ObjectId, ref: 'Disopred', default: null},
-    tmhmm: {type: mongoose.Schema.Types.ObjectId, ref: 'Tmhmm', default: null}
+    tmhmm: {type: mongoose.Schema.Types.ObjectId, ref: 'Tmhmm', default: null},
+    topcons: {type: mongoose.Schema.Types.ObjectId, ref: 'Topcons', default: null},
+    itasser: {type: mongoose.Schema.Types.ObjectId, ref: 'Itasser', default: null}
   },
   sequence: [String],
   seqLength: Number,

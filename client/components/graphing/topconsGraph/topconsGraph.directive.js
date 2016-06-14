@@ -10,18 +10,18 @@ angular.module('proteoWebApp')
         },
         link: function (scope, element, attrs) {
           //Length of the sequence alignement
-          var seqln = scope.graphData.zcord.length;
+          var seqln = scope.graphData.zCord.length;
           var data = scope.graphData;
 
           // Size and margins
           var lineGraphHeight = 100;
-          var si = d3Helper.getSizing(lineGraphHeight + (data.pred.length * 20), 10, 20, seqln);
+          var si = d3Helper.getSizing(lineGraphHeight + (data.predictions.length * 20), 10, 20, seqln);
 
           //Scales and domains
           var x = d3.scale.linear().range([1, si.width]);
           var yProb = d3.scale.linear().range([(lineGraphHeight/2)-5,0]);
           var yZcord = d3.scale.linear().range([lineGraphHeight,(lineGraphHeight/2)+5]);
-          x.domain(d3.extent(scope.graphData.zcord, function(d,i) { return i+1; }));
+          x.domain(d3.extent(scope.graphData.zCord, function(d,i) { return i+1; }));
           yProb.domain([0,1]);
           yZcord.domain([0,25]);
           var range = x(1)-x(0);
@@ -65,7 +65,7 @@ angular.module('proteoWebApp')
 
           svg.append('path')
             .attr('class', 'line')
-            .attr('d', zCordLine(scope.graphData.zcord))
+            .attr('d', zCordLine(scope.graphData.zCord))
             .style('stroke-width', 1)
             .style('stroke', 'black') ;
           svg.append('path')
@@ -94,13 +94,13 @@ angular.module('proteoWebApp')
 
           // Create sequence containers
           var sequences = body.selectAll('g')
-            .data(data.pred).enter()
+            .data(data.predictions).enter()
             .append('g')
             .attr('transform', function(d,i){return 'translate(0,' + (i*12) + ')';})
 
           // Append ids
           ids.selectAll('text')
-            .data(data.pred).enter()
+            .data(data.predictions).enter()
             .append('text')
             .attr('class', 'itasser-align-info')
             .attr('text-anchor', 'start')

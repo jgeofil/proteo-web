@@ -9,10 +9,14 @@ var mongoose = require('bluebird').promisifyAll(require('mongoose'));
 import Data from './data.model';
 import Disopred from './analysis/disopred/disopred.model';
 import Tmhmm from './analysis/tmhmm/tmhmm.model';
+import Topcons from './analysis/topcons/topcons.model';
+import Itasser from './analysis/itasser/itasser.model';
 import Model from './analysis/models/models.model';
 
 var tmhmmLoad = require('./analysis/tmhmm/tmhmm.load');
 var disoLoad = require('./analysis/disopred/disopred.load');
+var topconsLoad = require('./analysis/topcons/topcons.load');
+var itasserLoad = require('./analysis/itasser/itasser.load');
 var modelsLoad = require('./analysis/models/models.load');
 
 var util = require('./util');
@@ -123,9 +127,11 @@ function updateData(){
   Data.Gridfile.find({}).removeAsync().then(function(){
   Disopred.find({}).removeAsync().then(function(){
   Tmhmm.find({}).removeAsync().then(function(){
+  Topcons.find({}).removeAsync().then(function(){
+  Itasser.find({}).removeAsync().then(function(){
   Model.find({}).removeAsync().then(function(){
     readProjects();
-  })})})})})})})});
+  })})})})})})})})})});
 }
 
 /**
@@ -154,8 +160,14 @@ function loadAnalyses(orf){
   if (orf.analyses.hasOwnProperty("tmhmm")) {
     loadAnalysis(orf, tmhmmLoad.load, 'tmhmm', Tmhmm);
   }
+  if (orf.analyses.hasOwnProperty("topcons")) {
+    loadAnalysis(orf, topconsLoad.load, 'topcons', Topcons);
+  }
   if (orf.analyses.hasOwnProperty("models")) {
     loadAnalysis(orf, modelsLoad.load, 'models', Model);
+  }
+  if (orf.analyses.hasOwnProperty("itasser")) {
+    loadAnalysis(orf, itasserLoad.load, 'itasser', Itasser);
   }
 }
 
