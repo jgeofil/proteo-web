@@ -27,7 +27,7 @@ angular.module('proteoWebApp')
           var range = x(1)-x(0);
 
           // Create SVG D3 container
-          var svg = d3Helper.getSvgCanvas('#topcons-graph',si);
+          var svg = d3Helper.getSvgCanvas(element.children()[0],si);
           // Sub-containers
           var body = svg.append('g')
             .attr('transform', 'translate(0,'+ (lineGraphHeight+15) +')');

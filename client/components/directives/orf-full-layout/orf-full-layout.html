@@ -16,7 +16,7 @@
 
   <div class="panel-body orf-panel-body orf-opensmooth"
         ng-show="state.primary.isOpen && state.primary.isPresent">
-    <div id="scroll6" class="orf-scroll">
+    <div class="orf-scroll">
     <primary-sequence-graph ng-if="state.primary.isPresent" graph-data="oflOrf"></primary-sequence-graph>
     </div>
   </div>
@@ -44,7 +44,7 @@
         ng-if="state.disopred.isOpen && state.disopred.isPresent">Disorder pred.</p>
     <hr class="orf-hr">
 
-    <div id="scroll1" class="orf-scroll">
+    <div class="orf-scroll">
       <diso-graph-line ng-if="state.disopred.isPresent"
                         graph-data="oflOrf.analysis.disopred.data"
                         graph-spacing="graphSpacing"></diso-graph-line>
@@ -76,7 +76,7 @@
     <p class="orf-title-vertical orf-fade" ng-if="state.tmhmm.isOpen && state.tmhmm.isPresent">Transmembrane pred.</p>
     <hr class="orf-hr">
 
-    <div id="scroll2" class="orf-scroll">
+    <div class="orf-scroll">
       <tmhmm-graph ng-if="state.tmhmm.isPresent"
                     graph-data="oflOrf.analysis.tmhmm"
                     graph-height="100"
@@ -106,7 +106,7 @@
 
     <p class="orf-title-vertical orf-fade" ng-if="state.topcons.isOpen && state.topcons.isPresent">Topcons predictions</p>
     <hr class="orf-hr">
-    <div id="scroll3" class="orf-scroll">
+    <div class="orf-scroll">
           <topcons-graph ng-if="state.topcons.isPresent"
                           graph-data="oflOrf.analysis.topcons"
                           graph-spacing="graphSpacing"> </topcons-graph>
@@ -136,7 +136,7 @@
     <p class="orf-title-vertical orf-fade" ng-if="state.itasser.isOpen && state.itasser.isPresent">Secondary structure</p>
     <hr class="orf-hr">
 
-    <div id="scroll4" class="orf-scroll">
+    <div class="orf-scroll">
       <itasser-ss-graph ng-if="state.itasser.isPresent"
                         graph-data-ss="oflOrf.analysis.itasser.ss"
                         graph-height="150"
@@ -146,7 +146,7 @@
     <p class="orf-title-vertical orf-fade" ng-if="state.itasser.isOpen && state.itasser.isPresent">Top 10 threading templates</p>
     <hr class="orf-hr">
 
-    <div id="scroll5" class="orf-scroll">
+    <div class="orf-scroll">
       <itasser-align-graph ng-if="state.itasser.isPresent"
                             graph-data="oflOrf.analysis.itasser.align"
                             seq-count="10"
@@ -154,12 +154,12 @@
     </div>
 
     <div>
-      <p class="orf-title-vertical orf-fade" ng-if="state.itasser.isOpen && state.itasser.isPresent && itasserModels.length > 0">Top final models predicted</p>
+      <p class="orf-title-vertical orf-fade" ng-if="state.itasser.isOpen && state.itasser.isPresent && state.itasserModels">Top final models predicted</p>
       <hr class="orf-hr">
 
       <div clas="row">
-        <div ng-repeat="model in itasserModels" class="col-md-4">
-          <div id="gldiv-{{model.name}}" class="prot itasser-model-box">
+        <div ng-repeat="model in oflOrfItasserModels" class="col-md-4">
+          <div class="prot itasser-model-box">
 
           </div>
           <h5>

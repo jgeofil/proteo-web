@@ -1,17 +1,18 @@
 'use strict';
 
 angular.module('proteoWebApp')
-  .directive('orfFullLayout', function () {
+  .directive('orfFullLayout', function ($timeout, $uibModal, Download) {
     return {
       templateUrl: 'components/directives/orf-full-layout/orf-full-layout.html',
       restrict: 'EA',
       scope: {
         oflOrf: '=',
         //TODO: should be in the ORF object
-        oflBasePath: '='
+        oflBasePath: '=',
+        oflOrfItasserModels: '='
       },
-      link: function (scope, element, attrs) {
-
+      link: function (scope, el, attrs) {
+        scope.downData = Download.triggerDownloadFromData;
 
         // Controls spacing between amino acids
         scope.graphSpacing = 10;
@@ -20,6 +21,21 @@ angular.module('proteoWebApp')
         // State and parameters
         //**********************************************************************
 
+
+
+          // 3D model modal window
+          scope.spawnModelModal = function(pdb){
+            $uibModal.open({
+              animation: true,
+              templateUrl: 'modelModal.html',
+              controller: 'ModelModalCtrl',
+              size: 'lg',
+              resolve: {
+                pdb: function () {return pdb;}
+              }
+            });
+          };
+
         // Ng-scrollable config
         scope.scrollConf = {
           scrollX:'bottom',
@@ -27,16 +43,24 @@ angular.module('proteoWebApp')
           preventKeyEvents: false
         };
 
-        var containerIds = ['#scroll1', '#scroll2', '#scroll3', '#scroll4', '#scroll5', '#scroll6'];
-        containerIds.forEach(function(id){
-          $(id).scroll(function() {
-            containerIds.forEach(function(idTo){
-              if(idTo !== id){
-                $(idTo).scrollLeft($(id).scrollLeft());
+        var scrollZones = el[0].getElementsByClassName('orf-scroll');
+        var jZones = [];
+
+        for(var i = 0; i < scrollZones.length; i++){
+          jZones.push($(scrollZones[i]));
+        }
+
+        jZones.forEach(function(zone1){
+          zone1.scroll(function() {
+            jZones.forEach(function(zone2){
+              if(zone1 !== zone2){
+                zone2.scrollLeft(zone1.scrollLeft());
               }
             });
           });
         });
+
+
 
         var StateObj = function(){
           this.isOpen = true;
@@ -51,12 +75,31 @@ angular.module('proteoWebApp')
           primary: new StateObj(),
           disopred: new StateObj(),
           itasser: new StateObj(),
+          itasserModels: false,
           tmhmm: new StateObj(),
           topcons: new StateObj()
         };
 
+        scope.$watch('oflOrfItasserModels', function(ms){
+          if(ms){
+            scope.state.itasserModels = true;
+            scope.oflOrfItasserModels.forEach(function(model,i){
+              var element = $(el[0].getElementsByClassName('itasser-model-box')[i]);
+              // Viewer config - properties 'defaultcolors' and 'callback'
+              var config = {defaultcolors: $3Dmol.rasmolElementColors };
+              // Create GLViewer within 'gldiv'
+              var myviewer = $3Dmol.createViewer(element, config);
+              //'data' is a string containing molecule data in pdb format
+              myviewer.addModel(String(model.data), 'pdb');
+              myviewer.setBackgroundColor(0xffffff);
+              myviewer.setStyle({}, {cartoon: {color: 'spectrum'}});
+              myviewer.zoomTo();
+              myviewer.render();
+            });
+          }
+        });
+
         scope.$watch('oflOrf', function(orf){
-          console.log(orf)
           if(orf){
             scope.state.primary.isPresent = orf.sequence.length > 0;
             scope.state.disopred.isPresent = orf.analysis.disopred !== null;
@@ -67,8 +110,6 @@ angular.module('proteoWebApp')
 
 
 
-
-          console.log(scope.oflBasePath)
 
           scope.config = {
             sequence:{
@@ -149,5 +190,18 @@ angular.module('proteoWebApp')
 
 
       }
+    };
+  })
+
+  //**************************************************************************
+  // Modal window controller
+  //**************************************************************************
+  .controller('ModelModalCtrl', function ($scope, $uibModalInstance, pdb) {
+    $scope.pdb = pdb;
+    $scope.ok = function () {
+      $uibModalInstance.close();
+    };
+    $scope.cancel = function () {
+      $uibModalInstance.dismiss('cancel');
     };
   });

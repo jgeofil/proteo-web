@@ -24,7 +24,7 @@ angular.module('proteoWebApp')
         var step = x(0)-x(1);
 
         // Create SVG D3 container
-        var svg = d3Helper.getSvgCanvas('#itasser-ss-graph',si);
+        var svg = d3Helper.getSvgCanvas(element.children()[0],si);
 
         //**********************************************************************
         // Axes
