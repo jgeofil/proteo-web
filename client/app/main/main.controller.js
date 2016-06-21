@@ -30,6 +30,35 @@ angular.module('proteoWebApp')
     count: 10
   };
 
+  $scope.comparison = {
+    active: false,
+    isActive: function(){return this.active;},
+    isLacking: function(){return this.selection.length < 2;},
+    click: function(){
+      if(!this.active){
+        this.active = true;
+      }
+    },
+    selection: [],
+    text: function(){
+      if(!this.active){
+        return 'Comparison';
+      }else if(this.active && this.isLacking()){
+        return 'Select at least 2 ORF';
+      }
+    },
+    add: function(obj){
+      if(this.selection.indexOf(obj) === -1){
+        this.selection.push(obj);
+      }else{
+        this.selection.splice(this.selection.indexOf(obj), 1);
+      }
+    },
+    isIn: function(obj){
+      return this.selection.indexOf(obj) !== -1;
+    }
+  };
+
   // Get projects
   Datatree.getProjectList().then(function(response){
     $timeout(function(){
@@ -99,7 +128,6 @@ angular.module('proteoWebApp')
     $http.get('/api/data/'+$scope.selectedProject+'/dataset/'+dataset).then(function(response){
 
       $timeout(function(){
-        console.log(response.data)
         dataSort(response.data);
         $scope.table.orfs = new NgTableParams(tableParameters, {data: response.data});
         $scope.data.orfs = true;

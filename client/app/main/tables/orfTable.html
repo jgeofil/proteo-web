@@ -11,6 +11,13 @@
         filter="{name: 'text'}"
         sortable="'name'"
         class="col-lg-3">
+      <md-checkbox  ng-if="comparison.isActive()"
+                    ng-model="dummy"
+                    aria-label="s"
+                    class="green"
+                    ng-change="comparison.add(row)"
+                    >
+      </md-checkbox>
       <a href="/orf/single/{{selectedProject}}/{{selectedDataset}}/{{row.name}}">
         {{row.name}}
       </a>

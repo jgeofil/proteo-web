@@ -103,6 +103,16 @@
             <ng-include src="'app/main/tables/orfTable.html'"></ng-include>
           </div>
 
+          <button type="button"
+                  class="btn btn-sm"
+                  ng-class="{
+                    'btn-primary': !comparison.isActive(),
+                    'btn-warning': comparison.isActive() && comparison.isLacking()
+                  }"
+                  ng-click="comparison.click()">
+                  {{comparison.text()}}
+          </button>
+
         </div>
       </div>
 
