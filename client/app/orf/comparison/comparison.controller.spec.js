@@ -1,16 +1,16 @@
 'use strict';
 
-describe('Controller: OrfCtrl', function () {
+describe('Controller: OrfComparisonCtrl', function () {
 
   // load the controller's module
   beforeEach(module('proteoWebApp'));
 
-  var OrfCtrl, scope;
+  var OrfComparisonCtrl, scope;
 
   // Initialize the controller and a mock scope
   beforeEach(inject(function ($controller, $rootScope) {
     scope = $rootScope.$new();
-    OrfCtrl = $controller('OrfCtrl', {
+    OrfComparisonCtrl = $controller('OrfComparisonCtrl', {
       $scope: scope
     });
   }));

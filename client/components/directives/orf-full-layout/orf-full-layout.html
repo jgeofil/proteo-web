@@ -36,7 +36,8 @@
     </file-download-button>
   </div>
   <metadata-display md-state="state.disopred"
-                    md-metadata="disoGraphData.metadata">
+                    md-metadata="oflOrf.analysis.disopred.metadata"
+                    ng-if="state.disopred.isPresent">
   </metadata-display>
   <div class="panel-body orf-panel-body orf-opensmooth"
         ng-show="state.disopred.isOpen && state.disopred.isPresent">
@@ -67,7 +68,8 @@
     </file-download-button>
   </div>
  <metadata-display md-state="state.tmhmm"
-                   md-metadata="tmhmmGraphData.metadata">
+                   md-metadata="oflOrf.analysis.tmhmm.metadata"
+                   ng-if="state.tmhmm.isPresent">
  </metadata-display>
 
   <div class="panel-body orf-panel-body orf-opensmooth"
@@ -98,7 +100,8 @@
     </file-download-button>
   </div>
   <metadata-display md-state="state.topcons"
-                    md-metadata="topconsGraphData.metadata">
+                    md-metadata="oflOrf.analysis.topcons.metadata"
+                    ng-if="state.topcons.isPresent">
   </metadata-display>
 
   <div class="panel-body orf-panel-body orf-opensmooth"
@@ -127,7 +130,8 @@
     </file-download-button>
   </div>
   <metadata-display md-state="state.itasser"
-                    md-metadata="itasserSsGraphData.metadata">
+                    md-metadata="oflOrf.analysis.itasser.metadata"
+                    ng-if="state.itasser.isPresent">
   </metadata-display>
 
   <div class="panel-body orf-panel-body orf-opensmooth"

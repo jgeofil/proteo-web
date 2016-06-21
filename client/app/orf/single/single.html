@@ -10,7 +10,7 @@
 
           <h2>{{orfName}}</h2>
           <hr>
-          <orf-metadata-display md-metadata="metadata"></orf-metadata-display>
+          <orf-metadata-display md-metadata="oflOrf.meta"></orf-metadata-display>
           <hr>
           <orf-image-carousel oic-images="images"></orf-image-carousel>
           <hr ng-if="modelsLoaded">
@@ -20,20 +20,12 @@
       </div>
     </div>
 
-    <div class="col-lg-3">
-
+    <div class="col-lg-7">
       <orf-full-layout ofl-orf="oflOrf"
                         ofl-orf-itasser-models="oflOrfMs"
                         ofl-base-path="abp"></orf-full-layout>
-
     </div>
-    <div class="col-lg-3">
 
-      <orf-full-layout ofl-orf="oflOrf2"
-      ofl-orf-itasser-models="oflOrfMs2"
-                        ofl-base-path="abp"></orf-full-layout>
-
-    </div>
   </div>
 </div>
 
