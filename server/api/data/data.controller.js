@@ -52,6 +52,8 @@ export function orfs(req, res) {
     .find({dirname: subPath})
     .populate('analysis.disopred', 'stats sequence')
     .populate('analysis.tmhmm', 'stats sequence')
+    .populate('project', '_id name')
+    .populate('dataset', '_id name')
     .exec(function(err, orfs){
       if(!err){
         res.status(200).json(orfs);
@@ -69,11 +71,38 @@ export function oneOrf(req, res) {
     .findOne({path: subPath})
     .populate('analysis.disopred', 'stats sequence')
     .populate('analysis.tmhmm', 'stats sequence')
+    .populate('project', '_id name')
+    .populate('dataset', '_id name')
     .exec(function(err, orf){
       if(!err && orf){
         res.status(200).json(orf);
       }else{
         res.status(500).send("Error reading ORFs.");
+      }
+    })
+}
+
+/**
+ * Get all available information for an ORF, including analysis results.
+ * @return {null} request is answered.
+ */
+export function fullOrf(req, res) {
+  var subPath = path.join(DATA_PATH, req.params.projectId, req.params.dataId, req.params.orfId);
+
+  Data.Orf
+    .findOne({path: subPath})
+    .populate('analysis.disopred')
+    .populate('analysis.tmhmm')
+    .populate('analysis.itasser')
+    .populate('analysis.topcons')
+    //TODO: populate other analyses when they will be preloaded.
+    .exec(function(err, orf){
+      if(!err && orf){
+
+
+        res.status(200).json(orf);
+      }else{
+        res.status(500).send("Error reading ORF.");
       }
     })
 }

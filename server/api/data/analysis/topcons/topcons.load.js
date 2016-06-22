@@ -1,27 +1,15 @@
 'use strict';
 
-import _ from 'lodash';
-import config from '../../../config/environment';
-
+//var util = require('./util');
 var path = require('path');
 var fs = require('fs');
 var lineReader = require('linebyline');
 var asy = require('async');
 var glob = require("glob");
 
-// Location of data folder
-var dataPath = config.data;
+export function load(orfpath, callback){
 
-function getLineReader(path){
-  return lineReader.createInterface({
-    input: fs.createReadStream(path)
-  });
-}
-
-// Get JSON formatted tmhmm
-export function getTopcons(req, res){
-  var subPath = path.join(dataPath, req.params.projectId, req.params.dataId, req.params.orfId, 'topcons');
-
+  var subPath = path.join(orfpath, 'topcons');
   var topFilePath = path.join(subPath, 'topcons.txt');
 
   asy.waterfall([
@@ -39,7 +27,7 @@ export function getTopcons(req, res){
       var topcons = '';
 
       var data = {};
-      data.zcord = [];
+      data.zCord = [];
       data.deltaG = [];
       data.topRel = [];
 
@@ -102,7 +90,7 @@ export function getTopcons(req, res){
               case 7:
                 if(line !== ''){
                   line = line.split(/\s+/);
-                  data.zcord.push({
+                  data.zCord.push({
                     pos: Number(line[0]),
                     value: Number(line[1])
                   });
@@ -132,29 +120,29 @@ export function getTopcons(req, res){
         }
       })
       .on('close', function (){
-        data.pred = [];
+        data.predictions = [];
 
-        data.pred.push({
+        data.predictions.push({
           method: 'scampiSeq',
           values: scampiSeq.split('')
         });
-        data.pred.push({
+        data.predictions.push({
           method: 'scampiMsa',
           values: scampiMsa.split('')
         });
-        data.pred.push({
+        data.predictions.push({
           method: 'prodiv',
           values: prodiv.split('')
         });
-        data.pred.push({
+        data.predictions.push({
           method: 'pro',
           values: pro.split('')
         });
-        data.pred.push({
+        data.predictions.push({
           method: 'octopus',
           values: octopus.split('')
         });
-        data.pred.push({
+        data.predictions.push({
           method: 'topcons',
           values: topcons.split('')
         });
@@ -164,30 +152,13 @@ export function getTopcons(req, res){
     }
   ], function (err, result) {
     if(result && ! err){
-      result.metadata = req.params.metadata;
-      res.status(200).json(result);
+      result.metadata = {};
+      result.path = subPath;
+      callback(result);
     }else{
-      res.status(404).send("Not found");
+      callback(null);
     }
 
   });
-
-}
-
-/**
- * Get tmhmm output in original text format.
- * @return {null} request is answered.
- */
-export function original(req, res){
-
-  var subPath = path.join(dataPath, req.params.projectId, req.params.dataId, req.params.orfId, 'topcons');
-
-  switch (req.params.fileName) {
-    case 'topcons.txt':
-      res.sendFile(path.join(subPath, 'topcons.txt'));
-      break;
-    default:
-      res.status(404).send("Not found");
-  }
 
 }

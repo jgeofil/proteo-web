@@ -51,4 +51,84 @@ angular.module('proteoWebApp')
       FileSaver.saveAs(blob, filename);
     };
 
+    /**
+     * Temporary
+     * TODO: find better solution for this...
+     * @return {Object}
+     */
+    this.getAnalysisDownloadConfig = function(bp){
+      return {
+        sequence:{
+          path: bp,
+          files: [
+            {
+              title: 'FASTA',
+              type: 'text/plain',
+              file: 'fasta'
+            }
+          ]
+        },
+        disopred:{
+          path: bp + '/analysis/disopred',
+          files: [
+            {
+              title: 'Disorder',
+              type: 'text/plain',
+              file: 'disopred.seq.diso'
+            },
+            {
+              title: 'Binding',
+              type: 'text/plain',
+              file: 'disopred.seq.pbdat'
+            }
+          ]
+        },
+        tmhmm:{
+          path: bp + '/analysis/tmhmm',
+          files: [
+            {
+              title: 'Domains',
+              type: 'text/plain',
+              file: 'tmhmm.long'
+            },
+            {
+              title: 'Residues',
+              type: 'text/plain',
+              file: 'tmhmm.plp'
+            }
+          ]
+        },
+        topcons:{
+          path: bp + '/analysis/topcons',
+          files: [
+            {
+              title: 'Topcons',
+              type: 'text/plain',
+              file: 'topcons.txt'
+            }
+          ]
+        },
+        itasser:{
+          path: bp + '/analysis/itasser/predictions',
+          files: [
+            {
+              title: 'Coverage',
+              type: 'text/plain',
+              file: 'coverage'
+            },
+            {
+              title: 'CScore',
+              type: 'text/plain',
+              file: 'cscore'
+            },
+            {
+              title: 'Secondary sequence',
+              type: 'text/plain',
+              file: 'seq.ss'
+            }
+          ]
+        }
+      };
+    };
+
   });

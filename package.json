@@ -3,6 +3,9 @@
   "version": "0.0.0",
   "main": "server/app.js",
   "dependencies": {
+    "angular": "^1.5.7",
+    "angular-animate": "^1.5.7",
+    "angular-aria": "^1.5.7",
     "async": "^1.5.2",
     "babel-runtime": "^5.8.20",
     "bionode-fasta": "^0.5.3",

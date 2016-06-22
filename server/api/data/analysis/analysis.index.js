@@ -3,9 +3,9 @@
 var express = require('express');
 var controller = require('./analysis.controller');
 var disopred = require('./disopred/disopred.controller');
-var itasser = require('./itasser.controller');
+var itasser = require('./itasser/itasser.controller');
 var tmhmm = require('./tmhmm/tmhmm.controller');
-var topcons = require('./topcons.controller');
+var topcons = require('./topcons/topcons.controller');
 var images = require('./images.controller');
 var models = require('./models/models.controller');
 var util = require('./../util');
@@ -23,13 +23,13 @@ router.get('/disopred/file/:fileName', disopred.original);
 
 router.get('/itasser/models', itasser.listModels);
 router.get('/itasser/models/:modelName', itasser.getModel);
-router.get('/itasser/predictions', util.fetchMetadataAsync('itasser'), itasser.getPredictions);
+router.get('/itasser/predictions', util.fetchMetadataAsync('itasser'), itasser.itasser);
 router.get('/itasser/predictions/file/:fileName', itasser.original);
 
 router.get('/tmhmm/', util.fetchMetadataAsync('tmhmm'), tmhmm.tmhmm);
 router.get('/tmhmm/file/:fileName', tmhmm.original);
 
-router.get('/topcons/', util.fetchMetadataAsync('topcons'), topcons.getTopcons);
+router.get('/topcons/', util.fetchMetadataAsync('topcons'), topcons.topcons);
 router.get('/topcons/file/:fileName', topcons.original);
 
 router.get('/meta/', util.fetchMetadataAsync(''), controller.metadata);

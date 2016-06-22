@@ -22,10 +22,9 @@ angular.module('proteoWebApp')
         y.domain([0,1]);
 
         // SVG canvas
-        var svg = d3Helper.getSvgCanvas('#diso-graph',si);
+        var svg = d3Helper.getSvgCanvas(element.children()[0], si);
 
         svg.on(".zoom", null);
-
 
         //**********************************************************************
         // Shading zone

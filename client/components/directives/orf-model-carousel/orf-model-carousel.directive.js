@@ -37,7 +37,6 @@ angular.module('proteoWebApp')
 
         $timeout(function(){
           scope.omcModels.forEach(function(model){
-            console.log(model)
             // Assume there exists an HTML div with id 'gldiv'
             var element = $('#omc-model-'+model.shortName);
             // Viewer config - properties 'defaultcolors' and 'callback'

@@ -1,0 +1,39 @@
+<navbar></navbar>
+
+<div class="container-fluid" id="orf-panel">
+  <div class="row">
+    <div class="col-lg-1"></div>
+    <div class="col-lg-3">
+      <div class="panel panel-default orf-panel">
+        <div class="panel-heading orf-panel-heading"></div>
+        <div class="panel-body orf-panel-body">
+
+          <h2>{{orfName}}</h2>
+          <hr>
+          <orf-metadata-display md-metadata="oflOrf.meta"></orf-metadata-display>
+          <hr>
+          <orf-image-carousel oic-images="images"></orf-image-carousel>
+          <hr ng-if="modelsLoaded">
+          <orf-model-carousel ng-if="modelsLoaded" omc-models="models"></orf-model-carousel>
+
+        </div>
+      </div>
+    </div>
+
+    <div class="col-lg-7">
+      <orf-full-layout ofl-orf="oflOrf"
+                        ofl-orf-itasser-models="oflOrfMs"
+                        ofl-base-path="abp"></orf-full-layout>
+    </div>
+
+  </div>
+</div>
+
+<footer></footer>
+
+
+<script type="text/ng-template" id="modelModal.html">
+    <div class="modal-body">
+      <molecular-model mm-pdb="pdb"></molecular-model>
+    </div>
+</script>

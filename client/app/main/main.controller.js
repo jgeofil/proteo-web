@@ -2,7 +2,8 @@
 //TODO: include D3 in a more Angular way
 /* jshint undef: false*/
 angular.module('proteoWebApp')
-.controller('MainController', function ($scope, $http, $location, $routeParams, $timeout , $rootScope, NgTableParams, Datatree) {
+.controller('MainController', function ($scope, $http, $location, $routeParams,
+  $timeout , $rootScope, NgTableParams, Datatree, Comparison) {
 
   // If data is being loaded from server
   $scope.dataIsLoading = true;
@@ -29,6 +30,8 @@ angular.module('proteoWebApp')
     page: 1,
     count: 10
   };
+
+  $scope.comparison = Comparison;
 
   // Get projects
   Datatree.getProjectList().then(function(response){
@@ -99,7 +102,6 @@ angular.module('proteoWebApp')
     $http.get('/api/data/'+$scope.selectedProject+'/dataset/'+dataset).then(function(response){
 
       $timeout(function(){
-        console.log(response.data)
         dataSort(response.data);
         $scope.table.orfs = new NgTableParams(tableParameters, {data: response.data});
         $scope.data.orfs = true;
@@ -178,7 +180,7 @@ angular.module('proteoWebApp')
   // Disopred outcomeFunction
   $scope.disopredIsPositive = function(row){
     if(row.analysis.disopred){
-      return row.analysis.disopred.stats.percentAboveThreshold > $scope.disopredThreshold;
+      return row.analysis.disopred.stats.percentAboveThreshold > $scope.disopredThreshold*100;
     }else{
       return false;
     }

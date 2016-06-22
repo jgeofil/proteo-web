@@ -31,7 +31,7 @@ angular.module('proteoWebApp')
         var step = x(0)-x(1);
 
         // Create SVG D3 container
-        var svg = d3Helper.getSvgCanvas('#itasser-align-graph',si);
+        var svg = d3Helper.getSvgCanvas(element.children()[0],si);
         // Sub-containers
         var header = svg.append('g').attr('class', 'itasser-align-header');
         var body = svg.append('g').attr('class', 'itasser-align-body');
