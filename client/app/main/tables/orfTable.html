@@ -1,5 +1,24 @@
-
 <h4>Available orfs - <small>{{table.orfs.total()}} in dataset</small></h4>
+<button type="button"
+        class="btn btn-sm btn-standard pull-right comparison-button"
+        ng-if="comparison.isActive()"
+        ng-click="comparison.cancel()">
+  Cancel
+</button>
+<button type="button"
+        class="btn btn-sm pull-right comparison-button"
+
+        ng-class="{
+          'btn-primary': !comparison.isActive(),
+          'btn-warning': comparison.isLacking(),
+          'btn-success': comparison.isGood(),
+          'btn-danger': comparison.isOver(),
+        }"
+        ng-click="comparison.click()">
+        {{comparison.text()}}
+</button>
+
+
 
 <table ng-table="table.orfs"
         class="table table-condensed table-bordered table-striped"
@@ -12,11 +31,10 @@
         sortable="'name'"
         class="col-lg-3">
       <md-checkbox  ng-if="comparison.isActive()"
-                    ng-model="dummy"
+                    ng-model="comparison.selected[row._id]"
                     aria-label="s"
                     class="green"
-                    ng-change="comparison.add(row)"
-                    >
+                    ng-change="comparison.add(row)">
       </md-checkbox>
       <a href="/orf/single/{{selectedProject}}/{{selectedDataset}}/{{row.name}}">
         {{row.name}}

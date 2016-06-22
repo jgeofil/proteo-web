@@ -52,6 +52,8 @@ export function orfs(req, res) {
     .find({dirname: subPath})
     .populate('analysis.disopred', 'stats sequence')
     .populate('analysis.tmhmm', 'stats sequence')
+    .populate('project', '_id name')
+    .populate('dataset', '_id name')
     .exec(function(err, orfs){
       if(!err){
         res.status(200).json(orfs);
@@ -69,6 +71,8 @@ export function oneOrf(req, res) {
     .findOne({path: subPath})
     .populate('analysis.disopred', 'stats sequence')
     .populate('analysis.tmhmm', 'stats sequence')
+    .populate('project', '_id name')
+    .populate('dataset', '_id name')
     .exec(function(err, orf){
       if(!err && orf){
         res.status(200).json(orf);

@@ -9,7 +9,8 @@ angular.module('proteoWebApp')
         oflOrf: '=',
         //TODO: should be in the ORF object
         oflBasePath: '=',
-        oflOrfItasserModels: '='
+        oflOrfItasserModels: '=',
+        oflFirstClosed: '='
       },
       link: function (scope, el, attrs) {
         //**********************************************************************
@@ -20,6 +21,8 @@ angular.module('proteoWebApp')
         // Controls spacing between amino acids
         scope.graphSpacing = 10;
 
+        console.log(scope.oflFirstClosed)
+
         var StateObj = function(){
           this.isOpen = true;
           this.toggle = function (){this.isOpen = !this.isOpen;};
@@ -27,6 +30,17 @@ angular.module('proteoWebApp')
           this.toggleInfo = function (){this.infoOpen = !this.infoOpen;};
           this.isPresent = false;
         };
+
+        scope.$watch('oflFirstClosed', function(){
+          if(scope.oflFirstClosed){
+            scope.state.primary.isOpen = scope.oflFirstClosed.primary;
+            scope.state.disopred.isOpen = scope.oflFirstClosed.disopred;
+            scope.state.tmhmm.isOpen = scope.oflFirstClosed.tmhmm;
+            scope.state.topcons.isOpen = scope.oflFirstClosed.topcons;
+            scope.state.itasser.isOpen = scope.oflFirstClosed.itasser;
+          }
+
+        });
 
         // State for the analysis panels
         scope.state = {

@@ -35,6 +35,7 @@ var OrfSchema = new mongoose.Schema({
   path: { type: String, unique: true},
   dirname: String,
   dataset: {type: mongoose.Schema.Types.ObjectId, ref: 'Dataset'},
+  project: {type: mongoose.Schema.Types.ObjectId, ref: 'Project'},
   analyses: {},
   analysis: {
     disopred: {type: mongoose.Schema.Types.ObjectId, ref: 'Disopred', default: null},

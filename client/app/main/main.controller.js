@@ -2,7 +2,8 @@
 //TODO: include D3 in a more Angular way
 /* jshint undef: false*/
 angular.module('proteoWebApp')
-.controller('MainController', function ($scope, $http, $location, $routeParams, $timeout , $rootScope, NgTableParams, Datatree) {
+.controller('MainController', function ($scope, $http, $location, $routeParams,
+  $timeout , $rootScope, NgTableParams, Datatree, Comparison) {
 
   // If data is being loaded from server
   $scope.dataIsLoading = true;
@@ -30,34 +31,7 @@ angular.module('proteoWebApp')
     count: 10
   };
 
-  $scope.comparison = {
-    active: false,
-    isActive: function(){return this.active;},
-    isLacking: function(){return this.selection.length < 2;},
-    click: function(){
-      if(!this.active){
-        this.active = true;
-      }
-    },
-    selection: [],
-    text: function(){
-      if(!this.active){
-        return 'Comparison';
-      }else if(this.active && this.isLacking()){
-        return 'Select at least 2 ORF';
-      }
-    },
-    add: function(obj){
-      if(this.selection.indexOf(obj) === -1){
-        this.selection.push(obj);
-      }else{
-        this.selection.splice(this.selection.indexOf(obj), 1);
-      }
-    },
-    isIn: function(obj){
-      return this.selection.indexOf(obj) !== -1;
-    }
-  };
+  $scope.comparison = Comparison;
 
   // Get projects
   Datatree.getProjectList().then(function(response){

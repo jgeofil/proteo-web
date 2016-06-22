@@ -41,6 +41,7 @@ function readOrfs(dataset){
       meta: util.readMetaData(path.join(dataset.path, orf, 'meta.json')),
       path: path.join(dataset.path, orf),
       dataset: dataset._id,
+      project: dataset.project,
       analyses: getAnalyses(path.join(dataset.path, orf))
     }, function(err, orfSaved){
       count +=1

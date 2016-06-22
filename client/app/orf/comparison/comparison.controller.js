@@ -11,12 +11,17 @@ angular.module('proteoWebApp')
 
     Orf.getFullOrf($scope.abp1).then(function(resp){
       $scope.oflOrf1 = resp;
-      console.log(resp)
+      Orf.getFullOrf($scope.abp2).then(function(resp){
+        $scope.oflOrf2 = resp;
+        $scope.firstClosed = {
+          disopred: $scope.oflOrf1.analysis.disopred && $scope.oflOrf2.analysis.disopred,
+          topcons: $scope.oflOrf1.analysis.topcons && $scope.oflOrf2.analysis.topcons,
+          itasser: $scope.oflOrf1.analysis.itasser && $scope.oflOrf2.analysis.itasser,
+          tmhmm: $scope.oflOrf1.analysis.tmhmm && $scope.oflOrf2.analysis.tmhmm,
+          primary: ($scope.oflOrf1.sequence.length > 0) && ($scope.oflOrf2.sequence.length > 0)
+        };
 
-    });
-    Orf.getFullOrf($scope.abp2).then(function(resp){
-      $scope.oflOrf2 = resp;
-            console.log(resp)
+      });
     });
 
     // Page title, aka ORF name
