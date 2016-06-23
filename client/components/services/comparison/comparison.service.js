@@ -5,9 +5,10 @@ angular.module('proteoWebApp')
     // AngularJS will instantiate a singleton by calling "new" on this function
 
     /**
-     * Maximum number of ORF to be selected.
+     * Maximum and minimum number of ORF to be selected.
      */
-    var MAXSEL = 2;
+    var MAXSEL = 4;
+    var MINSEL = 2;
 
     /**
      * If selection is active.
@@ -40,8 +41,8 @@ angular.module('proteoWebApp')
      * @return {Boolean} The requested status.
      */
     this.isActive = function(){return active;};
-    this.isLacking = function(){return sel.length < MAXSEL && active;};
-    this.isGood = function(){return sel.length === MAXSEL && active;};
+    this.isLacking = function(){return sel.length < MINSEL && active;};
+    this.isGood = function(){return sel.length >= MINSEL && sel.length <= MAXSEL && active;};
     this.isOver = function(){return sel.length > MAXSEL && active;};
 
     /**
@@ -52,7 +53,11 @@ angular.module('proteoWebApp')
       if(!active){
         active = true;
       }else if(this.isGood()){
-        $location.url('/orf/comparison'+orfToPath(sel[0])+orfToPath(sel[1]));
+        var p = '/orf/comparison';
+        sel.forEach(function(orf){
+          p += orfToPath(orf);
+        });
+        $location.url(p);
       }
     };
 

@@ -2,16 +2,10 @@
 
 <div class="container-fluid" id="orf-panel">
   <div class="row">
-    <div class="col-sm-6">
-      <h2>{{oflOrf1.name}} <small>{{oflOrf1.project.name}}  {{oflOrf1.dataset.name}}</small></h2>
-      <orf-full-layout ofl-orf="oflOrf1"
+    <div class="col-sm-{{cols}}" ng-repeat="orf in orfs">
+      <h2>{{orf.name}} <small>{{orf.project.name}}  {{orf.dataset.name}}</small></h2>
+      <orf-full-layout ofl-orf="orf"
                         ofl-base-path="abp1"
-                        ofl-first-closed="firstClosed"></orf-full-layout>
-    </div>
-    <div class="col-sm-6">
-      <h2>{{oflOrf2.name}} <small>{{oflOrf2.project.name}}  {{oflOrf2.dataset.name}}</small></h2>
-      <orf-full-layout ofl-orf="oflOrf2"
-                        ofl-base-path="abp2"
                         ofl-first-closed="firstClosed"></orf-full-layout>
     </div>
 
