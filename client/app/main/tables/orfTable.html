@@ -33,7 +33,6 @@
       <md-checkbox  ng-if="comparison.isActive()"
                     ng-model="comparison.selected[row._id]"
                     aria-label="s"
-                    class="green"
                     ng-change="comparison.add(row)">
       </md-checkbox>
       <a href="/orf/single/{{selectedProject}}/{{selectedDataset}}/{{row.name}}">
