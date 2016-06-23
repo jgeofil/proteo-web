@@ -11,6 +11,7 @@ angular.module('proteoWebApp')
 
     Orf.getFullOrf($scope.abp1).then(function(resp){
       $scope.oflOrf1 = resp;
+      console.log(resp)
       Orf.getFullOrf($scope.abp2).then(function(resp){
         $scope.oflOrf2 = resp;
         $scope.firstClosed = {

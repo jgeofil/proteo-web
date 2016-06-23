@@ -95,6 +95,8 @@ export function fullOrf(req, res) {
     .populate('analysis.tmhmm')
     .populate('analysis.itasser')
     .populate('analysis.topcons')
+    .populate('project', '_id name')
+    .populate('dataset', '_id name')
     //TODO: populate other analyses when they will be preloaded.
     .exec(function(err, orf){
       if(!err && orf){
