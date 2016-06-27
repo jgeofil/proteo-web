@@ -21,35 +21,27 @@ angular.module('proteoWebApp')
         // Controls spacing between amino acids
         scope.graphSpacing = 10;
 
-        console.log(scope.oflFirstClosed)
-
-        var StateObj = function(){
-          this.isOpen = true;
-          this.toggle = function (){this.isOpen = !this.isOpen;};
-          this.infoOpen = false;
-          this.toggleInfo = function (){this.infoOpen = !this.infoOpen;};
-          this.isPresent = false;
-        };
+        scope.scrollPos = 0;
 
         scope.$watch('oflFirstClosed', function(){
           if(scope.oflFirstClosed){
-            scope.state.primary.isOpen = scope.oflFirstClosed.primary;
-            scope.state.disopred.isOpen = scope.oflFirstClosed.disopred;
-            scope.state.tmhmm.isOpen = scope.oflFirstClosed.tmhmm;
-            scope.state.topcons.isOpen = scope.oflFirstClosed.topcons;
-            scope.state.itasser.isOpen = scope.oflFirstClosed.itasser;
+            scope.state.primary = scope.oflFirstClosed.primary;
+            scope.state.disopred = scope.oflFirstClosed.disopred;
+            scope.state.tmhmm = scope.oflFirstClosed.tmhmm;
+            scope.state.topcons = scope.oflFirstClosed.topcons;
+            scope.state.itasser = scope.oflFirstClosed.itasser;
           }
 
         });
 
         // State for the analysis panels
         scope.state = {
-          primary: new StateObj(),
-          disopred: new StateObj(),
-          itasser: new StateObj(),
+          primary: true,
+          disopred: true,
+          itasser: true,
           itasserModels: false,
-          tmhmm: new StateObj(),
-          topcons: new StateObj()
+          tmhmm: true,
+          topcons: true
         };
 
         // 3D model modal window
@@ -65,56 +57,34 @@ angular.module('proteoWebApp')
           });
         };
 
-        //**********************************************************************
-        // Scrolling zones
-        var scrollZones = el[0].getElementsByClassName('orf-scroll');
-        var jZones = [];
-
-        for(var i = 0; i < scrollZones.length; i++){
-          jZones.push($(scrollZones[i]));
-        }
-
-        jZones.forEach(function(zone1){
-          zone1.scroll(function() {
-            jZones.forEach(function(zone2){
-              if(zone1 !== zone2){
-                zone2.scrollLeft(zone1.scrollLeft());
-              }
-            });
-          });
-        });
 
         //**********************************************************************
         // Itasser Models
         scope.$watch('oflOrfItasserModels', function(ms){
           if(ms){
             scope.state.itasserModels = true;
-            scope.oflOrfItasserModels.forEach(function(model,i){
-              var element = $(el[0].getElementsByClassName('itasser-model-box')[i]);
-              // Viewer config - properties 'defaultcolors' and 'callback'
-              var config = {defaultcolors: $3Dmol.rasmolElementColors };
-              // Create GLViewer within 'gldiv'
-              var myviewer = $3Dmol.createViewer(element, config);
-              //'data' is a string containing molecule data in pdb format
-              myviewer.addModel(String(model.data), 'pdb');
-              myviewer.setBackgroundColor(0xffffff);
-              myviewer.setStyle({}, {cartoon: {color: 'spectrum'}});
-              myviewer.zoomTo();
-              myviewer.render();
+            $timeout(function(){
+              scope.oflOrfItasserModels.forEach(function(model,i){
+                var element = $(document.getElementsByClassName('itasser-model-box')[i]);
+
+                // Viewer config - properties 'defaultcolors' and 'callback'
+                var config = {defaultcolors: $3Dmol.rasmolElementColors };
+                // Create GLViewer within 'gldiv'
+                var myviewer = $3Dmol.createViewer(element, config);
+                //'data' is a string containing molecule data in pdb format
+                myviewer.addModel(String(model.data), 'pdb');
+                myviewer.setBackgroundColor(0xffffff);
+                myviewer.setStyle({}, {cartoon: {color: 'spectrum'}});
+                myviewer.zoomTo();
+                myviewer.render();
+              });
             });
           }
         });
 
         //**********************************************************************
-        // Itasser Models
-        scope.$watch('oflOrf', function(orf){
-          if(orf){
-            scope.state.primary.isPresent = orf.sequence.length > 0;
-            scope.state.disopred.isPresent = orf.analysis.disopred !== null;
-            scope.state.tmhmm.isPresent = orf.analysis.tmhmm !== null;
-            scope.state.topcons.isPresent = orf.analysis.topcons !== null;
-            scope.state.itasser.isPresent = orf.analysis.itasser !== null;
-          }
+        //
+        scope.$watch('oflOrf', function(){
           scope.config = Download.getAnalysisDownloadConfig(scope.oflBasePath);
         });
 

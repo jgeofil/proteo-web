@@ -7,7 +7,7 @@ angular.module('proteoWebApp')
       restrict: 'EA',
       scope: {
         mdMetadata: '=',
-        mdState: '='
+        mdIsOpen: '='
       },
       link: function (scope, element, attrs) {
 

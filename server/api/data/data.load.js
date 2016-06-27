@@ -5,6 +5,7 @@ import config from '../../config/environment';
 var fs = require('fs');
 var path = require('path');
 var mongoose = require('bluebird').promisifyAll(require('mongoose'));
+var asy = require('async');
 
 import Data from './data.model';
 import Disopred from './analysis/disopred/disopred.model';
@@ -155,21 +156,26 @@ function getAnalyses (path) {
  * @return {null}
  */
 function loadAnalyses(orf){
-  if (orf.analyses.hasOwnProperty("disopred")) {
-    loadAnalysis(orf, disoLoad.load, 'disopred', Disopred);
-  }
-  if (orf.analyses.hasOwnProperty("tmhmm")) {
-    loadAnalysis(orf, tmhmmLoad.load, 'tmhmm', Tmhmm);
-  }
-  if (orf.analyses.hasOwnProperty("topcons")) {
-    loadAnalysis(orf, topconsLoad.load, 'topcons', Topcons);
-  }
-  if (orf.analyses.hasOwnProperty("models")) {
-    loadAnalysis(orf, modelsLoad.load, 'models', Model);
-  }
-  if (orf.analyses.hasOwnProperty("itasser")) {
-    loadAnalysis(orf, itasserLoad.load, 'itasser', Itasser);
-  }
+
+  asy.series([
+    function(cb){
+      loadAnalysis(orf, disoLoad.load, 'disopred', Disopred, cb);
+    },
+    function(cb){
+      loadAnalysis(orf, tmhmmLoad.load, 'tmhmm', Tmhmm, cb);
+    },
+    function(cb){
+      loadAnalysis(orf, topconsLoad.load, 'topcons', Topcons, cb);
+    },
+    function(cb){
+      loadAnalysis(orf, modelsLoad.load, 'models', Model, cb);
+    },
+    function(cb){
+      loadAnalysis(orf, itasserLoad.load, 'itasser', Itasser, cb);
+    }
+  ], function(){
+    orf.save();
+  });
 }
 
 /**
@@ -178,24 +184,29 @@ function loadAnalyses(orf){
  * @param {Object} lf The loading function for the analysis
  * @param {Object} name The name for the analysis
  * @param {Object} ac The analysis class
+ * @param {Object} cb Callback on completion
  * @return {null}
  */
-function loadAnalysis(orf, lf, name, ac){
-  lf(orf.path, function(result){
-    if(result !== null){
-      util.readMetaDataAsync(path.join(orf.path, name,'meta.json'), function(meta){
-        result.metadata = meta;
-        ac.create(result, function(err, anaObj){
-          if(err){
-            console.log(err);
-          }else {
-            orf.analysis[name] = anaObj._id;
-            orf.save();
-          }
+function loadAnalysis(orf, lf, name, ac, cb){
+  if(orf.analyses.hasOwnProperty(name)){
+    lf(orf.path, function(result){
+      if(result !== null){
+        util.readMetaDataAsync(path.join(orf.path, name,'meta.json'), function(meta){
+          result.metadata = meta;
+          ac.create(result, function(err, anaObj){
+            if(err){
+              console.log(err);
+            }else {
+              orf.analysis[name] = anaObj._id;
+            }
+            cb(null);
+          })
         })
-      })
-    }
-  })
+      }
+    })
+  }else{
+    cb(null);
+  }
 }
 
 /**

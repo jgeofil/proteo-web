@@ -3,29 +3,47 @@
 angular.module('proteoWebApp')
   .controller('OrfComparisonCtrl', function ($scope, $http, $routeParams, $rootScope, $uibModal, Download, Orf) {
 
+    var rp = $routeParams;
+
+    function getBp (pN, dN, oN){
+      return '/api/data/'+pN+'/dataset/'+dN+'/orf/'+oN;
+    }
+
+    $scope.firstClosed = {
+      disopred: true,
+      topcons: true,
+      itasser: true,
+      tmhmm: true,
+      primary: true
+    };
+
+    function mergePresent (orf){
+      $scope.firstClosed = {
+        disopred: orf.analysis.disopred && $scope.firstClosed.disopred,
+        topcons: orf.analysis.topcons && $scope.firstClosed.topcons,
+        itasser:  orf.analysis.itasser && $scope.firstClosed.itasser,
+        tmhmm: orf.analysis.tmhmm && $scope.firstClosed.tmhmm,
+        primary: (orf.sequence.length > 0) && $scope.firstClosed.primary
+      };
+    }
+
+    var paths = [];
+    $scope.orfs = [];
+
     // Base path for API
-    $scope.abp1 = '/api/data/'+$routeParams.projectName1+'/dataset/'+
-      $routeParams.datasetName1+'/orf/'+$routeParams.orfName1;
-    $scope.abp2 = '/api/data/'+$routeParams.projectName2+'/dataset/'+
-      $routeParams.datasetName2+'/orf/'+$routeParams.orfName2;
+    paths.push(getBp(rp.pN1, rp.dN1, rp.oN1));
+    paths.push(getBp(rp.pN2, rp.dN2, rp.oN2));
+    if(rp.pN3 && rp.dN3 && rp.oN3){paths.push(getBp(rp.pN3, rp.dN3, rp.oN3));}
+    if(rp.pN4 && rp.dN4 && rp.oN4){paths.push(getBp(rp.pN4, rp.dN4, rp.oN4));}
 
-    Orf.getFullOrf($scope.abp1).then(function(resp){
-      $scope.oflOrf1 = resp;
-      Orf.getFullOrf($scope.abp2).then(function(resp){
-        $scope.oflOrf2 = resp;
-        $scope.firstClosed = {
-          disopred: $scope.oflOrf1.analysis.disopred && $scope.oflOrf2.analysis.disopred,
-          topcons: $scope.oflOrf1.analysis.topcons && $scope.oflOrf2.analysis.topcons,
-          itasser: $scope.oflOrf1.analysis.itasser && $scope.oflOrf2.analysis.itasser,
-          tmhmm: $scope.oflOrf1.analysis.tmhmm && $scope.oflOrf2.analysis.tmhmm,
-          primary: ($scope.oflOrf1.sequence.length > 0) && ($scope.oflOrf2.sequence.length > 0)
-        };
+    $scope.cols = 12/paths.length;
 
+    paths.forEach(function(p){
+      Orf.getFullOrf(p).then(function(resp){
+        $scope.orfs.push(resp);
+        mergePresent(resp);
       });
     });
 
-    // Page title, aka ORF name
-    $scope.orfName1 = $routeParams.orfName1;
-    $scope.orfName2 = $routeParams.orfName2;
 
   });

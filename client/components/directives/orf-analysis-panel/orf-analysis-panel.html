@@ -1,0 +1,37 @@
+<div class="panel panel-default orf-panel">
+  <div class="panel-heading orf-panel-heading"
+        ng-class="{'panel-disabled': !oapIsPresent}">
+
+    <span class="glyphicon"
+          ng-click="toggleOpen()"
+          ng-class="{'glyphicon-chevron-down': oapIsOpen && oapIsPresent,
+                      'glyphicon-chevron-right': !oapIsOpen && oapIsPresent,
+                      'glyphicon-remove': !oapIsPresent}"></span>
+    {{oapTitle}}
+    <span class="glyphicon glyphicon-plus pull-right panel-glyph"
+          ng-show="oapIsOpen && oapIsPresent && oapAnalysis.metadata"
+          ng-class="{'text-success': infoOpen}"
+          ng-click="toggleInfo()"></span>
+
+    <file-download-button fdb-files="oapConfig.files"
+                          fdb-analysis-path="oapConfig.path"
+                          ng-if="oapIsPresent">
+    </file-download-button>
+  </div>
+  <metadata-display md-is-open="oapIsOpen && oapIsPresent && infoOpen"
+                    md-metadata="oapAnalysis.metadata">
+  </metadata-display>
+  <div class="panel-body orf-panel-body orf-opensmooth"
+        ng-show="oapIsOpen && oapIsPresent">
+
+
+    <div class="orf-scroll">
+      <ng-transclude>
+
+      </ng-transclude>
+
+    </div>
+
+  </div>
+
+</div>

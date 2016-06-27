@@ -1,10 +1,10 @@
 'use strict';
 
-describe('Directive: orfPanelTitle', function () {
+describe('Directive: orfAnalysisPanel', function () {
 
   // load the directive's module and view
   beforeEach(module('proteoWebApp'));
-  beforeEach(module('components/directives/orf-panel-title/orf-panel-title.html'));
+  beforeEach(module('components/directives/orf-analysis-panel/orf-analysis-panel.html'));
 
   var element, scope;
 
@@ -13,9 +13,9 @@ describe('Directive: orfPanelTitle', function () {
   }));
 
   it('should make hidden element visible', inject(function ($compile) {
-    element = angular.element('<orf-panel-title></orf-panel-title>');
+    element = angular.element('<orf-analysis-panel></orf-analysis-panel>');
     element = $compile(element)(scope);
     scope.$apply();
-    expect(element.text()).toBe('this is the orfPanelTitle directive');
+    expect(element.text()).toBe('this is the orfAnalysisPanel directive');
   }));
 });
