@@ -103,6 +103,7 @@ angular.module('proteoWebApp')
 
       $timeout(function(){
         dataSort(response.data);
+
         $scope.table.orfs = new NgTableParams(tableParameters, {data: response.data});
         $scope.data.orfs = true;
         $scope.dataIsLoading = false;
@@ -180,8 +181,15 @@ angular.module('proteoWebApp')
   // Disopred outcomeFunction
   $scope.disopredIsPositive = function(row){
     if(row.analysis.disopred){
-      return row.analysis.disopred.stats.percentAboveThreshold > $scope.disopredThreshold*100;
+      if(row.analysis.disopred.stats.percentAboveThreshold > $scope.disopredThreshold*100){
+        row._DISOPRED = 2;
+        return true;
+      }else{
+        row._DISOPRED = 1;
+        return false;
+      }
     }else{
+      row._DISOPRED = 0;
       return false;
     }
     $scope.$apply();
@@ -211,8 +219,16 @@ angular.module('proteoWebApp')
       var res =  (!$scope.tmhmm.TMH.checked || r.numberPredictedTMH >= $scope.tmhmm.TMH.value) &&
       (!$scope.tmhmm.AAInTMH.checked || r.expectedNumberAAInTMH >= $scope.tmhmm.AAInTMH.value) &&
       (!$scope.tmhmm.AAFirst60.checked || r.expectedNumberAAFirst60 <= $scope.tmhmm.AAFirst60.value);
+      if(res){
+        row._TMHMM = 2;
+        return true;
+      }else{
+        row._TMHMM = 1;
+        return false;
+      }
       return res;
     }else{
+      row._TMHMM = 0;
       return false;
     }
     $scope.$apply();
