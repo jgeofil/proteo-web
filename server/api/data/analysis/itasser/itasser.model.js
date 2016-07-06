@@ -38,9 +38,17 @@ var ItasserSchema = new mongoose.Schema({
       }
     ]
   },
+  sequence: String,
   stats: {},
   metadata: {},
   path: { type: String, unique: true}
+});
+
+ItasserSchema.pre('save', function(next) {
+
+  this.sequence = this.align.seq;
+
+  next();
 });
 
 var Itasser = mongoose.model('Itasser', ItasserSchema);
