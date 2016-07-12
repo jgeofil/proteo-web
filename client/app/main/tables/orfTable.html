@@ -1,4 +1,4 @@
-<h4>Available orfs - <small>{{table.orfs.total()}} in dataset</small></h4>
+<h4>Available orfs - <small>{{table.total()}} in dataset</small></h4>
 <button type="button"
         class="btn btn-sm btn-standard pull-right comparison-button"
         ng-if="comparison.isActive()"
@@ -20,7 +20,7 @@
 
 
 
-<table ng-table="table.orfs"
+<table ng-table="table"
         class="table table-condensed table-bordered table-striped"
         show-filter="true">
 
@@ -97,7 +97,7 @@
   </tr>
 </table>
 
-<small class="pull-right">{{table.orfs.total()}} ORFs in dataset</small>
+<small class="pull-right">{{table.total()}} ORFs in dataset</small>
 
 <span class="glyphicon glyphicon-remove text-muted"></span>  Analysis absent
 <span class="glyphicon glyphicon-ok text-info"></span>  Analysis available without conclusion

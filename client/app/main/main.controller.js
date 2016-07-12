@@ -4,50 +4,39 @@
 angular.module('proteoWebApp')
 .controller('MainController', function ($scope, $http, $location, $routeParams,
   $timeout , $rootScope, NgTableParams, Datatree, Comparison) {
-
+  // State of the coparison selection, kept in the comparison service
+  $scope.comparison = Comparison;
   // If data is being loaded from server
   $scope.dataIsLoading = true;
-
-  // If data is present for each level
-  $scope.data = {
-    projects: false,
-    datasets: false,
-    orfs: false
-  };
-  // Tables containing data
-  $scope.table = {
-    projects: undefined,
-    datasets: undefined,
-    orfs: undefined
-  };
+  // Table containing data
+  $scope.table = undefined;
+  // Which table template is active
+  $scope.active = 'NONE'; //PROJECT, DATASET, ORF
   // Selected project and dataset
   $scope.select = {
     project: undefined,
     dataset: undefined
   };
+  // If it is the first time the controller loads.
+  var pageLoad = true;
 
+  var search = $location.search()?$location.search():{};
+
+  // Initial parameters for the table
   var tableParameters = {
-    page: 1,
-    count: 10
+    page: Number(search.count || 10),
+    count: Number(search.page || 1)
   };
 
-  $scope.comparison = Comparison;
+  //****************************************************************************
+  // Funcs
+  //****************************************************************************
 
-  // Get projects
-  Datatree.getProjectList().then(function(response){
-    $timeout(function(){
-      $scope.data.projects = true;
-      $scope.table.projects = new NgTableParams(tableParameters, {data: response.data});
-      $scope.dataIsLoading = false;
-    });
-
-  }, function(error){
-    $scope.dataIsLoading = false;
-    console.log(error);
-    //TODO: Show message
-  });
-
-  // Sort datasets by number of available analyses
+  /**
+   * Sort datasets by number of available analyses
+   * @param {Object} data List of ORFs.
+   * @return {null} Sorted in place.
+   */
   var dataSort = function(data){
     data.sort(function(a,b){
       if(a.analyses && b.analyses){
@@ -59,6 +48,12 @@ angular.module('proteoWebApp')
     });
   };
 
+  /**
+   * Brings the specified property up one level in the object.
+   * Necessary for sorting in ng-table.
+   * @param {Object} data List of ORFs.
+   * @return {null} Orfs in list are modified in place.
+   */
   var setProperty = function(data, property){
     data = data.map(function(d){
       if(d.hasOwnProperty('meta')){
@@ -68,19 +63,31 @@ angular.module('proteoWebApp')
     });
   };
 
-  // Get datasets for specified project
-  $scope.getDatasets = function(project, setLoc){
+  //****************************************************************************
+  // Data
+  //****************************************************************************
+
+  /**
+   * Get all Datasets for the specified project.
+   * @param {Object} project The project for which to fetch data.
+   * @return {null} List of Datasets is placed on scope and appropriate
+   * template is selected.
+   */
+  $scope.getDatasets = function(project){
     $scope.dataIsLoading = true;
-    $scope.data.datasets = false;
     $scope.selectedProject = project;
-    if(!setLoc) {
-      $location.search({project: project});
-    }
+
+    $location.search({
+      project: project,
+      count: $location.search().count,
+      page: $location.search().page
+    });
+
     return $http.get('/api/data/'+project).then(function(response){
       $timeout(function(){
         setProperty(response.data, 'organism');
-        $scope.table.datasets = new NgTableParams(tableParameters, {data: response.data});
-        $scope.data.datasets = true;
+        $scope.table = new NgTableParams(tableParameters, {data: response.data});
+        $scope.active = 'DATASET';
         $scope.dataIsLoading = false;
       });
     }, function(error){
@@ -90,22 +97,32 @@ angular.module('proteoWebApp')
     });
   };
 
-  // Get ORFs for specified dataset
-  $scope.getOrfs = function(dataset, setLoc){
+  /**
+   * Get all ORF for the specified Project and Dataset.
+   * @param {Object} project The project for which to fetch data.
+   * @param {Object} dataset The dataset for which to fetch data.
+   * @return {null} List of ORF is placed on scope and appropriate
+   * template is selected.
+   */
+  $scope.getOrfs = function(project, dataset){
     $scope.dataIsLoading = true;
-    $scope.data.orfs = false;
     $scope.selectedDataset = dataset;
-    if(!setLoc) {
-      $location.search({project: $scope.selectedProject, dataset: dataset});
-    }
+    $scope.selectedProject = project;
+
+    $location.search({
+      project: project,
+      dataset: dataset,
+      count: $location.search().count,
+      page: $location.search().page
+    });
 
     $http.get('/api/data/'+$scope.selectedProject+'/dataset/'+dataset).then(function(response){
 
       $timeout(function(){
         dataSort(response.data);
 
-        $scope.table.orfs = new NgTableParams(tableParameters, {data: response.data});
-        $scope.data.orfs = true;
+        $scope.table = new NgTableParams(tableParameters, {data: response.data});
+        $scope.active = 'ORF';
         $scope.dataIsLoading = false;
       });
 
@@ -116,38 +133,112 @@ angular.module('proteoWebApp')
     });
   };
 
-
-  // Reset to initial view
-  $scope.reset = function(){
-    $scope.data = {
-      projects: true,
-      datasets: false,
-      orfs: false
-    };
-
-    $scope.selectedDataset = undefined;
-    $scope.selectedProject = undefined;
-
-    $location.search({});
-  };
-
-  // Reset to previously selected project
-  $scope.resetToProject = function(){
-    $scope.selectedDataset = undefined;
-    $scope.data.orfs = false;
-    $scope.data.dataset = false;
-    $location.search({project: $scope.selectedProject});
-  };
-
-  // Set location from URL
-  var search = $location.search();
-  if(search.project){
-    $scope.getDatasets(search.project, true).then(function(){
-      if(search.dataset){
-        $scope.getOrfs(search.dataset, true);
-      }
+  /**
+   * Get all Projects.
+   * @return {null} List of Projects is placed on scope and appropriate
+   * template is selected.
+   */
+  function getProjects() {
+    Datatree.getProjectList().then(function(response){
+      $scope.dataIsLoading = true;
+      $timeout(function(){
+        $scope.table = new NgTableParams(tableParameters, {data: response.data});
+        $scope.active = 'PROJECT';
+        $scope.dataIsLoading = false;
+      });
+    }, function(error){
+      $scope.dataIsLoading = false;
+      console.log(error);
+      //TODO: Show message
     });
   }
+
+  /**
+   * Reset to project selection.
+   * @return {null}
+   */
+  $scope.reset = function(){
+    $scope.active = 'NONE';
+    $scope.selectedDataset = undefined;
+    $scope.selectedProject = undefined;
+    $location.search({
+      count: $location.search().count,
+      page: 1
+    });
+  };
+
+  /**
+   * Reset to dataset selection.
+   * @return {null}
+   */
+  $scope.resetToProject = function(){
+    $scope.selectedDataset = undefined;
+    $scope.active = 'NONE';
+    $location.search({
+      project: $scope.selectedProject,
+      count: $location.search().count,
+      page: 1
+    });
+  };
+
+  /**
+   * Watch for change in location search. These changes can be:
+   *    - count: number of rows displayed in table
+   *    - page: active page in the table
+   *    - project: the project for which to display Datasets
+   *    - dataset: the dataset for which to display ORFs
+   * @return {null}
+   */
+  $scope.$watch(function(){return $location.search();}, function(nv, ov){
+    if(nv){
+      //Set for if table is not yet generated
+      tableParameters.count = Number(nv.count||10);
+      tableParameters.page = Number(nv.page||1);
+      if($scope.table){
+        //Set for if table is already present
+        $scope.table.count(Number(nv.count||10));
+        $scope.table.page(Number(nv.page||1));
+      }
+      if(nv.project){
+        // Prevent data from being loaded multiple times with digest cycles.
+        if(ov.project !== nv.project || pageLoad || ov.dataset !== nv.dataset){
+          if(nv.dataset){
+            $scope.getOrfs(nv.project, nv.dataset);
+          }else{
+            $scope.getDatasets(nv.project);
+          }
+          pageLoad = false;
+        }
+      }else{
+        // If no project is specified, fetch all projects.
+        $scope.selectedDataset = undefined;
+        $scope.selectedProject = undefined;
+        getProjects();
+      }
+    }
+  });
+
+  /**
+   * Watch for change in table settings by user and apply them on location search.
+   * Setting: count
+   * @return {null}
+   */
+  $scope.$watch(function(){return $scope.table?$scope.table.count():undefined;}, function(nv){
+    var search = $location.search();
+    search.count = nv?nv:search.count;
+    $location.search(search);
+  });
+  /**
+   * Watch for change in table settings by user and apply them on location search.
+   * Setting: page
+   * @return {null}
+   */
+  $scope.$watch(function(){return $scope.table?$scope.table.page():undefined;}, function(nv){
+    var search = $location.search();
+    search.page = nv?nv:search.page;
+    $location.search(search);
+  });
+
 
   //****************************************************************************
   // Analyses

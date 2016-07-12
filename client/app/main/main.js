@@ -5,6 +5,7 @@ angular.module('proteoWebApp')
     $routeProvider
       .when('/', {
         templateUrl: 'app/main/main.html',
-        controller: 'MainController'
+        controller: 'MainController',
+        reloadOnSearch: false
       });
   });
