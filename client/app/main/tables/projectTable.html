@@ -3,7 +3,7 @@
   Authorization must be requested for projects marked with the <span class="glyphicon glyphicon-lock"></span> icon.</small>
 <br>
 <br>
-<table ng-table="table.projects" class="table table-condensed table-bordered table-striped" show-filter="true">
+<table ng-table="table" class="table table-condensed table-bordered table-striped" show-filter="true">
   <tr ng-repeat="row in $data">
     <td  data-title="'Name'" filter="{name: 'text'}" sortable="'name'" class="col-lg-2">
       <a ng-if="row.authorized" ng-click="getDatasets(row.name)">{{row.name}}</a>

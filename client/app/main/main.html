@@ -91,15 +91,15 @@
             <span us-spinner="{radius:30, width:8, length: 16}" spinner-on="dataIsLoading"></span>
           </div>
 
-          <div ng-show="data.projects && !selectedProject">
+          <div ng-if="active==='PROJECT' && !dataIsLoading">
             <ng-include src="'app/main/tables/projectTable.html'"></ng-include>
           </div>
 
-          <div ng-show="data.datasets && !selectedDataset">
+          <div ng-if="active==='DATASET' && !dataIsLoading">
             <ng-include src="'app/main/tables/datasetTable.html'"></ng-include>
           </div>
 
-          <div ng-show="data.orfs">
+          <div ng-if="active==='ORF' && !dataIsLoading">
             <ng-include src="'app/main/tables/orfTable.html'"></ng-include>
           </div>
 

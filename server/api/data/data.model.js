@@ -57,6 +57,17 @@ OrfSchema.pre('save', function(next) {
   next();
 });
 
+function getSeqFromAnalysis(schema, name, orf, seqs, cb){
+  schema.findById(orf.analysis[name], function(err, obj){
+    if(obj){
+      seqs.push(obj.sequence);
+    }else{
+      orf.analysis[name] = null;
+    }
+    cb(null, seqs);
+  })
+}
+
 /**
  * Populate ORF sequence(s) from analyses
  * TODO: We should probably prevent analyses from having varying sequences for
@@ -68,28 +79,13 @@ OrfSchema.pre('save', function(next) {
   asy.waterfall([
     function(callback) {
       var seqs = [];
-      // Get  sequence from Disopred analysis
-      Disopred.findById(ORF.analysis.disopred, function(err, obj){
-        if(obj){
-          seqs.push(obj.sequence);
-        }else{
-          ORF.disopred = null;
-        }
-        callback(null, seqs);
-      })
-
+      getSeqFromAnalysis(Disopred, 'disopred', ORF, seqs, callback);
     },
     function(seqs, callback) {
-      // Get  sequence from TMHMM analysis
-      Tmhmm.findById(ORF.analysis.tmhmm, function(err, obj){
-        if(obj){
-          seqs.push(obj.sequence);
-        }else{
-          ORF.tmhmm = null;
-        }
-        callback(null, seqs);
-      })
-
+      getSeqFromAnalysis(Tmhmm, 'tmhmm', ORF, seqs, callback);
+    },
+    function(seqs, callback) {
+      getSeqFromAnalysis(Itasser, 'itasser', ORF, seqs, callback);
     }
   ], function (err, result) {
     //Eliminiate doubles
