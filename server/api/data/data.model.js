@@ -9,6 +9,7 @@ import Disopred from './analysis/disopred/disopred.model';
 import Tmhmm from './analysis/tmhmm/tmhmm.model';
 import Topcons from './analysis/topcons/topcons.model';
 import Itasser from './analysis/itasser/itasser.model';
+import Bio from './bio.model';
 
 var ProjectSchema = new mongoose.Schema({
   name: String,

@@ -1,11 +1,15 @@
 'use strict';
 
 var mongoose = require('bluebird').promisifyAll(require('mongoose'));
+var extend = require('mongoose-schema-extend');
+import Bio from './../../bio.model';
+import Analysis from './../../analysis.model'
 
-var DisopredSchema = new mongoose.Schema({
+
+var DisopredSchema = Analysis.discriminator('Disopred', new mongoose.Schema({
   data: [
     {
-      amino: String,
+      amino: Bio.Amino,
       pos: Number,
       bind: {
         symbol: String,
@@ -24,7 +28,7 @@ var DisopredSchema = new mongoose.Schema({
   },
   metadata: {},
   path: { type: String, unique: true}
-});
+}));
 
 DisopredSchema.pre('save', function(next) {
   this.stats.percentAboveThreshold = calculateAboveThreshold(this);
