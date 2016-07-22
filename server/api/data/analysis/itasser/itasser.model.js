@@ -2,6 +2,9 @@
 
 var mongoose = require('bluebird').promisifyAll(require('mongoose'));
 
+import Bio from './../../bio.model';
+import Analysis from './../../analysis.model'
+
 var ItasserSchema = new mongoose.Schema({
   models: [
     {
@@ -37,11 +40,7 @@ var ItasserSchema = new mongoose.Schema({
         cov: String
       }
     ]
-  },
-  sequence: String,
-  stats: {},
-  metadata: {},
-  path: { type: String, unique: true}
+  }
 });
 
 ItasserSchema.pre('save', function(next) {
@@ -51,6 +50,6 @@ ItasserSchema.pre('save', function(next) {
   next();
 });
 
-var Itasser = mongoose.model('Itasser', ItasserSchema);
+var Itasser = Analysis.discriminator('Itasser', ItasserSchema);
 
 export default Itasser

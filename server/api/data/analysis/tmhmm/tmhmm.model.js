@@ -2,16 +2,19 @@
 
 var mongoose = require('bluebird').promisifyAll(require('mongoose'));
 
+import Bio from './../../bio.model';
+import Analysis from './../../analysis.model'
+
 var TmhmmSchema = new mongoose.Schema({
-  data: [
-    {
-      amino: String,
-      pos: Number,
-      inside: Number,
-      outside: Number,
-      membrane: Number
-    }
-  ],
+  data: {
+    sequential: [
+      {
+        inside: Number,
+        outside: Number,
+        membrane: Number
+      }
+    ]
+  },
   sequence: String,
   domains: [
     {
@@ -26,14 +29,13 @@ var TmhmmSchema = new mongoose.Schema({
     expectedNumberAAInTMH: Number,
     expectedNumberAAFirst60: Number,
     totalProbNin: Number
-  },
-  metadata: {},
-  path: { type: String, unique: true}
+  }
 });
 
 TmhmmSchema.pre('save', function(next) {
+  console.log(this)
   //Producde sequence string
-  var s = this.data.map(function (a) {
+  var s = this.data.sequential.map(function (a) {
     return a.amino;
   });
   this.sequence = s.join('');
@@ -44,6 +46,6 @@ TmhmmSchema.pre('save', function(next) {
   next();
 });
 
-var Tmhmm = mongoose.model('Tmhmm', TmhmmSchema);
+var Tmhmm = Analysis.discriminator('Tmhmm', TmhmmSchema);
 
 export default Tmhmm

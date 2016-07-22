@@ -5,30 +5,20 @@ var extend = require('mongoose-schema-extend');
 import Bio from './../../bio.model';
 import Analysis from './../../analysis.model'
 
-
-var DisopredSchema = Analysis.discriminator('Disopred', new mongoose.Schema({
-  data: [
-    {
-      amino: Bio.Amino,
-      pos: Number,
-      bind: {
-        symbol: String,
-        value: Number
-      },
-      diso: {
-        symbol: String,
-        value: Number
+var DisopredSchema = new mongoose.Schema({
+  data: {
+    sequential: [
+      {
+        binding: Number,
+        disorder: Number
       }
-    }
-  ],
-  sequence: String,
+    ]
+  },
   stats: {
     sequenceLength: Number,
     percentAboveThreshold: Number,
-  },
-  metadata: {},
-  path: { type: String, unique: true}
-}));
+  }
+});
 
 DisopredSchema.pre('save', function(next) {
   this.stats.percentAboveThreshold = calculateAboveThreshold(this);
@@ -40,12 +30,13 @@ DisopredSchema.pre('save', function(next) {
 
 function calculateAboveThreshold (obj){
   var total = 0;
-  obj.data.forEach(function(d){
-    if(d.diso.value > 0.5) total += 1;
+  obj.data.sequential.forEach(function(d){
+    if(d.disorder > 0.5) total += 1;
   })
-  return total*100.0/obj.data.length;
+  return total*100.0/obj.data.sequential.length;
 }
 
-var Disopred = mongoose.model('Disopred', DisopredSchema);
+
+var Disopred = Analysis.discriminator('Disopred', DisopredSchema);
 
 export default Disopred

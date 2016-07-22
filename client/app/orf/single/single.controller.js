@@ -10,6 +10,7 @@ angular.module('proteoWebApp')
 
   Orf.getFullOrf($scope.abp).then(function(resp){
     $scope.oflOrf = resp;
+    console.log(resp)
     Orf.getItasserModelsData($scope.oflOrf, $scope.abp).then(function(ms){
       $scope.oflOrfMs = ms;
     });

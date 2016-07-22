@@ -75,6 +75,7 @@ export function load(orfpath, callback){
 
       var lines = []; // Lines read from file
       var first = true;
+      data.sequential = {};
 
       rl
       .on('error', function (err) {

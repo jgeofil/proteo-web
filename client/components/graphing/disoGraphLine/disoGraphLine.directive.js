@@ -11,6 +11,7 @@ angular.module('proteoWebApp')
       },
       link: function (scope, element, attrs) {
         var seqln = scope.graphData.length; //Length of the sequence alignement
+        
 
         // Size and margins
         var si = d3Helper.getSizing(100, 10, 25, seqln);
@@ -18,7 +19,7 @@ angular.module('proteoWebApp')
         //Scales and domains
         var x = d3.scale.linear().range([0, si.width]);
         var y = d3.scale.linear().range([si.height,0]);
-        x.domain(d3.extent(scope.graphData, function(d) { return d.pos; }));
+        x.domain(d3.extent(scope.graphData, function(d) { return d.position; }));
         y.domain([0,1]);
 
         // SVG canvas
@@ -80,11 +81,11 @@ angular.module('proteoWebApp')
 
         // Graph line functions
         var disorderLine = d3.svg.line()
-          .x(function(d) { return x(d.pos); })
-          .y(function(d) { return y(d.diso.value); });
+          .x(function(d) { return x(d.position); })
+          .y(function(d) { return y(d.disorder); });
         var bindingLine = d3.svg.line()
-          .x(function(d) { return x(d.pos); })
-          .y(function(d) { return y(d.bind.value); });
+          .x(function(d) { return x(d.position); })
+          .y(function(d) { return y(d.binding); });
         // Add lines to canvas
         svg.append('path')
           .attr('class', 'line')
@@ -141,20 +142,20 @@ angular.module('proteoWebApp')
             .attr('r', 2);
 
         // Move tip with mouse and set text
-        var bisect = d3.bisector(function(d) { return d.pos; }).left;
+        var bisect = d3.bisector(function(d) { return d.position; }).left;
         var mousemove = function() {
             var x0 = x.invert(d3.mouse(this)[0]),
                 i = bisect(scope.graphData, x0, 1),
                 d0 = scope.graphData[i - 1],
                 d1 = scope.graphData[i],
-                d = x0 - d0.pos > d1.pos - x0 ? d1 : d0;
+                d = x0 - d0.position > d1.position - x0 ? d1 : d0;
             //TODO: this is unecessarily complicated, positions are integers
           focus.select('circle.diso-tip-circle-diso')
-            .attr('transform','translate(0,' + y(d.diso.value) + ')');
+            .attr('transform','translate(0,' + y(d.disorder) + ')');
           focus.select('circle.diso-tip-circle-bind')
-            .attr('transform','translate(0,' + y(d.bind.value) + ')');
+            .attr('transform','translate(0,' + y(d.binding) + ')');
           focus.select('text.diso-tip-text').text(d.amino);
-          focus.attr('transform', 'translate(' + x(d.pos) + ')');
+          focus.attr('transform', 'translate(' + x(d.position) + ')');
         };
 
         // append the rectangle to capture mouse
