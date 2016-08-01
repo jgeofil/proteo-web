@@ -22,7 +22,8 @@ export function load(orfpath, callback){
       var rl = lineReader(longFilePath);
 
       var lines = []; // Lines read from file
-      var data = {stats:{}}; // Data output
+      var data = {}; // Data output
+      data.data = {discrete:{}};
 
       rl
       .on('error', function (err) {
@@ -36,16 +37,16 @@ export function load(orfpath, callback){
           switch (l[5]) {
 
             case 'TMHs:':
-              data.stats.numberPredictedTMH = Number(l[6]);
+              data.data.discrete.numberPredictedTMH = Number(l[6]);
               break;
             case 'AAs':
-              data.stats.expectedNumberAAInTMH = Number(l[8]);
+              data.data.discrete.expectedNumberAAInTMH = Number(l[8]);
               break;
             case '60':
-              data.stats.expectedNumberAAFirst60 = Number(l[7]);
+              data.data.discrete.expectedNumberAAFirst60 = Number(l[7]);
               break;
             case 'N-in:':
-              data.stats.totalProbNin = Number(l[6]);
+              data.data.discrete.totalProbNin = Number(l[6]);
               break;
             default:
 
@@ -54,11 +55,12 @@ export function load(orfpath, callback){
       })
       .on('close', function (){
         // List of strings to object
-        data.domains = lines.map(function(line){
+
+        data.data.domains = lines.map(function(line){
           return {
             //name: line[0],
             //version: line[1],
-            dom: line[2],
+            name: line[2],
             start: Number(line[3]),
             end: Number(line[4])
           }
@@ -75,7 +77,7 @@ export function load(orfpath, callback){
 
       var lines = []; // Lines read from file
       var first = true;
-      data.sequential = {};
+
 
       rl
       .on('error', function (err) {
@@ -92,9 +94,9 @@ export function load(orfpath, callback){
       })
       .on('close', function (){
         // List of strings to object
-        data.data = lines.map(function(line){
+        data.data.sequential = lines.map(function(line){
           return {
-            pos: Number(line[0]),
+            position: Number(line[0]),
             amino: line[1],
             inside: Number(line[2]),
             membrane: Number(line[3]),
@@ -107,6 +109,7 @@ export function load(orfpath, callback){
   ], function (err, result) {
 
     if(result && ! err){
+      console.log(result)
       result.metadata = {};
       result.path = subPath;
       callback(result);

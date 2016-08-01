@@ -50,8 +50,8 @@ export function orfs(req, res) {
 
   Data.Orf
     .find({dirname: subPath})
-    .populate('analysis.disopred', 'stats sequence')
-    .populate('analysis.tmhmm', 'stats sequence')
+    .populate('analysis.disopred', 'data.discrete sequence')
+    .populate('analysis.tmhmm', 'data.discrete sequence')
     .populate('project', '_id name')
     .populate('dataset', '_id name')
     .exec(function(err, orfs){

@@ -13,22 +13,14 @@ var TmhmmSchema = new mongoose.Schema({
         outside: Number,
         membrane: Number
       }
-    ]
-  },
-  sequence: String,
-  domains: [
-    {
-      start: Number,
-      end: Number,
-      dom: String
+    ],
+    discrete:{
+      sequenceLength: Number,
+      numberPredictedTMH: Number,
+      expectedNumberAAInTMH: Number,
+      expectedNumberAAFirst60: Number,
+      totalProbNin: Number
     }
-  ],
-  stats: {
-    sequenceLength: Number,
-    numberPredictedTMH: Number,
-    expectedNumberAAInTMH: Number,
-    expectedNumberAAFirst60: Number,
-    totalProbNin: Number
   }
 });
 
@@ -41,7 +33,7 @@ TmhmmSchema.pre('save', function(next) {
   this.sequence = s.join('');
 
   //Calculate sequence length
-  this.stats.sequenceLength = this.sequence.length;
+  this.data.discrete.sequenceLength = this.sequence.length;
 
   next();
 });

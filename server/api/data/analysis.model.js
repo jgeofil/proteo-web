@@ -11,6 +11,16 @@ var AnalysisSchema = new mongoose.Schema({
         amino: Bio.Amino
       }
     ],
+    domains: [
+      {
+        name: String,
+        start: Number,
+        end: Number
+      }
+    ],
+    discrete: {
+
+    },
     other: {}
   },
   metadata: {},

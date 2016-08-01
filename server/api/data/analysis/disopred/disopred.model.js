@@ -12,18 +12,18 @@ var DisopredSchema = new mongoose.Schema({
         binding: Number,
         disorder: Number
       }
-    ]
-  },
-  stats: {
-    sequenceLength: Number,
-    percentAboveThreshold: Number,
+    ],
+    discrete: {
+      sequenceLength: Number,
+      percentAboveThreshold: Number,
+    }
   }
 });
 
 DisopredSchema.pre('save', function(next) {
-  this.stats.percentAboveThreshold = calculateAboveThreshold(this);
+  this.data.discrete.percentAboveThreshold = calculateAboveThreshold(this);
   //Calculate sequence length
-  this.stats.sequenceLength = this.sequence.length;
+  this.data.discrete.sequenceLength = this.sequence.length;
 
   next();
 });

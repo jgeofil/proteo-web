@@ -27,13 +27,13 @@ var TopconsSchema = new mongoose.Schema({
     }
   }
 });
-
+/**
 TopconsSchema.pre('save', function(next) {
   console.log(this)
 
   next();
 });
-
+**/
 var Topcons = Analysis.discriminator('Topcons', TopconsSchema);
 
 export default Topcons
