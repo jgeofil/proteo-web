@@ -13,12 +13,14 @@ import Tmhmm from './analysis/tmhmm/tmhmm.model';
 import Topcons from './analysis/topcons/topcons.model';
 import Itasser from './analysis/itasser/itasser.model';
 import Model from './analysis/models/models.model';
+import Images from './analysis/images/images.model';
 
 var tmhmmLoad = require('./analysis/tmhmm/tmhmm.load');
 var disoLoad = require('./analysis/disopred/disopred.load');
 var topconsLoad = require('./analysis/topcons/topcons.load');
 var itasserLoad = require('./analysis/itasser/itasser.load');
 var modelsLoad = require('./analysis/models/models.load');
+var imagesLoad = require('./analysis/images/images.load');
 
 var util = require('./util');
 
@@ -132,8 +134,9 @@ function updateData(){
   Topcons.find({}).removeAsync().then(function(){
   Itasser.find({}).removeAsync().then(function(){
   Model.find({}).removeAsync().then(function(){
+    Images.find({}).removeAsync().then(function(){
     readProjects();
-  })})})})})})})})})});
+  })})})})})})})})})})});
 }
 
 /**
@@ -172,6 +175,9 @@ function loadAnalyses(orf){
     },
     function(cb){
       loadAnalysis(orf, itasserLoad.load, 'itasser', Itasser, cb);
+    },
+    function(cb){
+      loadAnalysis(orf, imagesLoad.load, 'images', Images, cb);
     }
   ], function(){
     orf.save();

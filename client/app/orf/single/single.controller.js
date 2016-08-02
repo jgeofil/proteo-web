@@ -10,6 +10,11 @@ angular.module('proteoWebApp')
 
   Orf.getFullOrf($scope.abp).then(function(resp){
     $scope.oflOrf = resp;
+    console.log(resp)
+    $scope.images = resp.analysis.images.data;
+    $scope.images.forEach(function(img){
+      Orf.getImageLink($scope.abp, img);
+    });
     Orf.getItasserModelsData($scope.oflOrf, $scope.abp).then(function(ms){
       console.log(ms)
       $scope.oflOrfMs = ms;
@@ -18,16 +23,6 @@ angular.module('proteoWebApp')
 
   // Page title, aka ORF name
   $scope.orfName = $routeParams.orfName;
-
-  //**************************************************************************
-  // Images
-  //**************************************************************************
-  Orf.getImages($scope.abp).then(function(response){
-    $scope.images = response;
-    $scope.images.forEach(function(img){
-      Orf.getImageLink($scope.abp, img);
-    });
-  });
 
   //**************************************************************************
   // Models
