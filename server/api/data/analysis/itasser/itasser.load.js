@@ -67,7 +67,7 @@ function readCscoreFiles (p) {
           var len = colArray.length;
           if(len > 3){
             data.forEach(function(model){
-              if(model.name === colArray[0]){
+              if(model.shortName === colArray[0]){
                 model.cscore = Number(colArray[1]);
                 if(len === 4){
                   model.decoys = Number(colArray[2]);

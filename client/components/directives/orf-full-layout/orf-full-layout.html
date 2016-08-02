@@ -81,9 +81,9 @@
                 ng-click="downData(model.data, 'text/plain', 'model.pdb')"></span>
         </h5>
         <h4>
-          <small>CScore: {{model.cscore}}</small><br>
-          <small ng-if="model.tm">TM-Score: {{model.tm}}</small><br>
-          <small ng-if="model.rmsd">RMSD: {{model.rmsd}}</small><br>
+          <small>CScore: {{model.metadata.cscore}}</small><br>
+          <small ng-if="model.metadata.tm">TM-Score: {{model.metadata.tm}}</small><br>
+          <small ng-if="model.metadata.rmsd">RMSD: {{model.metadata.rmsd}}</small><br>
         </h4>
       </div>
     </div>
