@@ -56,15 +56,15 @@
                     oap-scroll="scrollPos">
     <p class="orf-title-vertical orf-fade">Secondary structure</p>
     <hr class="orf-hr">
-    <itasser-ss-graph ng-if="oflOrf.analysis.itasser.ss"
-                      graph-data-ss="oflOrf.analysis.itasser.ss"
+    <itasser-ss-graph ng-if="oflOrf.analysis.itasser"
+                      graph-data-ss="oflOrf.analysis.itasser"
                       graph-height="150"
                       graph-spacing="graphSpacing"></itasser-ss-graph>
 
     <p class="orf-title-vertical orf-fade">Top 10 threading templates</p>
     <hr class="orf-hr">
-    <itasser-align-graph ng-if="oflOrf.analysis.itasser.align"
-                          graph-data="oflOrf.analysis.itasser.align"
+    <itasser-align-graph ng-if="oflOrf.analysis.itasser"
+                          graph-data="oflOrf.analysis.itasser"
                           seq-count="10"
                           graph-spacing="graphSpacing"></itasser-align-graph>
     <p class="orf-title-vertical orf-fade" ng-if="oflOrfItasserModels">Top final models predicted</p>

@@ -6,46 +6,41 @@ import Bio from './../../bio.model';
 import Analysis from './../../analysis.model'
 
 var ItasserSchema = new mongoose.Schema({
-  models: [
-    {
-      cscore: Number,
-      decoys: Number,
-      dentisty: Number,
-      name: String,
-      rmsd: String,
-      tm: String
-    }
-  ],
-  ss: [
-    {
-      amino: String,
-      confidence: {
+  data: {
+    sequential: [
+      {
         beta: Number,
         coil: Number,
-        helix: Number
-      },
-      pos: Number,
-      symbol: String
-    }
-  ],
-  align:{
-    seq: String,
-    ss: String,
-    coverage: [
-      {
-        pdbid: String,
-        rank: Number,
-        zz0: Number,
-        method: String,
-        cov: String
+        helix: Number,
+        symbol: String
       }
-    ]
+    ],
+    other: {
+      alignments: [
+        {
+          //pdbid: String,
+          //rank: Number,
+          //zz0: Number,
+          //method: String,
+          //coverage: [String]
+        }
+      ],
+      models: [
+        {
+          //cscore: Number,
+          //decoys: Number,
+          //dentisty: Number,
+          //name: String,
+          //rmsd: String,
+          //tm: String
+        }
+      ]
+    }
   }
 });
 
 ItasserSchema.pre('save', function(next) {
 
-  this.sequence = this.align.seq;
 
   next();
 });

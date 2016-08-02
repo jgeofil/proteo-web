@@ -25,7 +25,6 @@ var TmhmmSchema = new mongoose.Schema({
 });
 
 TmhmmSchema.pre('save', function(next) {
-  console.log(this)
   //Producde sequence string
   var s = this.data.sequential.map(function (a) {
     return a.amino;

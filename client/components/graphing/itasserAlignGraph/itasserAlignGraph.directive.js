@@ -14,12 +14,13 @@ angular.module('proteoWebApp')
       },
       link: function (scope, element, attrs) {
         //Length of the sequence alignement
-        var seqln = scope.graphData.seq.length;
+        var seqln = scope.graphData.sequence.length;
+        var aligns = scope.graphData.data.other.alignments;
 
-        //Keep only necessary alignements
-        var data = scope.graphData.coverage.slice(0, scope.seqCount);
+        //Keep only necessary alignments
+        var data = aligns.slice(0, scope.seqCount);
         data.forEach(function(d){
-          d.cov = d.cov.split(''); //Split alignement sequences
+          d.coverage = d.coverage.split(''); //Split alignement sequences
         });
 
         // Size and margins
@@ -57,7 +58,7 @@ angular.module('proteoWebApp')
         //**********************************************************************
         // Main sequence
         header.selectAll('text')
-          .data(scope.graphData.seq.split('')).enter()
+          .data(scope.graphData.sequence.split('')).enter()
           .append('text')
             .attr('class', 'itasser-sequence-amino')
             .attr('text-anchor', 'middle')
@@ -88,7 +89,7 @@ angular.module('proteoWebApp')
         // Append sequences to containers
         sequences.selectAll('rect')
           .data(function(d){
-            return d.cov;
+            return d.coverage;
           }).enter().append('svg:rect')
           .attr('x', function(d,i) { return x(i)-(step/2); })
           .attr('y', -6)

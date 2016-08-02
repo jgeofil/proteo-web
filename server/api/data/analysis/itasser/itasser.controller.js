@@ -32,7 +32,7 @@ export function listModels(req, res){
   var subPath = path.join(dataPath, req.params.projectId, req.params.dataId, req.params.orfId, 'itasser');
   Itasser.findOne({path: subPath}, function(err,itasser){
     if(!err && itasser){
-      res.status(200).json(itasser.models);
+      res.status(200).json(itasser.data.other.models);
     }else{
       res.status(404).send("Not found");
     }

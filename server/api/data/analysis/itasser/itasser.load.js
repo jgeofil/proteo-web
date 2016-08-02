@@ -38,18 +38,16 @@ export function load(orfpath, callback){
         }
       })
       .on('close', function (){
-        data.ss = {};
+        data.data = {};
 
-        data.ss = lines.map(function(line){
+        data.data.sequential = lines.map(function(line){
           return {
-            pos: Number(line[0]),
+            position: Number(line[0]),
             amino: line[1],
             symbol: line[2],
-            confidence: {
-              coil: Number(line[3]),
-              helix: Number(line[4]),
-              beta: Number(line[5]),
-            }
+            coil: Number(line[3]),
+            helix: Number(line[4]),
+            beta: Number(line[5]),
           }
         });
         callback(null, data);
@@ -65,8 +63,8 @@ export function load(orfpath, callback){
       var lines = [];
       var pos = 0;
       var method;
-      data.align = {};
-      data.align.coverage = [];
+      data.data.other = {};
+      data.data.other.alignments = [];
 
       rl
       .on('error', function (err) {
@@ -86,13 +84,13 @@ export function load(orfpath, callback){
             break;
           // Retrieve secondary structure line
           case 1:
-            data.align.ss = line.split(' ')
-                              .filter(function(el) {return el.length !== 0})[0]
+            //data.align.ss = line.split(' ')
+            //                  .filter(function(el) {return el.length !== 0})[0]
             pos+=1;
             break;
           // Retrieve sequence line
           case 2:
-            data.align.seq = line.split(' ')
+            data.sequence = line.split(' ')
                               .filter(function(el) {return el.length !== 0})[0]
             pos+=1;
             break;
@@ -101,12 +99,12 @@ export function load(orfpath, callback){
             var colArray = line.split(' ')
                             .filter(function(el) {return el.length !== 0});
             if(colArray.length > 5){
-              data.align.coverage.push({
+              data.data.other.alignments.push({
                 rank: Number(colArray[0]),
                 pdbid: colArray[1],
                 zz0: Number(colArray[2]),
                 method: method[Number(colArray[3].replace(':', ''))-1],
-                cov: colArray[4]
+                coverage: colArray[4]
               });
             }
             break;
@@ -132,7 +130,7 @@ export function load(orfpath, callback){
             name: str.split('.')[0]
           }
         });
-        data.models = files;
+        data.data.other.models = files;
         callback(null, data);
       });
     },
@@ -160,7 +158,7 @@ export function load(orfpath, callback){
                             .filter(function(el) {return el.length !== 0});
             var len = colArray.length;
             if(len > 3){
-              data.models.forEach(function(model){
+              data.data.other.models.forEach(function(model){
                 if(model.name === colArray[0]){
                   model.cscore = Number(colArray[1]);
                   if(len === 4){
@@ -186,6 +184,7 @@ export function load(orfpath, callback){
   ], function (err, result) {
 
     if(result && ! err){
+
       result.metadata = {};
       result.path = subPath;
       callback(result)

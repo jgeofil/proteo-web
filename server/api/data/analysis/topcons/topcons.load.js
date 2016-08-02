@@ -155,7 +155,6 @@ export function load(orfpath, callback){
       }
       obj.metadata = {};
       obj.path = subPath;
-      console.log(obj)
       callback(obj);
     }else{
       callback(null);

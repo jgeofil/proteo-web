@@ -11,7 +11,6 @@ angular.module('proteoWebApp')
     },
     link: function (scope, element, attrs) {
 
-      console.log(scope.graphData)
       //Length of the sequence alignement
       var seqln = scope.graphData.data.sequential.length-1;
 

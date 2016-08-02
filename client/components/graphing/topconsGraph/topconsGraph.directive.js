@@ -12,7 +12,6 @@ angular.module('proteoWebApp')
           //Length of the sequence alignement
           var seqln = scope.graphData.data.sequential.length;
           var data = scope.graphData;
-          console.log(scope.graphData)
 
           // Size and margins
           var lineGraphHeight = 100;

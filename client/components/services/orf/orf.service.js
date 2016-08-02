@@ -52,7 +52,7 @@ angular.module('proteoWebApp')
     this.getItasserModelsData = function(orf, abp){
       var deferred = $q.defer();
 
-      var ms = orf.analysis.itasser.models || [];
+      var ms = orf.analysis.itasser.data.other.models || [];
       var count = 0;
 
       ms.forEach(function(model){

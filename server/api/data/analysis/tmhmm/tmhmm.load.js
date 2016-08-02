@@ -109,7 +109,6 @@ export function load(orfpath, callback){
   ], function (err, result) {
 
     if(result && ! err){
-      console.log(result)
       result.metadata = {};
       result.path = subPath;
       callback(result);
