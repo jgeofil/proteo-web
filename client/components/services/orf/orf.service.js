@@ -55,14 +55,16 @@ angular.module('proteoWebApp')
       var ms = orf.analysis.itasser.data.other.models || [];
       var count = 0;
 
+      var models = [];
+
       ms.forEach(function(model){
-        $http.get(abp + '/analysis/itasser/models/' + model.name)
+        $http.get(abp + '/analysis/itasser/models/' + model)
         .then(function(data){
 
-          model.data = data.data;
+          models.push(data.data);
           count++;
           if(count === ms.length){
-            deferred.resolve(ms);
+            deferred.resolve(models);
           }
 
         });

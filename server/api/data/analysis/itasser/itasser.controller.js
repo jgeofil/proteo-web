@@ -5,6 +5,12 @@ import config from '../../../../config/environment';
 var path = require('path');
 var fs = require('fs');
 var Itasser = require('./itasser.model');
+var mongoose = require('bluebird').promisifyAll(require('mongoose'));
+var Grid = require('gridfs-stream');
+
+var conn = mongoose.connection;
+Grid.mongo = mongoose.mongo;
+var gfs = new Grid(conn.db);
 
 // Location of data folder
 var dataPath = config.data;
@@ -28,6 +34,7 @@ export function itasser(req, res){
 
 // TODO: get rid of this, no longer needed, but adjust client first
 // Get JSON formatted list of all available models for the analysis
+
 export function listModels(req, res){
   var subPath = path.join(dataPath, req.params.projectId, req.params.dataId, req.params.orfId, 'itasser');
   Itasser.findOne({path: subPath}, function(err,itasser){
@@ -46,13 +53,30 @@ export function listModels(req, res){
  * @return {null} request is answered.
  */
 export function getModel(req, res){
-  var subPath = path.join(dataPath, req.params.projectId, req.params.dataId, req.params.orfId, 'itasser', req.params.modelName+'.pdb');
+  var subPath = path.join(dataPath, req.params.projectId, req.params.dataId, req.params.orfId, 'itasser');
 
-  fs.readFile(subPath, 'utf8', function(err, contents) {
-    if(err) {
-      res.status(500).send(err);
+  Itasser.findOne({path: subPath}, function(err,itasser){
+    if(!err && itasser){
+      var dataString = '';
+      var readstream = gfs.createReadStream({
+        _id: req.params.modelName
+      });
+      readstream.on('error', function (err) {
+        res.send(500, err);
+      });
+      readstream.on('data',function(part){
+        dataString += part;
+      });
+      readstream.on('end',function(){
+        gfs.findOne({ _id: req.params.modelName}, function (err, file) {
+          file.data = dataString;
+          res.send(file);
+        });
+      });
+    }else{
+      res.status(404).send("Not found");
     }
-    res.status(200).send(contents);
+
   });
 }
 

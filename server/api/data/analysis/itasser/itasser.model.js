@@ -25,16 +25,7 @@ var ItasserSchema = new mongoose.Schema({
           //coverage: [String]
         }
       ],
-      models: [
-        {
-          //cscore: Number,
-          //decoys: Number,
-          //dentisty: Number,
-          //name: String,
-          //rmsd: String,
-          //tm: String
-        }
-      ]
+      models: [{type: mongoose.Schema.Types.ObjectId, ref: 'fs.files'}]
     }
   }
 });
