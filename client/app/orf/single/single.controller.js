@@ -10,44 +10,34 @@ angular.module('proteoWebApp')
 
   Orf.getFullOrf($scope.abp).then(function(resp){
     $scope.oflOrf = resp;
-    Orf.getItasserModelsData($scope.oflOrf, $scope.abp).then(function(ms){
-      $scope.oflOrfMs = ms;
-    });
-  });
-
-  // Page title, aka ORF name
-  $scope.orfName = $routeParams.orfName;
-
-  //**************************************************************************
-  // Images
-  //**************************************************************************
-  Orf.getImages($scope.abp).then(function(response){
-    $scope.images = response;
+    console.log(resp)
+    $scope.images = resp.files.images;
     $scope.images.forEach(function(img){
-      Orf.getImageLink($scope.abp, img);
+      Orf.getImageLink('/api/data', img);
     });
-  });
-
-  //**************************************************************************
-  // Models
-  //**************************************************************************
-
-  Orf.getModels($scope.abp).then(function(data){
     var count = 0;
-    $scope.models = data.data;
+    $scope.models = resp.files.models;
 
     // Get PDB files for each model
     $scope.models.forEach(function(model){
-      $http.get($scope.abp + '/analysis/models/' + model.shortName)
+      $http.get('/api/data/files/models/' + model._id)
       .then(function(md){
 
         model.data = md.data;
+        console.log(model)
         count +=1;
         if(count === $scope.models.length-1){
           $scope.modelsLoaded = true;
         }
       });
     });
+    Orf.getItasserModelsData($scope.oflOrf, $scope.abp).then(function(ms){
+      console.log(ms)
+      $scope.oflOrfMs = ms;
+    });
   });
+
+  // Page title, aka ORF name
+  $scope.orfName = $routeParams.orfName;
 
 });

@@ -10,8 +10,9 @@ angular.module('proteoWebApp')
       graphData: '='
     },
     link: function (scope, element, attrs) {
+
       //Length of the sequence alignement
-      var seqln = scope.graphData.data.length-1;
+      var seqln = scope.graphData.data.sequential.length-1;
 
       // Size and margins
       var si = d3Helper.getSizing(120, 10, 25, seqln);
@@ -20,7 +21,7 @@ angular.module('proteoWebApp')
       //Scales and domain
       var x = d3.scale.linear().range([0, si.width]);
       var yProb = d3.scale.linear().range([conHeight,0]);
-      x.domain(d3.extent(scope.graphData.data, function(d) { return d.pos; }));
+      x.domain(d3.extent(scope.graphData.data.sequential, function(d) { return d.position; }));
       yProb.domain([0,1]);
       var range = x(1)-x(0);
 
@@ -30,28 +31,28 @@ angular.module('proteoWebApp')
       //**********************************************************************
       // Lines
       var memLine = d3.svg.line()
-      .x(function(d) { return x(d.pos); })
+      .x(function(d) { return x(d.position); })
       .y(function(d) { return yProb(d.membrane); });
       var outLine = d3.svg.line()
-      .x(function(d) { return x(d.pos); })
+      .x(function(d) { return x(d.position); })
       .y(function(d) { return yProb(d.outside); });
       var inLine = d3.svg.line()
-      .x(function(d) { return x(d.pos); })
+      .x(function(d) { return x(d.position); })
       .y(function(d) { return yProb(d.inside); });
 
       svg.append('path')
       .attr('class', 'line')
-      .attr('d', memLine(scope.graphData.data))
+      .attr('d', memLine(scope.graphData.data.sequential))
       .style('stroke-width', 1)
       .style('stroke', 'red') ;
       svg.append('path')
       .attr('class', 'line')
-      .attr('d', inLine(scope.graphData.data))
+      .attr('d', inLine(scope.graphData.data.sequential))
       .style('stroke-width', 1)
       .style('stroke', 'blue') ;
       svg.append('path')
       .attr('class', 'line')
-      .attr('d', outLine(scope.graphData.data))
+      .attr('d', outLine(scope.graphData.data.sequential))
       .style('stroke-width', 1)
       .style('stroke', 'grey');
 
@@ -79,13 +80,13 @@ angular.module('proteoWebApp')
       svg.call(tip);
 
       //**********************************************************************
-      // Protein domains rectangles
+      // Protein data.domains rectangles
       svg.selectAll('rect')
-      .data(scope.graphData.domains)
+      .data(scope.graphData.data.domains)
       .enter().append('svg:rect')
       .attr('x', function(d) { return x(d.start)-range/2; })
       .attr('y', function(d){
-        switch(d.dom){
+        switch(d.name){
           case 'TMhelix':
           return si.height-15;
           case 'inside':
@@ -96,7 +97,7 @@ angular.module('proteoWebApp')
       })
       .attr('width', function(d) { return x(d.end)-x(d.start)+range; })
       .attr('height', function(d){
-        switch(d.dom){
+        switch(d.name){
           case 'TMhelix':
           return 10;
           case 'inside':
@@ -106,7 +107,7 @@ angular.module('proteoWebApp')
         }
       })
       .attr('class', function(d){
-        switch(d.dom){
+        switch(d.name){
           case 'TMhelix':
           return 'tmhmm-helix';
           case 'inside':

@@ -272,7 +272,7 @@ angular.module('proteoWebApp')
   // Disopred outcomeFunction
   $scope.disopredIsPositive = function(row){
     if(row.analysis.disopred){
-      if(row.analysis.disopred.stats.percentAboveThreshold > $scope.disopredThreshold*100){
+      if(row.analysis.disopred.data.discrete.percentAboveThreshold > $scope.disopredThreshold*100){
         row._DISOPRED = 2;
         return true;
       }else{
@@ -306,7 +306,7 @@ angular.module('proteoWebApp')
   // Disopred outcomeFunction
   $scope.tmhmmIsPositive = function(row){
     if(row.analysis.tmhmm){
-      var r = row.analysis.tmhmm.stats;
+      var r = row.analysis.tmhmm.data.discrete;
       var res =  (!$scope.tmhmm.TMH.checked || r.numberPredictedTMH >= $scope.tmhmm.TMH.value) &&
       (!$scope.tmhmm.AAInTMH.checked || r.expectedNumberAAInTMH >= $scope.tmhmm.AAInTMH.value) &&
       (!$scope.tmhmm.AAFirst60.checked || r.expectedNumberAAFirst60 <= $scope.tmhmm.AAFirst60.value);

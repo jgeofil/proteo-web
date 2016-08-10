@@ -10,7 +10,7 @@ angular.module('proteoWebApp')
         graphDataSs: '='
       },
       link: function (scope, element, attrs) {
-        var seqln = scope.graphDataSs.length; //Length of the sequence alignement
+        var seqln = scope.graphDataSs.data.sequential.length; //Length of the sequence alignement
 
         // Size and margins
         var si = d3Helper.getSizing(120, 10, 20, seqln);
@@ -19,7 +19,7 @@ angular.module('proteoWebApp')
         // Scales and domains
         var x = d3.scale.linear().range([0, si.width]);
         var yCon = d3.scale.linear().range([conHeight,0]);
-        x.domain(d3.extent(scope.graphDataSs, function(d) { return d.pos; }));
+        x.domain(d3.extent(scope.graphDataSs.data.sequential, function(d) { return d.position; }));
         yCon.domain([0,1]);
         var step = x(0)-x(1);
 
@@ -42,12 +42,12 @@ angular.module('proteoWebApp')
         //**********************************************************************
         // Lines
         var conLine = d3.svg.line()
-          .x(function(d) { return x(d.pos); })
-          .y(function(d) { return yCon(Math.max(d.confidence.coil,d.confidence.beta,d.confidence.helix)); });
+          .x(function(d) { return x(d.position); })
+          .y(function(d) { return yCon(Math.max(d.coil,d.beta,d.helix)); });
 
         svg.append('path')
           .attr('class', 'itasser-con-line')
-          .attr('d', conLine(scope.graphDataSs))
+          .attr('d', conLine(scope.graphDataSs.data.sequential))
           .style('stroke-width', 1)
           .style('stroke', 'grey') ;
 
@@ -57,7 +57,7 @@ angular.module('proteoWebApp')
           .attr('class', 'd3-tip')
           .offset([-10, 0])
           .html(function(d) {
-            return "<span style='color:white'>" + d.amino +"-"+ d.pos+ "</span>";
+            return "<span style='color:white'>" + d.amino +"-"+ d.position+ "</span>";
           });
         svg.call(tip);
 
@@ -75,11 +75,11 @@ angular.module('proteoWebApp')
 
         // Color blocks
         svg.selectAll('rect')
-          .data(scope.graphDataSs)
+          .data(scope.graphDataSs.data.sequential)
           .enter().append('svg:rect')
-          .attr('x', function(d) { return x(d.pos-1)-(step/2); })
+          .attr('x', function(d) { return x(d.position-1)-(step/2); })
           .attr('y', si.height -15)
-          .attr('width', function(d) { return x(d.pos)-x(d.pos-1); })
+          .attr('width', function(d) { return x(d.position)-x(d.position-1); })
           .attr('height', 10)
           .attr('class', function(d){
             switch(d.symbol){

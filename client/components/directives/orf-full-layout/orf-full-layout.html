@@ -17,7 +17,7 @@
     <p class="orf-title-vertical orf-fade">Disorder pred.</p>
     <hr class="orf-hr">
     <diso-graph-line ng-if="oflOrf.analysis.disopred.data"
-                      graph-data="oflOrf.analysis.disopred.data"
+                      graph-data="oflOrf.analysis.disopred.data.sequential"
                       graph-spacing="graphSpacing"></diso-graph-line>
 </orf-analysis-panel>
 
@@ -56,15 +56,15 @@
                     oap-scroll="scrollPos">
     <p class="orf-title-vertical orf-fade">Secondary structure</p>
     <hr class="orf-hr">
-    <itasser-ss-graph ng-if="oflOrf.analysis.itasser.ss"
-                      graph-data-ss="oflOrf.analysis.itasser.ss"
+    <itasser-ss-graph ng-if="oflOrf.analysis.itasser"
+                      graph-data-ss="oflOrf.analysis.itasser"
                       graph-height="150"
                       graph-spacing="graphSpacing"></itasser-ss-graph>
 
     <p class="orf-title-vertical orf-fade">Top 10 threading templates</p>
     <hr class="orf-hr">
-    <itasser-align-graph ng-if="oflOrf.analysis.itasser.align"
-                          graph-data="oflOrf.analysis.itasser.align"
+    <itasser-align-graph ng-if="oflOrf.analysis.itasser"
+                          graph-data="oflOrf.analysis.itasser"
                           seq-count="10"
                           graph-spacing="graphSpacing"></itasser-align-graph>
     <p class="orf-title-vertical orf-fade" ng-if="oflOrfItasserModels">Top final models predicted</p>
@@ -81,9 +81,9 @@
                 ng-click="downData(model.data, 'text/plain', 'model.pdb')"></span>
         </h5>
         <h4>
-          <small>CScore: {{model.cscore}}</small><br>
-          <small ng-if="model.tm">TM-Score: {{model.tm}}</small><br>
-          <small ng-if="model.rmsd">RMSD: {{model.rmsd}}</small><br>
+          <small>CScore: {{model.metadata.cscore}}</small><br>
+          <small ng-if="model.metadata.tm">TM-Score: {{model.metadata.tm}}</small><br>
+          <small ng-if="model.metadata.rmsd">RMSD: {{model.metadata.rmsd}}</small><br>
         </h4>
       </div>
     </div>

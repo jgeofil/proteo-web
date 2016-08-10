@@ -10,18 +10,18 @@ angular.module('proteoWebApp')
         },
         link: function (scope, element, attrs) {
           //Length of the sequence alignement
-          var seqln = scope.graphData.zCord.length;
+          var seqln = scope.graphData.data.sequential.length;
           var data = scope.graphData;
 
           // Size and margins
           var lineGraphHeight = 100;
-          var si = d3Helper.getSizing(lineGraphHeight + (data.predictions.length * 20), 10, 20, seqln);
+          var si = d3Helper.getSizing(lineGraphHeight + (data.data.other.methods.length * 20), 10, 20, seqln);
 
           //Scales and domains
           var x = d3.scale.linear().range([1, si.width]);
           var yProb = d3.scale.linear().range([(lineGraphHeight/2)-5,0]);
           var yZcord = d3.scale.linear().range([lineGraphHeight,(lineGraphHeight/2)+5]);
-          x.domain(d3.extent(scope.graphData.zCord, function(d,i) { return i+1; }));
+          x.domain(d3.extent(scope.graphData.data.sequential, function(d,i) { return i+1; }));
           yProb.domain([0,1]);
           yZcord.domain([0,25]);
           var range = x(1)-x(0);
@@ -53,29 +53,29 @@ angular.module('proteoWebApp')
 
           //**********************************************************************
           // Lines
-          var zCordLine = d3.svg.line()
-            .x(function(d) { return x(d.pos); })
-            .y(function(d) { return yZcord(d.value); });
-          var deltaGLine = d3.svg.line()
-            .x(function(d) { return x(d.pos); })
-            .y(function(d) { return yZcord(d.value); });
-          var topRelLine = d3.svg.line()
-            .x(function(d) { return x(d.pos); })
-            .y(function(d) { return yProb(d.value); });
+          var zCordLine = d3.svg.line().defined(function(d) { return d.zCord; })
+            .x(function(d) { return x(d.position); })
+            .y(function(d) { return yZcord(d.zCord); });
+          var deltaGLine = d3.svg.line().defined(function(d) { return d.deltaG; })
+            .x(function(d) { return x(d.position); })
+            .y(function(d) { return yZcord(d.deltaG); });
+          var topRelLine = d3.svg.line().defined(function(d) { return d.topRel; })
+            .x(function(d) { return x(d.position); })
+            .y(function(d) { return yProb(d.topRel); });
 
           svg.append('path')
             .attr('class', 'line')
-            .attr('d', zCordLine(scope.graphData.zCord))
+            .attr('d', zCordLine(scope.graphData.data.sequential))
             .style('stroke-width', 1)
             .style('stroke', 'black') ;
           svg.append('path')
             .attr('class', 'line')
-            .attr('d', topRelLine(scope.graphData.topRel))
+            .attr('d', topRelLine(scope.graphData.data.sequential))
             .style('stroke-width', 1)
             .style('stroke', 'black') ;
           svg.append('path')
             .attr('class', 'line')
-            .attr('d', deltaGLine(scope.graphData.deltaG))
+            .attr('d', deltaGLine(scope.graphData.data.sequential))
             .style('stroke-width', 1)
             .style('stroke', 'grey') ;
 
@@ -94,23 +94,31 @@ angular.module('proteoWebApp')
 
           // Create sequence containers
           var sequences = body.selectAll('g')
-            .data(data.predictions).enter()
+            .data(data.data.other.methods).enter()
             .append('g')
             .attr('transform', function(d,i){return 'translate(0,' + (i*12) + ')';})
 
           // Append ids
           ids.selectAll('text')
-            .data(data.predictions).enter()
+            .data(data.data.other.methods).enter()
             .append('text')
             .attr('class', 'itasser-align-info')
             .attr('text-anchor', 'start')
             .attr('x', -65)
             .attr('y', function(d,i){return i*12;})
-            .text(function(d){return d.method;});
+            .text(function(d){return d});
+
+          function toArrayFromProp (data, prop) {
+            return data.map(function(d){
+              return d.predictions[prop];
+            });
+          }
 
           // Append secondary sequences rectangles
           sequences.selectAll('rect')
-            .data(function(d){return d.values;})
+            .data(function(d){
+              return toArrayFromProp(data.data.sequential, d);
+            })
             .enter().append('svg:rect')
             .attr('x', function(d,i) { return x(i+1)-range/2; })
             .attr('y', function(d){

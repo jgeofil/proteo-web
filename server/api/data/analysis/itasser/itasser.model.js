@@ -2,55 +2,40 @@
 
 var mongoose = require('bluebird').promisifyAll(require('mongoose'));
 
+import Bio from './../../bio.model';
+import Analysis from './../analysis.model'
+
 var ItasserSchema = new mongoose.Schema({
-  models: [
-    {
-      cscore: Number,
-      decoys: Number,
-      dentisty: Number,
-      name: String,
-      rmsd: String,
-      tm: String
-    }
-  ],
-  ss: [
-    {
-      amino: String,
-      confidence: {
+  data: {
+    sequential: [
+      {
         beta: Number,
         coil: Number,
-        helix: Number
-      },
-      pos: Number,
-      symbol: String
-    }
-  ],
-  align:{
-    seq: String,
-    ss: String,
-    coverage: [
-      {
-        pdbid: String,
-        rank: Number,
-        zz0: Number,
-        method: String,
-        cov: String
+        helix: Number,
+        symbol: String
       }
-    ]
-  },
-  sequence: String,
-  stats: {},
-  metadata: {},
-  path: { type: String, unique: true}
+    ],
+    other: {
+      alignments: [
+        {
+          //pdbid: String,
+          //rank: Number,
+          //zz0: Number,
+          //method: String,
+          //coverage: [String]
+        }
+      ],
+      models: [{type: mongoose.Schema.Types.ObjectId, ref: 'fs.files'}]
+    }
+  }
 });
 
 ItasserSchema.pre('save', function(next) {
 
-  this.sequence = this.align.seq;
 
   next();
 });
 
-var Itasser = mongoose.model('Itasser', ItasserSchema);
+var Itasser = Analysis.discriminator('Itasser', ItasserSchema);
 
 export default Itasser

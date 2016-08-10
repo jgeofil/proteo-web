@@ -77,20 +77,15 @@ export function load(orfpath, callback){
 
       result.diso.values.forEach(function(d,i){
         formatted.push({
-          pos: i+1,
+          position: i+1,
           amino: seqList[i],
-          bind:{
-            value: result.bind.values[i],
-            symbol: result.bind.symbol[i]
-          },
-          diso:{
-            value: result.diso.values[i],
-            symbol: result.diso.symbol[i]
-          }
+          binding: result.bind.values[i],
+          disorder: result.diso.values[i]
+
         })
       });
 
-      callback({sequence: result.seq, data: formatted, metadata: {}, path: subPath});
+      callback({sequence: result.seq, data: {sequential: formatted}, metadata: {}, path: subPath});
     }else{
       callback(null);
     }

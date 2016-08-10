@@ -21,7 +21,7 @@ var gfs = new Grid(conn.db);
  */
 function listModelFiles(p){
   return function (cb){
-    glob("*.@(pdb|PDB)", {cwd: p}, function (err, files) {
+    glob("*.@(png|jpg|jpeg|gif)", {cwd: p}, function (err, files) {
       if(err) {
         return cb(err, null);
       }
@@ -75,9 +75,12 @@ function createGridFiles(){
       var writestream = gfs.createWriteStream({filename: file.name});
       fs.createReadStream(file.path).pipe(writestream);
 
-      writestream.on('close', function (gfsfile) {
+      writestream.on('error', function (err) {
+        console.log(err);
+      });
 
-          file.pdbId = gfsfile._id;
+      writestream.on('close', function (gfsfile) {
+          file.gridFile = gfsfile._id;
           count += 1;
           if (count === da.length){
             cb(null, da);
@@ -95,7 +98,7 @@ function createGridFiles(){
  */
 export function load(orfpath, callback){
 
-  var subPath = path.join(orfpath, 'models');
+  var subPath = path.join(orfpath, 'images');
 
   asy.waterfall([
 
@@ -106,7 +109,7 @@ export function load(orfpath, callback){
   ], function (err, result) {
 
     if(result && !err){
-      callback({data: result, path: subPath});
+      callback(result);
     }else{
       callback(null);
     }

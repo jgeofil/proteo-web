@@ -28,7 +28,7 @@ angular.module('proteoWebApp')
     };
 
     this.getImageLink = function(abp, img){
-      Download.getLink(abp + '/analysis/images/' + img.name, 'image/jpeg').then(function(link){
+      Download.getLink(abp + '/files/images/' + img._id, 'image/jpeg').then(function(link){
         img.url = link;
       });
     };
@@ -52,17 +52,19 @@ angular.module('proteoWebApp')
     this.getItasserModelsData = function(orf, abp){
       var deferred = $q.defer();
 
-      var ms = orf.analysis.itasser.models || [];
+      var ms = orf.analysis.itasser.data.other.models || [];
       var count = 0;
 
+      var models = [];
+
       ms.forEach(function(model){
-        $http.get(abp + '/analysis/itasser/models/' + model.name)
+        $http.get(abp + '/analysis/itasser/models/' + model)
         .then(function(data){
 
-          model.data = data.data;
+          models.push(data.data);
           count++;
           if(count === ms.length){
-            deferred.resolve(ms);
+            deferred.resolve(models);
           }
 
         });

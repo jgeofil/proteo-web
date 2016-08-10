@@ -7,6 +7,32 @@ var lineReader = require('linebyline');
 var asy = require('async');
 var glob = require("glob");
 
+function addValue(arr, name, pos, val){
+  var found = false;
+  for(var i = 0; i < arr.length; i++){
+    if(arr[i].position === pos){
+      found = true;
+      arr[i][name] = val;
+    }
+  }
+  if(!found){
+    var nel = {
+      position: pos
+    }
+    nel[name]= val;
+    arr.push(nel);
+  }
+}
+
+function addPrediction (data, arr, name){
+  arr.forEach(function(d, i){
+    if(!data.sequential[i].predictions){
+      data.sequential[i].predictions = {};
+    }
+    data.sequential[i].predictions[name] = d;
+  })
+}
+
 export function load(orfpath, callback){
 
   var subPath = path.join(orfpath, 'topcons');
@@ -27,9 +53,7 @@ export function load(orfpath, callback){
       var topcons = '';
 
       var data = {};
-      data.zCord = [];
-      data.deltaG = [];
-      data.topRel = [];
+      data.sequential = [];
 
       var state = 0;
 
@@ -90,28 +114,19 @@ export function load(orfpath, callback){
               case 7:
                 if(line !== ''){
                   line = line.split(/\s+/);
-                  data.zCord.push({
-                    pos: Number(line[0]),
-                    value: Number(line[1])
-                  });
-                  }
+                  addValue(data.sequential, 'zCord', Number(line[0]), Number(line[1]));
+                }
                 break;
               case 8:
                 if(line !== ''){
                   line = line.split(/\s+/);
-                  data.deltaG.push({
-                    pos: Number(line[0]),
-                    value: Number(line[1])
-                  });
+                  addValue(data.sequential, 'deltaG', Number(line[0]), Number(line[1]));
                 }
                 break;
               case 9:
                 if(line !== ''){
                   line = line.split(/\s+/);
-                  data.topRel.push({
-                    pos: Number(line[0]),
-                    value: Number(line[1])
-                  });
+                  addValue(data.sequential, 'topRel', Number(line[0]), Number(line[1]));
                 }
                 break;
               default:
@@ -120,41 +135,27 @@ export function load(orfpath, callback){
         }
       })
       .on('close', function (){
-        data.predictions = [];
+        data.other = {};
+        data.other.methods = ['scampiSeq','scampiMsa','prodiv','pro','octopus','topcons']
 
-        data.predictions.push({
-          method: 'scampiSeq',
-          values: scampiSeq.split('')
-        });
-        data.predictions.push({
-          method: 'scampiMsa',
-          values: scampiMsa.split('')
-        });
-        data.predictions.push({
-          method: 'prodiv',
-          values: prodiv.split('')
-        });
-        data.predictions.push({
-          method: 'pro',
-          values: pro.split('')
-        });
-        data.predictions.push({
-          method: 'octopus',
-          values: octopus.split('')
-        });
-        data.predictions.push({
-          method: 'topcons',
-          values: topcons.split('')
-        });
+        addPrediction(data, scampiSeq.split('') ,'scampiSeq')
+        addPrediction(data, scampiMsa.split('') ,'scampiMsa')
+        addPrediction(data, prodiv.split('') ,'prodiv')
+        addPrediction(data, pro.split('') ,'pro')
+        addPrediction(data, octopus.split('') ,'octopus')
+        addPrediction(data, topcons.split(''),'topcons')
 
         callback(null, data);
       });
     }
   ], function (err, result) {
     if(result && ! err){
-      result.metadata = {};
-      result.path = subPath;
-      callback(result);
+      var obj = {
+        data: result
+      }
+      obj.metadata = {};
+      obj.path = subPath;
+      callback(obj);
     }else{
       callback(null);
     }
