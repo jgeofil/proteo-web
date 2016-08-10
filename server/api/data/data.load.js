@@ -73,13 +73,7 @@ function readDatasets(project){
   var count = 0;
 
   datasets.forEach(function(set){
-    // Create record in database for dataset
-    Data.Dataset.create({
-      name: set,
-      meta: util.readMetaData(path.join(project.path, set , 'meta.json')),
-      path: path.join(project.path, set),
-      project: project._id // Reference to parent Project
-    }, function(err, dataSaved){
+    loadDataset(set, project, function(err, dataSaved){
       count +=1;
       if (err) console.log("Error saving new dataset: " + err)
       else{
@@ -104,17 +98,49 @@ function readProjects() {
   var projects = util.getDirectories(DATA_PATH); // Get all available project folders
 
   projects.forEach(function(proj){
-    Data.Project.create({
-      name: proj,
-      meta: util.readMetaData(path.join(DATA_PATH, proj, 'meta.json')),
-      path: path.join(DATA_PATH, proj)
-    }, function (err, projSaved) {
-      if (err) console.log("Error saving new project: " + err)
-      else{
-        readDatasets(projSaved);
-      }
-    });
+    loadProject(proj);
   });
+}
+/**
+ * Loads a project recursivly into the database.
+ * @return {null} Data is loaded.
+ */
+export function loadProject (proj) {
+  Data.Project.create({
+    name: proj,
+    meta: util.readMetaData(path.join(DATA_PATH, proj, 'meta.json')),
+    path: path.join(DATA_PATH, proj)
+  }, function (err, projSaved) {
+    if (err) console.log("Error saving new project: " + err)
+    else{
+      readDatasets(projSaved);
+    }
+  });
+}
+/**
+ * Loads a dataset recursivly into the database.
+ * @return {null} Data is loaded.
+ */
+export function loadDataset (set, project, callb) {
+  if(!callb){
+    callb = function(err, dataSaved){
+      if (err) console.log("Error saving new dataset: " + err)
+      else{
+        project.datasets.push(dataSaved._id); // Reference in parent Project
+        project.save(function(err){
+          if(err) console.log("Error saving datasets to project: " + err)
+        });
+      }
+      readOrfs(dataSaved);
+      }
+  }
+  // Create record in database for dataset
+  Data.Dataset.create({
+    name: set,
+    meta: util.readMetaData(path.join(project.path, set , 'meta.json')),
+    path: path.join(project.path, set),
+    project: project._id // Reference to parent Project
+  }, callb);
 }
 
 /**
@@ -135,7 +161,7 @@ function updateData(){
   Itasser.find({}).removeAsync().then(function(){
   Models.find({}).removeAsync().then(function(){
     Images.find({}).removeAsync().then(function(){
-    readProjects();
+    //readProjects();
   })})})})})})})})})})});
 }
 

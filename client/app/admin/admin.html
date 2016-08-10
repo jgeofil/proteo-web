@@ -9,6 +9,33 @@
     <div class="panel-body">
       <h4 class="small">After adding data files, click here to update database.</h4>
       <button class="btn btn-primary" ng-click="updateData()">Update data  <i ng-class="{'fa fa-refresh fa-spin': updating}"></i></button>
+
+      <div class="dropdown">
+          <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+            Dropdown
+            <span class="caret"></span>
+          </button>
+        <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+          <li ng-repeat="name in folderList" ng-click="setFolderName(name)"><a href="#">{{name}}</a></li>
+        </ul>
+      </div>
+
+      <div ng-if="folderName" class="btn-group" role="group" aria-label="...">
+        <button type="button" ng-click="addProject()" class="btn btn-default">Project</button>
+        <button type="button" ng-click="asDataset()" class="btn btn-default">Dataset</button>
+        <button type="button" class="btn btn-default">Analysis</button>
+      </div>
+
+      <div class="dropdown" ng-if="projectList">
+          <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+            Dropdown
+            <span class="caret"></span>
+          </button>
+        <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+          <li ng-repeat="project in projectList" ng-click="addDataset(project._id)"><a href="#">{{project.name}}</a></li>
+        </ul>
+      </div>
+
     </div>
   </div>
 

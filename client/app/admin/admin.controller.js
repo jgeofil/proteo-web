@@ -3,7 +3,7 @@
 (function() {
 
 angular.module('proteoWebApp.admin')
-  .controller('AdminController', function(User, $scope, $http, $timeout, socket, NgTableParams, ngToast){
+  .controller('AdminController', function(User, Admin, $scope, $http, $timeout, socket, NgTableParams, ngToast){
 
     $scope.groups = [];
 
@@ -19,6 +19,40 @@ angular.module('proteoWebApp.admin')
         userTableSetting.data = $scope.users;
         $scope.userTableParams = new NgTableParams(userTableParameters, userTableSetting);
     });
+
+    Admin.getListOfFolders().then(function(response){
+      $scope.folderList = response.data;
+    }, function(error){
+      console.log(error);
+      //TODO: Show message
+    });
+
+    $scope.addProject = Admin.addProject;
+    $scope.folderName = '';
+    $scope.projectList = '';
+    $scope.setFolderName = function(name){
+      $scope.folderName = name;
+    };
+    $scope.addProject = function(){
+      Admin.addProject($scope.folderName);
+      $scope.folderName = '';
+    };
+    $scope.asDataset = function(){
+      Admin.listProjects().then(function(response){
+        $scope.projectList = response.data;
+      }, function(error){
+        console.log(error);
+        //TODO: Show message
+      });
+    };
+    $scope.addDataset = function(projectId){
+      Admin.addDataset(projectId, $scope.folderName).then(function(){
+
+      }, function(error){
+        console.log(error);
+        //TODO: Show message
+      });
+    };
 
     $scope.delete = function (user) {
       user.$remove();

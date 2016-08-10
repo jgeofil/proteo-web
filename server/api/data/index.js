@@ -9,6 +9,10 @@ import * as auth from '../../auth/auth.service';
 var router = express.Router({mergeParams: true});
 
 router.post('/update', auth.hasRole('admin'), controller.update);
+router.get('/list', auth.hasRole('admin'), controller.listFolders);
+router.get('/list/projects', auth.hasRole('admin'), controller.listProjects);
+router.post('/add/project/:folderName', auth.hasRole('admin'), controller.addProject);
+router.post('/add/dataset/:folderName/to/:projectId', auth.hasRole('admin'), controller.addDataset);
 router.use('/files', auth.isAuthenticated(),require('./files/files.index.js'));
 router.use('/:projectId/dataset/:dataId/orf/:orfId/analysis', auth.isAuthenticated(), util.isAuthorizedOnGroup ,require('./analysis/analysis.index.js'));
 router.use('/:projectId/dataset/:dataId/orf/:orfId/file/fasta', auth.isAuthenticated(), util.isAuthorizedOnGroup, controller.oneOrfSequence);
@@ -17,5 +21,6 @@ router.use('/:projectId/dataset/:dataId/orf/:orfId', auth.isAuthenticated(), uti
 router.use('/:projectId/dataset/:dataId', auth.isAuthenticated(), util.isAuthorizedOnGroup, controller.orfs);
 router.use('/:projectId', auth.isAuthenticated(), util.isAuthorizedOnGroup, controller.datasets);
 router.get('/', auth.isAuthenticated(), controller.index);
+
 
 module.exports = router;
