@@ -9,6 +9,10 @@ import Disopred from './analysis/disopred/disopred.model';
 import Tmhmm from './analysis/tmhmm/tmhmm.model';
 import Topcons from './analysis/topcons/topcons.model';
 import Itasser from './analysis/itasser/itasser.model';
+
+import Images from './files/images/images.model';
+import Models from './files/models/models.model';
+
 import Bio from './bio.model';
 
 var ProjectSchema = new mongoose.Schema({
@@ -38,6 +42,10 @@ var OrfSchema = new mongoose.Schema({
   dataset: {type: mongoose.Schema.Types.ObjectId, ref: 'Dataset'},
   project: {type: mongoose.Schema.Types.ObjectId, ref: 'Project'},
   analyses: {},
+  files: {
+    images: [{type: mongoose.Schema.Types.ObjectId, ref: 'Images'}],
+    models: [{type: mongoose.Schema.Types.ObjectId, ref: 'Models'}],
+  },
   analysis: {
     disopred: {type: mongoose.Schema.Types.ObjectId, ref: 'Disopred', default: null},
     tmhmm: {type: mongoose.Schema.Types.ObjectId, ref: 'Tmhmm', default: null},

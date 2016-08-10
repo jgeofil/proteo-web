@@ -12,15 +12,15 @@ import Disopred from './analysis/disopred/disopred.model';
 import Tmhmm from './analysis/tmhmm/tmhmm.model';
 import Topcons from './analysis/topcons/topcons.model';
 import Itasser from './analysis/itasser/itasser.model';
-import Model from './analysis/models/models.model';
-import Images from './analysis/images/images.model';
+import Images from './files/images/images.model';
+import Models from './files/models/models.model';
 
 var tmhmmLoad = require('./analysis/tmhmm/tmhmm.load');
 var disoLoad = require('./analysis/disopred/disopred.load');
 var topconsLoad = require('./analysis/topcons/topcons.load');
 var itasserLoad = require('./analysis/itasser/itasser.load');
-var modelsLoad = require('./analysis/models/models.load');
-var imagesLoad = require('./analysis/images/images.load');
+var modelsLoad = require('./files/models/models.load');
+var imagesLoad = require('./files/images/images.load');
 
 var util = require('./util');
 
@@ -133,7 +133,7 @@ function updateData(){
   Tmhmm.find({}).removeAsync().then(function(){
   Topcons.find({}).removeAsync().then(function(){
   Itasser.find({}).removeAsync().then(function(){
-  Model.find({}).removeAsync().then(function(){
+  Models.find({}).removeAsync().then(function(){
     Images.find({}).removeAsync().then(function(){
     readProjects();
   })})})})})})})})})})});
@@ -171,17 +171,58 @@ function loadAnalyses(orf){
       loadAnalysis(orf, topconsLoad.load, 'topcons', Topcons, cb);
     },
     function(cb){
-      loadAnalysis(orf, modelsLoad.load, 'models', Model, cb);
+      loadFiles(orf, modelsLoad.load, 'models', Models, cb);
     },
     function(cb){
       loadAnalysis(orf, itasserLoad.load, 'itasser', Itasser, cb);
     },
     function(cb){
-      loadAnalysis(orf, imagesLoad.load, 'images', Images, cb);
+      loadFiles(orf, imagesLoad.load, 'images', Images, cb);
     }
   ], function(){
     orf.save();
   });
+}
+
+
+ /**
+  * Loads a file type into an Orf using its path.
+  * @param {Object} orf The Orf
+  * @param {Object} lf The loading function for the file type
+  * @param {Object} name The name for the file type
+  * @param {Object} ac The file class
+  * @param {Object} cb Callback on completion
+  * @return {null}
+  */
+function loadFiles(orf, lf, name, ac, cb){
+  if(orf.analyses.hasOwnProperty(name)){
+    lf(orf.path, function(result){
+      if(result !== null){
+        var count = 0;
+        var idList = [];
+        result.forEach(function(f){
+          f.project = orf.project;
+          ac.create(f, function(err, anaObj){
+            if(err){
+              console.log(err);
+            }else {
+              idList.push(anaObj._id)
+              count += 1;
+              if(count === result.length){
+                orf.files[name] = idList;
+                cb(null);
+              }
+            }
+
+          })
+        })
+      }else{
+        cb(null);
+      }
+    })
+  }else{
+    cb(null);
+  }
 }
 
 /**
@@ -199,6 +240,7 @@ function loadAnalysis(orf, lf, name, ac, cb){
       if(result !== null){
         util.readMetaDataAsync(path.join(orf.path, name,'meta.json'), function(meta){
           result.metadata = meta;
+          result.project = orf.project;
           ac.create(result, function(err, anaObj){
             if(err){
               console.log(err);

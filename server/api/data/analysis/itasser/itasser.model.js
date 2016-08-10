@@ -3,7 +3,7 @@
 var mongoose = require('bluebird').promisifyAll(require('mongoose'));
 
 import Bio from './../../bio.model';
-import Analysis from './../../analysis.model'
+import Analysis from './../analysis.model'
 
 var ItasserSchema = new mongoose.Schema({
   data: {

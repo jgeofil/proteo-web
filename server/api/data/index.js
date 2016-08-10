@@ -9,6 +9,7 @@ import * as auth from '../../auth/auth.service';
 var router = express.Router({mergeParams: true});
 
 router.post('/update', auth.hasRole('admin'), controller.update);
+router.use('/files', auth.isAuthenticated(),require('./files/files.index.js'));
 router.use('/:projectId/dataset/:dataId/orf/:orfId/analysis', auth.isAuthenticated(), util.isAuthorizedOnGroup ,require('./analysis/analysis.index.js'));
 router.use('/:projectId/dataset/:dataId/orf/:orfId/file/fasta', auth.isAuthenticated(), util.isAuthorizedOnGroup, controller.oneOrfSequence);
 router.use('/:projectId/dataset/:dataId/orf/:orfId/full', auth.isAuthenticated(), util.isAuthorizedOnGroup, controller.fullOrf);

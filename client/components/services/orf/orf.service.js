@@ -28,7 +28,7 @@ angular.module('proteoWebApp')
     };
 
     this.getImageLink = function(abp, img){
-      Download.getLink(abp + '/analysis/images/' + img.name, 'image/jpeg').then(function(link){
+      Download.getLink(abp + '/files/images/' + img._id, 'image/jpeg').then(function(link){
         img.url = link;
       });
     };

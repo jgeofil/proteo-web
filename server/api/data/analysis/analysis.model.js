@@ -1,7 +1,7 @@
 'use strict';
 
 var mongoose = require('bluebird').promisifyAll(require('mongoose'));
-import Bio from './bio.model';
+import Bio from './../bio.model';
 
 var AnalysisSchema = new mongoose.Schema({
   data: {
@@ -26,7 +26,8 @@ var AnalysisSchema = new mongoose.Schema({
   metadata: {},
   sequence: String,
   path: { type: String, unique: true},
-  stats: {}
+  stats: {},
+  project: {type: mongoose.Schema.Types.ObjectId, ref: 'Project'},
 });
 
 var Analysis = mongoose.model('Analysis', AnalysisSchema);

@@ -38,7 +38,7 @@ angular.module('proteoWebApp')
         $timeout(function(){
           scope.omcModels.forEach(function(model){
             // Assume there exists an HTML div with id 'gldiv'
-            var element = $('#omc-model-'+model.shortName);
+            var element = $('#omc-model-'+model._id);
             // Viewer config - properties 'defaultcolors' and 'callback'
             var config = {defaultcolors: $3Dmol.rasmolElementColors };
             // Create GLViewer within 'gldiv'

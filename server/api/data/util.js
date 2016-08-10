@@ -30,6 +30,25 @@ export function isAuthorizedOnGroup(req, res, next) {
   });
 }
 
+export function isAuthorizedOnProject(userId, projectId){
+  return true;
+  
+  Group.find({users: mongoose.Types.ObjectId(userId)}, function(err,groups){
+    var permissions = [];
+    groups.forEach(function(d){
+      permissions = permissions.concat(d.permissions);
+    })
+    if(err){ // User is in no groups
+      return true;
+    }
+    else if(permissions.indexOf(projectId) === -1){ //User is not authorized on group
+      return true
+    }else{
+      return true
+    }
+  });
+}
+
 // Read metadata file for Projects, Datasets, ORFs
 export function readMetaData(path){
   var file = {};

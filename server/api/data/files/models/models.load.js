@@ -77,7 +77,7 @@ function createGridFiles(){
 
       writestream.on('close', function (gfsfile) {
 
-          file.pdbId = gfsfile._id;
+          file.gridFile = gfsfile._id;
           count += 1;
           if (count === da.length){
             cb(null, da);
@@ -106,7 +106,7 @@ export function load(orfpath, callback){
   ], function (err, result) {
 
     if(result && !err){
-      callback({data: result, path: subPath});
+      callback(result);
     }else{
       callback(null);
     }

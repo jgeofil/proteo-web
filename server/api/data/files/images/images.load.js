@@ -52,7 +52,7 @@ function readCaptionFiles(p){
     da.forEach(function(file){
       var metaPath = path.join(p, file.shortName+'.json');
       util.readMetaDataAsync(metaPath, function(meta){
-        file.meta = meta;
+        file.metadata = meta;
         count += 1;
         if (count === da.length){
           cb(null, da);
@@ -109,7 +109,7 @@ export function load(orfpath, callback){
   ], function (err, result) {
 
     if(result && !err){
-      callback({data: result, path: subPath});
+      callback(result);
     }else{
       callback(null);
     }

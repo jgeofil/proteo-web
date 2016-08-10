@@ -3,7 +3,7 @@
 var mongoose = require('bluebird').promisifyAll(require('mongoose'));
 var extend = require('mongoose-schema-extend');
 import Bio from './../../bio.model';
-import Analysis from './../../analysis.model'
+import Analysis from './../analysis.model'
 
 var DisopredSchema = new mongoose.Schema({
   data: {
