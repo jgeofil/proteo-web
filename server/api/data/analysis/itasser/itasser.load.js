@@ -12,6 +12,8 @@ var conn = mongoose.connection;
 Grid.mongo = mongoose.mongo;
 var gfs = new Grid(conn.db);
 
+import Models from './../../files/models/models.model';
+
 /**
  * Produces a function that gets list of all available experimental models
  * for the ORF.
