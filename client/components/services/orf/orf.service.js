@@ -10,37 +10,20 @@ angular.module('proteoWebApp')
      * @param {String} abp The path to the ORF.
      * @return {Object} Promise.
      */
-    this.getFullOrf = function(abp){
-      return $http.get(abp+'/full').then(function(response){
+    this.getFullOrf = function(orfId){
+      return $http.get('/api/data/orf/'+orfId+'/full').then(function(response){
         return response.data;
       });
     };
 
-    /**
-     * Gets a list of all the images for an ORF.
-     * @param {String} abp The path to the ORF.
-     * @return {Object} Promise.
-     */
-    this.getImages = function(abp){
-      return $http.get(abp + '/analysis/images/').then(function(response){
-        return response.data;
-      });
-    };
-
-    this.getImageLink = function(abp, img){
-      Download.getLink(abp + '/files/images/' + img._id, 'image/jpeg').then(function(link){
+    this.getImageLink = function(img){
+      Download.getLink('/api/data/files/images/' + img._id, 'image/jpeg').then(function(link){
         img.url = link;
       });
     };
 
-    this.getModels = function(abp) {
-      return $http.get(abp + '/analysis/models').then(function(response){
-        return response.data;
-      });
-    };
-
-    this.getModelData = function(abp, name){
-      return $http.get(abp + '/analysis/models/' + name);
+    this.getModelData = function(id){
+      return $http.get('/api/data/files/models/'+ id);
     };
 
     /**
@@ -49,7 +32,7 @@ angular.module('proteoWebApp')
      * @param {String} abp The path to the ORF.
      * @return {Object} Promise, resolving to an array of the models.
      */
-    this.getItasserModelsData = function(orf, abp){
+    this.getItasserModelsData = function(orf){
       var deferred = $q.defer();
 
       var ms = orf.analysis.itasser.data.other.models || [];
@@ -58,7 +41,7 @@ angular.module('proteoWebApp')
       var models = [];
 
       ms.forEach(function(model){
-        $http.get(abp + '/analysis/itasser/models/' + model)
+        $http.get('/api/data/analysis/itasser/models/' + model)
         .then(function(data){
 
           models.push(data.data);

@@ -17,6 +17,7 @@ var path = require('path');
 // Location of data folder
 var DATA_PATH = config.data;
 
+//OK ID
 // Gets a list of available
 export function index(req, res) {
   Group.find({users: mongoose.Types.ObjectId(req.user._id)}, function(err,groups){
@@ -46,10 +47,8 @@ export function index(req, res) {
 
 // Gets a list of available orfs
 export function orfs(req, res) {
-  var subPath = path.join(DATA_PATH, req.params.projectId, req.params.dataId);
-
   Data.Orf
-    .find({dirname: subPath})
+    .find({dataset: req.params.dataId})
     .populate('analysis.disopred', 'data.discrete sequence')
     .populate('analysis.tmhmm', 'data.discrete sequence')
     .populate('project', '_id name')
@@ -63,34 +62,14 @@ export function orfs(req, res) {
     })
 }
 
-// Gets one ORF by name
-export function oneOrf(req, res) {
-  var subPath = path.join(DATA_PATH, req.params.projectId, req.params.dataId, req.params.orfId);
-
-  Data.Orf
-    .findOne({path: subPath})
-    .populate('analysis.disopred', 'stats sequence')
-    .populate('analysis.tmhmm', 'stats sequence')
-    .populate('project', '_id name')
-    .populate('dataset', '_id name')
-    .exec(function(err, orf){
-      if(!err && orf){
-        res.status(200).json(orf);
-      }else{
-        res.status(500).send("Error reading ORFs.");
-      }
-    })
-}
-
+//OKID
 /**
  * Get all available information for an ORF, including analysis results.
  * @return {null} request is answered.
  */
 export function fullOrf(req, res) {
-  var subPath = path.join(DATA_PATH, req.params.projectId, req.params.dataId, req.params.orfId);
-
   Data.Orf
-    .findOne({path: subPath})
+    .findOne({_id: req.params.orfId})
     .populate('analysis.disopred')
     .populate('analysis.tmhmm')
     .populate('analysis.itasser')
@@ -102,8 +81,6 @@ export function fullOrf(req, res) {
     //TODO: populate other analyses when they will be preloaded.
     .exec(function(err, orf){
       if(!err && orf){
-
-
         res.status(200).json(orf);
       }else{
         res.status(500).send("Error reading ORF.");
@@ -138,11 +115,10 @@ export function oneOrfSequence(req, res) {
     })
 }
 
-
+//OK ID
 export function datasets(req, res) {
-  var subPath = path.join(DATA_PATH, req.params.projectId);
-
-  Data.Dataset.find({dirname: subPath}).populate('orfs').exec(function(err, datasets){
+  Data.Dataset.find().populate('orfs').exec(function(err, datasets){
+    console.log(datasets)
     if(!err){
       res.status(200).json(datasets);
     }else{

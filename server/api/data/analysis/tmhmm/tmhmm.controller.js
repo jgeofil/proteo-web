@@ -9,24 +9,6 @@ var Tmhmm = require('./tmhmm.model');
 var dataPath = config.data;
 
 /**
- * Get TMHMM output in JSON.
- * @return {null} request is answered.
- */
-export function tmhmm(req, res){
-
-  var subPath = path.join(dataPath, req.params.projectId, req.params.dataId, req.params.orfId, 'tmhmm');
-
-  Tmhmm.findOne({path: subPath}, function(err,tmhmm){
-    if(!err && tmhmm){
-      res.status(200).json(tmhmm);
-    }else{
-      res.status(404).send("Not found");
-    }
-  });
-
-}
-
-/**
  * Get disopred output in original text format.
  * @return {null} request is answered.
  */

@@ -8,23 +8,6 @@ var Topcons = require('./topcons.model');
 // Location of data folder
 var dataPath = config.data;
 
-/**
- * Get TOPCONS output in JSON.
- * @return {null} request is answered.
- */
-export function topcons(req, res){
-
-  var subPath = path.join(dataPath, req.params.projectId, req.params.dataId, req.params.orfId, 'topcons');
-
-  Topcons.findOne({path: subPath}, function(err,topcons){
-    if(!err && topcons){
-      res.status(200).json(topcons);
-    }else{
-      res.status(404).send("Not found");
-    }
-  });
-
-}
 
 /**
  * Get tmhmm output in original text format.

@@ -16,68 +16,29 @@ var gfs = new Grid(conn.db);
 var dataPath = config.data;
 
 /**
- * Get TOPCONS output in JSON.
- * @return {null} request is answered.
- */
-export function itasser(req, res){
-
-  var subPath = path.join(dataPath, req.params.projectId, req.params.dataId, req.params.orfId, 'itasser');
-
-  Itasser.findOne({path: subPath}, function(err,itasser){
-    if(!err && itasser){
-      res.status(200).json(itasser);
-    }else{
-      res.status(404).send("Not found");
-    }
-  });
-}
-
-// TODO: get rid of this, no longer needed, but adjust client first
-// Get JSON formatted list of all available models for the analysis
-
-export function listModels(req, res){
-  var subPath = path.join(dataPath, req.params.projectId, req.params.dataId, req.params.orfId, 'itasser');
-  Itasser.findOne({path: subPath}, function(err,itasser){
-    if(!err && itasser){
-      res.status(200).json(itasser.data.other.models);
-    }else{
-      res.status(404).send("Not found");
-    }
-  });
-
-}
-
-/**
  * Get PDB format models.
  * TODO: should be GLOBS
  * @return {null} request is answered.
  */
 export function getModel(req, res){
-  var subPath = path.join(dataPath, req.params.projectId, req.params.dataId, req.params.orfId, 'itasser');
 
-  Itasser.findOne({path: subPath}, function(err,itasser){
-    if(!err && itasser){
-      var dataString = '';
-      var readstream = gfs.createReadStream({
-        _id: req.params.modelName
-      });
-      readstream.on('error', function (err) {
-        res.send(500, err);
-      });
-      readstream.on('data',function(part){
-        dataString += part;
-      });
-      readstream.on('end',function(){
-        gfs.findOne({ _id: req.params.modelName}, function (err, file) {
-          file.data = dataString;
-          res.send(file);
-        });
-      });
-    }else{
-      res.status(404).send("Not found");
-    }
-
+  var dataString = '';
+  var readstream = gfs.createReadStream({
+    _id: req.params.modelId
   });
+  readstream.on('error', function (err) {
+    res.send(500, err);
+  });
+  readstream.on('data',function(part){
+    dataString += part;
+  });
+  readstream.on('end',function(){
+    gfs.findOne({ _id: req.params.modelId}, function (err, file) {
+      file.data = dataString;
+      res.send(file);
+    });
+  });
+
 }
 
 /**

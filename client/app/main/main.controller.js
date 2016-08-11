@@ -116,7 +116,8 @@ angular.module('proteoWebApp')
       page: $location.search().page
     });
 
-    $http.get('/api/data/'+$scope.selectedProject+'/dataset/'+dataset).then(function(response){
+
+    $http.get('/api/data/dataset/'+dataset).then(function(response){
 
       $timeout(function(){
         dataSort(response.data);

@@ -6,7 +6,7 @@
 <table ng-table="table" class="table table-condensed table-bordered table-striped" show-filter="true">
   <tr ng-repeat="row in $data">
     <td  data-title="'Name'" filter="{name: 'text'}" sortable="'name'" class="col-lg-2">
-      <a ng-if="row.authorized" ng-click="getDatasets(row.name)">{{row.name}}</a>
+      <a ng-if="row.authorized" ng-click="getDatasets(row._id)">{{row.name}}</a>
       <span ng-if="!row.authorized" class="text-muted"><span class="glyphicon glyphicon-lock"></span>  {{row.name}}</span>
     </td>
     <td data-title="'Description'" class="col-lg-4">{{row.meta.description}}</td>

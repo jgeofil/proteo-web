@@ -14,6 +14,8 @@ var DATA_PATH = config.data;
 
 // Middleware - check if user is authorized on group
 export function isAuthorizedOnGroup(req, res, next) {
+  next();
+  /**
   Group.find({users: mongoose.Types.ObjectId(req.user._id)}, function(err,groups){
     var permissions = [];
     groups.forEach(function(d){
@@ -25,14 +27,15 @@ export function isAuthorizedOnGroup(req, res, next) {
     else if(permissions.indexOf(req.params.projectId) === -1){ //User is not authorized on group
       res.status(403).send("User not authorized.");
     }else{
-      next();
+      //next();
     }
   });
+  **/
 }
 
 export function isAuthorizedOnProject(userId, projectId){
   return true;
-  
+
   Group.find({users: mongoose.Types.ObjectId(userId)}, function(err,groups){
     var permissions = [];
     groups.forEach(function(d){
