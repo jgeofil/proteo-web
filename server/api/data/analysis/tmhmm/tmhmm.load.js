@@ -6,6 +6,7 @@ var fs = require('fs');
 var lineReader = require('linebyline');
 var asy = require('async');
 var glob = require("glob");
+var Original = require('./../../files/originals/originals.load');
 
 export function load(orfpath, callback){
 
@@ -105,7 +106,11 @@ export function load(orfpath, callback){
         });
         callback(null, data);
       });
-    }
+    },
+    Original.loadToAnalysis([
+      {name: 'tmhmm.long', path: longFilePath},
+      {name: 'tmhmm.plp', path: plpFilePath}
+    ])
   ], function (err, result) {
 
     if(result && ! err){

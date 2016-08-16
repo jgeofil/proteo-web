@@ -20,6 +20,7 @@ export function getOneFileByID (type, req, res){
       readstream.pipe(res);
 
     }else{
+      console.log(err)
       res.status(404).send("Not found");
     }
   });

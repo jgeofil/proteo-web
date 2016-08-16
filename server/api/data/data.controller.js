@@ -7,15 +7,10 @@ import User from './../user/user.model';
 import Data from './data.model';
 
 var os = require('os');
-
 var dl = require('./data.load');
-dl.load();
-
 var mongoose = require('bluebird').promisifyAll(require('mongoose'));
-var path = require('path');
 
-// Location of data folder
-var DATA_PATH = config.data;
+dl.load();
 
 //OK ID
 // Gets a list of available
@@ -74,6 +69,10 @@ export function fullOrf(req, res) {
     .populate('analysis.tmhmm')
     .populate('analysis.itasser')
     .populate('analysis.topcons')
+    .populate('analysis.disopred.originals')
+    .populate('analysis.tmhmm.originals')
+    .populate('analysis.itasser.originals')
+    .populate('analysis.topcons.originals')
     .populate('files.models')
     .populate('files.images')
     .populate('project', '_id name')
@@ -81,8 +80,30 @@ export function fullOrf(req, res) {
     //TODO: populate other analyses when they will be preloaded.
     .exec(function(err, orf){
       if(!err && orf){
-        res.status(200).json(orf);
+        Data.Orf.populate(orf, [
+            {
+              path: 'analysis.disopred.originals',
+              model: 'Originals'
+            },{
+              path: 'analysis.topcons.originals',
+              model: 'Originals'
+            },{
+              path: 'analysis.itasser.originals',
+              model: 'Originals'
+            },{
+              path: 'analysis.tmhmm.originals',
+              model: 'Originals'
+            }
+          ],
+          function(err, orf) {
+            console.log(err)
+            if(err) res.status(500).send("Error reading ORF.");
+            else res.status(200).json(orf);
+          }
+        );
+
       }else{
+
         res.status(500).send("Error reading ORF.");
       }
     })
@@ -93,19 +114,20 @@ export function fullOrf(req, res) {
  * @return {null} request is answered.
  */
 export function oneOrfSequence(req, res) {
-  var subPath = path.join(DATA_PATH, req.params.projectId, req.params.dataId, req.params.orfId);
 
   Data.Orf
-    .findOne({path: subPath})
+    .findOne({_id: req.params.orfId})
     .exec(function(err, orf){
       if(!err && orf){
         var fasta = '';
         orf.sequence.forEach(function(s,i){
           fasta = fasta + ">" + req.params.orfId + '|v' + i + os.EOL;
           var sp = s.match(/.{1,80}/g);
-          sp.forEach(function(p){
-            fasta = fasta + p + os.EOL
-          });
+          if(sp){
+            sp.forEach(function(p){
+              fasta = fasta + p + os.EOL
+            });
+          }
         });
 
         res.status(200).send(fasta);

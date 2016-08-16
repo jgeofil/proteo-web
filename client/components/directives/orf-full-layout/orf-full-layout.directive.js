@@ -82,12 +82,6 @@ angular.module('proteoWebApp')
           }
         });
 
-        //**********************************************************************
-        //
-        scope.$watch('oflOrf', function(){
-          scope.config = Download.getAnalysisDownloadConfig(scope.oflBasePath);
-        });
-
       }
     };
   })

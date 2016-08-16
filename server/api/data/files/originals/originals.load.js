@@ -1,74 +1,68 @@
 'use strict';
 
-var path = require('path');
-var asy = require('async');
-var glob = require("glob");
-var util = require('./../../util');
 var fs = require('fs');
 var Grid = require('gridfs-stream');
+var asy = require('async');
 var mongoose = require('bluebird').promisifyAll(require('mongoose'));
+import Original from './originals.model';
 
 var conn = mongoose.connection;
 Grid.mongo = mongoose.mongo;
 var gfs = new Grid(conn.db);
 
-/**
- * Produces a function that gets list of all available experimental models
- * for the ORF.
- * @param {String} p Path in which to look for model files.
- * @return {Object} The function.
- */
-function listModelFiles(p){
-  return function (cb){
-    glob("*.@(pdb|PDB)", {cwd: p}, function (err, files) {
-      if(err) {
-        return cb(err, null);
-      }
-      if(!files || files.length < 0){
-        return cb('No files available...', null);
-      }
-      files = files.map(function(str){
-        return {
-          name: str,
-          shortName: str.split('.')[0],
-          path: path.join(p, str)
-        }
-      });
-      cb(null, files);
-    });
-  }
-}
 
-/**
- * Produces a function that reads metadata files for each model.
- * @param {String} p Path in which to look for model files.
- * @return {Object} The function.
- */
-function readCaptionFiles(p){
-  return function(da, cb){
+function readFiles (pathList){
+  return function (callback){
     var count = 0;
+    var ids = [];
 
-    da.forEach(function(file){
-      var metaPath = path.join(p, file.shortName+'.json');
-      util.readMetaDataAsync(metaPath, function(meta){
-        file.metadata = meta;
+
+    pathList.forEach(function(file){
+
+      var writestream = gfs.createWriteStream({filename: file.name});
+      fs.createReadStream(file.path).pipe(writestream);
+
+      writestream.on('close', function (gfsfile) {
+
+        file.gridFile = gfsfile._id;
         count += 1;
-        if (count === da.length){
-          cb(null, da);
+        if (count === pathList.length){
+          callback(null, pathList);
         }
-      })
+
+      });
     })
   }
 }
 
-/**
- * Produces a function that saves model files into database using GridFS.
- * @return {Object} The function.
- */
-function createGridFiles(){
-  return function(da, cb){
+function addIdsToAnalysis (analysis){
 
+  return function (ids, callback){
+
+    analysis.originals = ids;
+
+    callback(null, analysis);
   }
+}
+
+function saveToOriginalModel (files, callback){
+
+  var count = 0;
+  var idList = [];
+  files.forEach(function (file){
+    Original.create(file, function(err, saved){
+      if(err){
+        console.log(err);
+      }else {
+        idList.push(saved._id)
+        count += 1;
+        if(count === files.length){
+
+          callback(null, idList);
+        }
+      }
+    })
+  })
 }
 
 /**
@@ -77,22 +71,18 @@ function createGridFiles(){
  * @param {String} callback Callback for the data.
  * @return {null} Data is passed to callback.
  */
-export function load(pathList, callback){
-
-  var count = 0;
-
-  pathList.forEach(function(file){
-
-    var writestream = gfs.createWriteStream({filename: file.name});
-    fs.createReadStream(file.path).pipe(writestream);
-
-    writestream.on('close', function (gfsfile) {
-
-        file.gridFile = gfsfile._id;
-        count += 1;
-        if (count === da.length){
-          cb(null, da);
-        }
+export function loadToAnalysis(pathList){
+  return function (data, callback){
+    asy.waterfall([
+      readFiles(pathList),
+      saveToOriginalModel,
+      addIdsToAnalysis(data)
+    ], function (err, result) {
+      if(result && !err){
+        callback(null,result);
+      }else{
+        callback(null);
+      }
     });
-  })
+  }
 }

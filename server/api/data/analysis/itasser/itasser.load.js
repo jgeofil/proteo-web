@@ -11,6 +11,7 @@ var mongoose = require('bluebird').promisifyAll(require('mongoose'));
 var conn = mongoose.connection;
 Grid.mongo = mongoose.mongo;
 var gfs = new Grid(conn.db);
+var Original = require('./../../files/originals/originals.load');
 
 import Models from './../../files/models/models.model';
 
@@ -60,7 +61,8 @@ function readCscoreFiles (p) {
     .on('line', function (line) {
       switch(pos){
         // Ignore header line
-        case 0:
+        case 0:      console.log({sequence: result.seq, data: {sequential: formatted}, metadata: {}, path: subPath, originals: result.originals})
+
           if(line.substring(0,3) === '---'){ pos+=1; }
           break;
         default:
@@ -253,7 +255,12 @@ export function load(orfpath, callback){
         callback(null, data);
       });
     },
-    loadModels(subPath, cscorePath)
+    loadModels(subPath, cscorePath),
+    Original.loadToAnalysis([
+      {name: 'seq.ss', path: ssFilePath},
+      {name: 'coverage', path: alignFilePath},
+      {name: 'cscore', path: cscorePath},
+    ])
 
   ], function (err, result) {
     if(result && ! err){

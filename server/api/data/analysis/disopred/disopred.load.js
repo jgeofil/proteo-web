@@ -8,7 +8,7 @@ var fs = require('fs');
 var fasta = require('bionode-fasta');
 var lineReader = require('linebyline');
 var asy = require('async');
-
+var Original = require('./../../files/originals/originals.load');
 
 var readDisoFile = function(path, callback){
   var rl = lineReader(path);
@@ -67,7 +67,12 @@ export function load(orfpath, callback){
         data.bind = retdata;
         callback(err, data);
       });
-    }
+    },
+    Original.loadToAnalysis([
+      {name: 'disopred.seq', path: seqFilePath},
+      {name: 'disopred.seq.diso', path: disoFilePath},
+      {name: 'disopred.seq.pbdat', path: bindFilePath},
+    ])
   ], function (err, result) {
 
     var formatted = [];
@@ -85,7 +90,7 @@ export function load(orfpath, callback){
         })
       });
 
-      callback({sequence: result.seq, data: {sequential: formatted}, metadata: {}, path: subPath});
+      callback({sequence: result.seq, data: {sequential: formatted}, metadata: {}, path: subPath, originals: result.originals});
     }else{
       callback(null);
     }

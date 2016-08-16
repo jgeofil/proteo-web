@@ -4,9 +4,9 @@ var Originals = require('./originals.model');
 var util = require('./../files.util');
 
 /**
- * Get a specific PDB experimental model file.
+ * Get a specific  file.
  * @return {null} request is answered.
  */
-export function getModels(req, res){
+export function getOriginals(req, res){
   util.getOneFileByID(Originals, req, res);
 }

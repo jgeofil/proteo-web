@@ -13,8 +13,8 @@ router.post('/update', auth.hasRole('admin'), controller.update);
 router.use('/files', auth.isAuthenticated(),require('./files/files.index.js'));
 //OKID
 router.use('/analysis', auth.isAuthenticated(), util.isAuthorizedOnGroup ,require('./analysis/analysis.index.js'));
-router.use('/:projectId/dataset/:dataId/orf/:orfId/file/fasta', auth.isAuthenticated(), util.isAuthorizedOnGroup, controller.oneOrfSequence);
-
+//OKID
+router.use('/orf/:orfId/fasta', auth.isAuthenticated(), util.isAuthorizedOnGroup, controller.oneOrfSequence);
 //OKID
 router.use('/orf/:orfId/full', auth.isAuthenticated(), util.isAuthorizedOnGroup, controller.fullOrf);
 //OKID

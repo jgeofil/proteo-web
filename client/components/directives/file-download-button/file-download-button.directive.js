@@ -6,15 +6,10 @@ angular.module('proteoWebApp')
       templateUrl: 'components/directives/file-download-button/file-download-button.html',
       restrict: 'EA',
       scope: {
-        fdbFiles: '=',
-        fdbAnalysisPath: '='
+        fdbFiles: '='
       },
       link: function (scope, element, attrs) {
-        scope.downUrl = Download.triggerDownloadFromUrl;
-
-        scope.pathToFile = function(p, n){
-          return p + '/file/'+ n;
-        };
+        scope.downUrl = Download.triggerDownloadFromId;
       }
     };
   });

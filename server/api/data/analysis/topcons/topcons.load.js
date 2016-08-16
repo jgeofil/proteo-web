@@ -6,6 +6,7 @@ var fs = require('fs');
 var lineReader = require('linebyline');
 var asy = require('async');
 var glob = require("glob");
+var Original = require('./../../files/originals/originals.load');
 
 function addValue(arr, name, pos, val){
   var found = false;
@@ -147,7 +148,10 @@ export function load(orfpath, callback){
 
         callback(null, data);
       });
-    }
+    },
+    Original.loadToAnalysis([
+      {name: 'topcons.txt', path: topFilePath}
+    ])
   ], function (err, result) {
     if(result && ! err){
       var obj = {

@@ -11,9 +11,9 @@ angular.module('proteoWebApp')
         oapTitle: '=',
         oapIsOpen: '=',
         oapIsPresent: '=',
-        oapConfig: '=',
         oapScroll: '=',
-        oapMetadata: '='
+        oapMetadata: '=',
+        oapFiles: '='
       },
       link: function (scope, element, attrs) {
         //**********************************************************************

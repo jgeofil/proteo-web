@@ -24,6 +24,7 @@ var AnalysisSchema = new mongoose.Schema({
     other: {}
   },
   metadata: {},
+  originals: [{type: mongoose.Schema.Types.ObjectId, ref: 'Originals'}],
   sequence: String,
   path: { type: String, unique: true},
   stats: {},
