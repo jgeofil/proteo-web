@@ -27,7 +27,13 @@ function createListener(event, socket) {
       if(err){
         console.log("Error popuating users in group: " + err)
       }else{
-        socket.emit(event, poped);
+        doc.populate('permissions', function(err, poped){
+          if(err){
+            console.log("Error popuating permissions in group: " + err)
+          }else{
+            socket.emit(event, poped);
+          }
+        })
       }
     })
   };

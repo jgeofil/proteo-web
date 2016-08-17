@@ -132,7 +132,7 @@ angular.module('proteoWebApp')
     //**************************************************************************
     // Add and and remove permissions
     $scope.addPerm = function(perm, other){
-      $http.patch('/api/groups/' + $routeParams.groupId + '/addset/'+ perm.title).then(function(){
+      $http.patch('/api/groups/' + $routeParams.groupId + '/addset/'+ perm.originalObject._id).then(function(){
         ngToast.create({
           className: 'success',
           content: 'Permission on <b>'+perm.title+'</b> added for this group.',
@@ -169,7 +169,8 @@ angular.module('proteoWebApp')
     //  Sync changes made to Group
     function updateData (data) {
       userTableSetting.data = data.users;
-      permTableSetting.data = permLtoObj(data);
+      console.log(data.permissions)
+      permTableSetting.data = data.permissions;
       //socket.syncUpdates('Group', )
       $timeout(function () {
         $scope.userTableParams = new NgTableParams(userTableParameters, userTableSetting);
