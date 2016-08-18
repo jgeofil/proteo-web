@@ -12,6 +12,7 @@ var mongoose = require('bluebird').promisifyAll(require('mongoose'));
 // Location of data folder
 var DATA_PATH = config.data;
 
+
 // Middleware - check if user is authorized on group
 export function isAuthorizedOnGroup(req, res, next) {
   next();

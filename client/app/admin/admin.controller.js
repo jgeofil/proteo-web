@@ -75,6 +75,7 @@ angular.module('proteoWebApp.admin')
 
     $http.get('/api/groups/').then(function(response){
       $scope.groups = response.data;
+      console.log(response.data)
       socket.syncUpdates('group', $scope.groups);
     }, function(error){
       console.log(error);

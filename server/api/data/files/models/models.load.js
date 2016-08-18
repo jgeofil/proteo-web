@@ -8,7 +8,7 @@ var util = require('./../../util');
 var fs = require('fs');
 var Grid = require('gridfs-stream');
 var mongoose = require('bluebird').promisifyAll(require('mongoose'));
-
+import Models from './models.model';
 var conn = mongoose.connection;
 Grid.mongo = mongoose.mongo;
 var gfs = new Grid(conn.db);
@@ -19,9 +19,10 @@ var gfs = new Grid(conn.db);
  * @param {String} p Path in which to look for model files.
  * @return {Object} The function.
  */
-function listModelFiles(p){
+function listModelFiles(p, prefix){
+  prefix = prefix || '*'
   return function (cb){
-    glob("*.@(pdb|PDB)", {cwd: p}, function (err, files) {
+    glob(prefix+".@(pdb|PDB)", {cwd: p}, function (err, files) {
       if(err) {
         return cb(err, null);
       }
@@ -45,8 +46,8 @@ function listModelFiles(p){
  * @param {String} p Path in which to look for model files.
  * @return {Object} The function.
  */
-function readCaptionFiles(p){
-  return function(da, cb){
+function readCaptionFiles(p, func){
+  return func || function(da, cb){
     var count = 0;
 
     da.forEach(function(file){
@@ -87,6 +88,28 @@ function createGridFiles(){
   }
 }
 
+function saveModels (project){
+  return function(data, callback){
+    var count = 0;
+    var idList = [];
+    data.forEach(function(f){
+      f.project = project;
+      Models.create(f, function(err, anaObj){
+        if(err){
+          console.log(err);
+        }else {
+          idList.push(anaObj._id)
+          count += 1;
+          if(count === data.length){
+            callback(null, idList);
+          }
+        }
+
+      })
+    })
+  }
+}
+
 /**
  * Loads experimental model files for an ORF.
  * @param {String} orfpath The path to the ORF.
@@ -111,4 +134,28 @@ export function load(orfpath, callback){
       callback(null);
     }
   });
+}
+
+/**
+ * Loads experimental model files for an ORF.
+ * @param {String} orfpath The path to the ORF.
+ * @param {String} callback Callback for the data.
+ * @return {null} Data is passed to callback.
+ */
+export function customLoad(subPath, prefix, metaFunc, project){
+  return function (callback){
+    asy.waterfall([
+      listModelFiles(subPath, prefix),
+      readCaptionFiles(subPath, metaFunc),
+      createGridFiles(),
+      saveModels(project)
+    ], function (err, result) {
+      if(result && !err){
+        callback(null,result);
+      }else{
+        callback(err, null);
+      }
+    });
+  }
+
 }

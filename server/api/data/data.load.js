@@ -14,6 +14,8 @@ import Topcons from './analysis/topcons/topcons.model';
 import Itasser from './analysis/itasser/itasser.model';
 import Images from './files/images/images.model';
 import Models from './files/models/models.model';
+import User from './../user/user.model';
+import Group from './../group/group.model';
 
 var tmhmmLoad = require('./analysis/tmhmm/tmhmm.load');
 var disoLoad = require('./analysis/disopred/disopred.load');
@@ -111,7 +113,44 @@ function readProjects() {
     }, function (err, projSaved) {
       if (err) console.log("Error saving new project: " + err)
       else{
-        readDatasets(projSaved);
+        //***********************************************************************
+        // TESTING
+        // TODO: GET RID OF THIS
+        Group.findOne({name: 'admin'}).exec(function (err, doc) {
+          if(doc){
+            doc.permissions.push(projSaved._id);
+            User.find({role: 'admin'}).exec(function(err, usr){
+              if(usr){
+                usr.forEach(function(u){
+                  doc.users.push(u._id);
+                })
+                doc.save(function(){
+                  readDatasets(projSaved);
+                })
+              }
+            })
+          }else{
+
+            Group.create({
+              name: 'admin',
+              permissions: [projSaved._id],
+              users: [],
+              active: true
+            },function(err, gr){
+              User.find({role: 'admin'}).exec(function(err, usr){
+                if(usr){
+                  usr.forEach(function(u){
+                    gr.users.push(u._id);
+                  })
+                  gr.save(function(){
+                    readDatasets(projSaved);
+                  })
+                }
+              })
+            })
+
+          }
+        })
       }
     });
   });
@@ -251,7 +290,7 @@ function loadAnalysis(orf, lf, name, ac, cb){
           })
         })
       }
-    })
+    }, orf.project)
   }else{
     cb(null);
   }
