@@ -34,20 +34,22 @@ var DATA_PATH = config.data;
  * @param {Object} dataset The Dataset for wich to load ORFs.
  * @return {null} ORFs are loaded.
  */
-function readOrfs(dataset){
-  // Read directories
-  var orfs = util.getDirectories(dataset.path)
+export function loadNewOrf(isRoot, orfs, dataset){
+  if (typeof orfs === 'string' || orfs instanceof String){
+    orfs = [orfs];
+  }
+  console.log(orfs)
   var count = 0;
 
   orfs.forEach(function(orf){
     // Create record in database for ORF
     Data.Orf.create({
       name: orf,
-      meta: util.readMetaData(path.join(dataset.path, orf, 'meta.json')),
-      path: path.join(dataset.path, orf),
+      meta: util.readMetaData(path.join(isRoot?DATA_PATH:dataset.path, orf, 'meta.json')),
+      path: path.join(isRoot?DATA_PATH:dataset.path, orf),
       dataset: dataset._id,
       project: dataset.project,
-      analyses: getAnalyses(path.join(dataset.path, orf))
+      analyses: getAnalyses(path.join(isRoot?DATA_PATH:dataset.path, orf))
     }, function(err, orfSaved){
       count +=1
       if (err) console.log("Error saving new ORF: " + err)
@@ -69,17 +71,48 @@ function readOrfs(dataset){
  * @param {Object} project The Project for wich to load Datasets.
  * @return {null} Projects are loaded.
  */
-function readDatasets(project){
-  // Read directories
-  var datasets = util.getDirectories(project.path)
-  var count = 0;
+function loadChildOrfs(dataset){
+  var orfs = util.getDirectories(dataset.path)
+  loadNewOrf(false, orfs, dataset);
+}
 
-  datasets.forEach(function(set){
-    // Create record in database for dataset
+/**
+ * Loads all Datsets for a specified Project.
+ * @param {Object} project The Project for wich to load Datasets.
+ * @return {null} Projects are loaded.
+ */
+function loadChildDatasets(project){
+  var datasets = util.getDirectories(project.path)
+  loadNewDataset(false, datasets, project)
+}
+
+/**
+ * Loads a project recursivly into the database.
+ * @return {null} Data is loaded.
+ */
+export function loadNewProject (proj) {
+  return Data.Project.create({
+    name: proj,
+    meta: util.readMetaData(path.join(DATA_PATH, proj, 'meta.json')),
+    path: path.join(DATA_PATH, proj)
+  })
+  .then(loadChildDatasets);
+}
+
+/**
+ * Loads a dataset recursivly into the database.
+ * @return {null} Data is loaded.
+ */
+export function loadNewDataset (isRoot, setListOrName, project) {
+  if (typeof setListOrName === 'string' || setListOrName instanceof String){
+    setListOrName = [setListOrName];
+  }
+  var count = 0;
+  setListOrName.forEach(function(set){
     Data.Dataset.create({
       name: set,
-      meta: util.readMetaData(path.join(project.path, set , 'meta.json')),
-      path: path.join(project.path, set),
+      meta: util.readMetaData(path.join(isRoot?DATA_PATH:project.path, set , 'meta.json')),
+      path: path.join(isRoot?DATA_PATH:project.path, set),
       project: project._id // Reference to parent Project
     }, function(err, dataSaved){
       count +=1;
@@ -87,73 +120,15 @@ function readDatasets(project){
       else{
         project.datasets.push(dataSaved._id); // Reference in parent Project
         // When all datasets records a associated with project, save project
-        if(count >= datasets.length) {
+        if(count >= setListOrName.length) {
           project.save(function(err){
             if(err) console.log("Error saving datasets to project: " + err)
           });
         }
-        readOrfs(dataSaved);
-      }
-    })
-  })
-}
-
-/**
- * Loads all projects from DATA_PATH folder into database.
- * @return {null} Data is loaded.
- */
-function readProjects() {
-  var projects = util.getDirectories(DATA_PATH); // Get all available project folders
-
-  projects.forEach(function(proj){
-    Data.Project.create({
-      name: proj,
-      meta: util.readMetaData(path.join(DATA_PATH, proj, 'meta.json')),
-      path: path.join(DATA_PATH, proj)
-    }, function (err, projSaved) {
-      if (err) console.log("Error saving new project: " + err)
-      else{
-        //***********************************************************************
-        // TESTING
-        // TODO: GET RID OF THIS
-        Group.findOne({name: 'admin'}).exec(function (err, doc) {
-          if(doc){
-            doc.permissions.push(projSaved._id);
-            User.find({role: 'admin'}).exec(function(err, usr){
-              if(usr){
-                usr.forEach(function(u){
-                  doc.users.push(u._id);
-                })
-                doc.save(function(){
-                  readDatasets(projSaved);
-                })
-              }
-            })
-          }else{
-
-            Group.create({
-              name: 'admin',
-              permissions: [projSaved._id],
-              users: [],
-              active: true
-            },function(err, gr){
-              User.find({role: 'admin'}).exec(function(err, usr){
-                if(usr){
-                  usr.forEach(function(u){
-                    gr.users.push(u._id);
-                  })
-                  gr.save(function(){
-                    readDatasets(projSaved);
-                  })
-                }
-              })
-            })
-
-          }
-        })
+        loadChildOrfs(dataSaved);
       }
     });
-  });
+  })
 }
 
 /**
@@ -174,7 +149,7 @@ function updateData(){
   Itasser.find({}).removeAsync().then(function(){
   Models.find({}).removeAsync().then(function(){
     Images.find({}).removeAsync().then(function(){
-    readProjects();
+    //readProjects();
   })})})})})})})})})})});
 }
 

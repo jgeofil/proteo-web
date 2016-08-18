@@ -5,13 +5,16 @@ import config from '../../config/environment';
 import Group from './../group/group.model';
 import User from './../user/user.model';
 import Data from './data.model';
-
+var util = require('./util');
 var os = require('os');
 var dl = require('./data.load');
 var mongoose = require('bluebird').promisifyAll(require('mongoose'));
 var Apu = require('./../api.util');
 
-dl.load();
+//dl.load();
+
+// Location of data folder
+var DATA_PATH = config.data;
 
 
 function setPermissionsOnProjects (req, permissions){
@@ -68,7 +71,73 @@ function produceFasta (orf){
   return fasta;
 }
 
+/**
+ * @return {List} Returns a list of folders available for loading.
+ */
+ export function listFolders(req, res) {
+   var folders = util.getDirectories(DATA_PATH);
+   res.status(200).json(folders);
+ }
 
+ /**
+  * @return {List} Returns a list of available projects.
+  */
+export function listProjects(req, res) {
+  Data.Project.find({}, function(err, projects){
+    if(err){
+      res.status(500).send("Error reading projects..")
+    }else{
+      res.status(200).json(projects);
+    }
+  })
+}
+
+/**
+ * @return {List} Returns a list of available projects.
+ */
+export function listDatasets(req, res) {
+ Data.Dataset.find({project: req.params.projectId})
+  .then(Apu.handleEntityNotFound(res))
+  .then(Apu.responseWithResult(res))
+  .catch(Apu.handleError(res))
+}
+
+ /**
+  * @return {List} Returns a list of folders available for loading.
+  */
+export function addProject(req, res) {
+  dl.loadNewProject(req.params.folderName)
+  .then(Apu.responseWithResult(res))
+  .catch(Apu.handleError(res));
+}
+
+/**
+ * @return {null} Dataset is added.
+ */
+export function addDataset(req, res) {
+  Data.Project.findOne({_id: req.params.projectId}, function(err, project){
+    if(err){
+      res.status(500).send("Error finding project")
+    }else{
+      dl.loadNewDataset(true, req.params.folderName, project);
+      res.status(200).json();
+    }
+  })
+}
+
+/**
+ * @return {null} Dataset is added.
+ */
+export function addOrf(req, res) {
+  Data.Dataset.findOne({_id: req.params.datasetId}, function(err, dataset){
+    if(err){
+      res.status(500).send("Error finding project")
+    }else{
+      dl.loadNewOrf(true, req.params.folderName, dataset);
+      res.status(200).json();
+    }
+  })
+}
 
 //******************************************************************************
 // Exports

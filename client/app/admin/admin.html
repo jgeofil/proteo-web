@@ -7,8 +7,58 @@
       Data
     </div>
     <div class="panel-body">
-      <h4 class="small">After adding data files, click here to update database.</h4>
-      <button class="btn btn-primary" ng-click="updateData()">Update data  <i ng-class="{'fa fa-refresh fa-spin': updating}"></i></button>
+      <h4 class="small">Click here to empty database, folders will remain.</h4>
+      <button class="btn btn-danger" ng-click="updateData()">Clear all database<i ng-class="{'fa fa-refresh fa-spin': updating}"></i></button>
+
+      <h3>Add a data folder</h3>
+      <h4>1. Choose an available folder to add</h4>
+      <div class="dropdown">
+          <button ng-disabled='folderName' class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+            Select folder
+            <span class="caret"></span>
+          </button>
+        <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+          <li ng-repeat="name in folderList" ng-click="setFolderName(name)"><a href="#">{{name}}</a></li>
+        </ul>
+      </div>
+
+      <div ng-if="folderName">
+        <h4>2. Select the folder data type</h4>
+        <div class="btn-group" role="group" aria-label="...">
+          <button ng-disabled='projectList' type="button" ng-click="addProject()" class="btn btn-default">As Project</button>
+          <button ng-disabled='projectList' type="button" ng-click="asDataset()" class="btn btn-default">As Dataset</button>
+          <button ng-disabled='projectList' type="button" ng-click="asOrfStep1()"class="btn btn-default">As Orf</button>
+        </div>
+      </div>
+
+      <div ng-if="projectList">
+        <h4>3. Select a project in which to add the data</h4>
+        <div class="dropdown" >
+            <button ng-disabled='datasetList' class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+              Select project
+              <span class="caret"></span>
+            </button>
+          <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+            <li ng-repeat="project in projectList" ng-click="projectListFunc(project._id)"><a href="#">{{project.name}}</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div ng-if="datasetList">
+        <h4>3. Select a Dataset in which to add the Orf</h4>
+        <div class="dropdown">
+            <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+              Select Dataset
+              <span class="caret"></span>
+            </button>
+          <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+            <li ng-repeat="dataset in datasetList" ng-click="addOrf(dataset._id)"><a href="#">{{dataset.name}}</a></li>
+          </ul>
+        </div>
+      </div>
+      <br/>
+      <button ng-if="folderName" type="button" ng-click="resetAdding()" class="btn btn-warning">Reset</button>
+
     </div>
   </div>
 

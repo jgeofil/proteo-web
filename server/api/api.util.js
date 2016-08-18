@@ -52,20 +52,24 @@ function projectIdNotFound (entity, groups){
   })
 }
 
-function checkIfAuthorized (entity) {
+function checkIfAuthorized (entity, req) {
   return function (groups){
-    if(Array.isArray(entity)){
-      entity.forEach(function(obj){
-        if(projectIdNotFound(obj, groups)){
-          throw new Error('One or more entities not authorized on project.');
-        }
-      })
+    if(req.user.role === 'admin'){
+      return entity
     }else{
-      if(projectIdNotFound(entity, groups)){
-        throw new Error('Not authorized on project.');
+      if(Array.isArray(entity)){
+        entity.forEach(function(obj){
+          if(projectIdNotFound(obj, groups)){
+            throw new Error('One or more entities not authorized on project.');
+          }
+        })
+      }else{
+        if(projectIdNotFound(entity, groups)){
+          throw new Error('Not authorized on project.');
+        }
       }
+      return entity
     }
-    return entity
   }
 }
 
@@ -74,6 +78,6 @@ export function userIsAuthorizedAtProjectLevel(req, res){
     return Group.find({users: mongoose.Types.ObjectId(req.user._id)})
       .then(handleEntityNotFound(res))
       .then(combineGroups)
-      .then(checkIfAuthorized(entity))
+      .then(checkIfAuthorized(entity, req))
   }
 }
