@@ -1,6 +1,5 @@
 'use strict';
-
-var fs = require('fs');
+var fs = require("bluebird").promisifyAll(require("fs")); //This is most convenient way if it works for you
 var path = require("path");
 var glob = require("glob");
 var readMultipleFiles = require('read-multiple-files');
@@ -35,15 +34,36 @@ export function readMetaDataAsync(path, callback){
   });
 }
 
-export function getDirectories(srcpath) {
+// Read metaData for analyses
+export function readMeta(analysis){
   try{
-    return fs.readdirSync(srcpath).filter(function(file) {
-      return fs.statSync(path.join(srcpath, file)).isDirectory();
-    });
+    var file = JSON.parse(fs.readFileSync(path.join(analysis.path, 'meta.json')));
+    file.dateCreated = new Date(file.dateCreated);
+    file.dateModified = new Date(file.dateModified);
+    analysis.metadata = file;
+    return analysis;
   }catch(er){
-    console.log("Error getting directories: " + er)
-    return [];
+    return analysis;
   }
+}
+
+export function getDirectories(srcpath) {
+  return fs.readdirAsync(srcpath).filter(function(file) {
+    return fs.statSync(path.join(srcpath, file)).isDirectory();
+  });
+}
+
+export function filePathExists(filePath,callback) {
+    fs.stat(filePath, (err, stats) => {
+      if (err && err.code === 'ENOENT') {
+        callback(false, null);
+      } else if (err) {
+        callback(false, 'Error file access');
+      }
+      if (stats.isFile() || stats.isDirectory()) {
+        callback(true, null);
+      }
+    });
 }
 
 

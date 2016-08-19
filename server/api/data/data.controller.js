@@ -75,25 +75,24 @@ function produceFasta (orf){
  * @return {List} Returns a list of folders available for loading.
  */
  export function listFolders(req, res) {
-   var folders = util.getDirectories(DATA_PATH);
-   res.status(200).json(folders);
+   util.getDirectories(DATA_PATH)
+    .then(Apu.handleEntityNotFound(res))
+    .then(Apu.responseWithResult(res))
+    .catch(Apu.handleError(res));
  }
 
  /**
   * @return {List} Returns a list of available projects.
   */
 export function listProjects(req, res) {
-  Data.Project.find({}, function(err, projects){
-    if(err){
-      res.status(500).send("Error reading projects..")
-    }else{
-      res.status(200).json(projects);
-    }
-  })
+  Data.Project.find({})
+  .then(Apu.handleEntityNotFound(res))
+  .then(Apu.responseWithResult(res))
+  .catch(Apu.handleError(res));
 }
 
 /**
- * @return {List} Returns a list of available projects.
+ * @return {List} Returns a list of available Datasets for a Project.
  */
 export function listDatasets(req, res) {
  Data.Dataset.find({project: req.params.projectId})
@@ -115,28 +114,26 @@ export function addProject(req, res) {
  * @return {null} Dataset is added.
  */
 export function addDataset(req, res) {
-  Data.Project.findOne({_id: req.params.projectId}, function(err, project){
-    if(err){
-      res.status(500).send("Error finding project")
-    }else{
-      dl.loadNewDataset(true, req.params.folderName, project);
-      res.status(200).json();
-    }
-  })
+  Data.Project.findOne({_id: req.params.projectId})
+    .then(Apu.handleEntityNotFound(res))
+    .then(function(project){
+      return dl.loadNewDataset(true, req.params.folderName, project);
+    })
+    .then(Apu.responseWithResult(res))
+    .catch(Apu.handleError(res));
 }
 
 /**
  * @return {null} Dataset is added.
  */
 export function addOrf(req, res) {
-  Data.Dataset.findOne({_id: req.params.datasetId}, function(err, dataset){
-    if(err){
-      res.status(500).send("Error finding project")
-    }else{
-      dl.loadNewOrf(true, req.params.folderName, dataset);
-      res.status(200).json();
-    }
-  })
+  Data.Dataset.findOne({_id: req.params.datasetId})
+    .then(Apu.handleEntityNotFound(res))
+    .then(function(dataset){
+      return dl.loadNewOrf(true, req.params.folderName, dataset);
+    })
+    .then(Apu.responseWithResult(res))
+    .catch(Apu.handleError(res));
 }
 
 //******************************************************************************

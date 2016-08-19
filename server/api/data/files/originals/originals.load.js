@@ -36,9 +36,7 @@ function readFiles (pathList){
 }
 
 function addIdsToAnalysis (analysis){
-
   return function (ids, callback){
-
     analysis.originals = ids;
 
     callback(null, analysis);

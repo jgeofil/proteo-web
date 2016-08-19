@@ -1,10 +1,6 @@
 'use strict';
 
-import _ from 'lodash';
-
-//var util = require('./util');
 var path = require('path');
-var fs = require('fs');
 var fasta = require('bionode-fasta');
 var lineReader = require('linebyline');
 var asy = require('async');
@@ -37,64 +33,77 @@ var readDisoFile = function(path, callback){
   });
 };
 
+function formatData(data){
+  data.data.sequential = [];
+  var seqList = data.sequence.split('');
+  data.temp.diso.values.forEach(function(d,i){
+    data.data.sequential.push({
+      position: i+1,
+      amino: seqList[i],
+      binding: data.temp.bind.values[i],
+      disorder: data.temp.diso.values[i]
+    })
+  });
+  return data;
+}
+
 // Get JSON formatted DISOPRED3 output
-export function load(orfpath, callback){
+export function load(orfpath){
 
   var subPath = path.join(orfpath, 'disopred');
-
   var seqFilePath = path.join(subPath, 'disopred' + '.seq');
   var disoFilePath = path.join(subPath, 'disopred' + '.seq.diso');
   var bindFilePath = path.join(subPath, 'disopred' + '.seq.pbdat');
 
-  asy.waterfall([
-    function(callback) {
-      fasta.obj(seqFilePath)
-      .on('data', function(data){
-        callback(null, data);
-      })
-      .on('error', function(err) {
-        return callback(err);
-      });
-    },
-    function(data, callback) {
-      readDisoFile(disoFilePath, function(err, retdata){
-        data.diso = retdata;
-        callback(err, data);
-      });
-    },
-    function(data, callback) {
-      readDisoFile(bindFilePath, function(err, retdata){
-        data.bind = retdata;
-        callback(err, data);
-      });
-    },
-    Original.loadToAnalysis([
-      {name: 'disopred.seq', path: seqFilePath},
-      {name: 'disopred.seq.diso', path: disoFilePath},
-      {name: 'disopred.seq.pbdat', path: bindFilePath},
-    ])
-  ], function (err, result) {
+  return new Promise(function(resolve, reject){
 
-    var formatted = [];
-    if(result && ! err){
-      var seqList = result.seq.split('');
-
-
-      result.diso.values.forEach(function(d,i){
-        formatted.push({
-          position: i+1,
-          amino: seqList[i],
-          binding: result.bind.values[i],
-          disorder: result.diso.values[i]
-
+    asy.waterfall([
+      function(callback){
+        return callback(null, {
+          data: {},
+          metadata: {},
+          temp: {},
+          path: subPath
+        });
+      },
+      // Read fasta file
+      function(data, callback) {
+        fasta.obj(seqFilePath)
+        .on('data', function(f){
+          data.sequence = f.seq;
+          callback(null, data);
         })
-      });
-
-      callback({sequence: result.seq, data: {sequential: formatted}, metadata: {}, path: subPath, originals: result.originals});
-    }else{
-      callback(null);
-    }
-
+        .on('error', function(err) {
+          return callback(err);
+        });
+      },
+      // Read Disopred file
+      function(data, callback) {
+        readDisoFile(disoFilePath, function(err, retdata){
+          data.temp.diso = retdata;
+          callback(err, data);
+        });
+      },
+      // Read Binding file
+      function(data, callback) {
+        readDisoFile(bindFilePath, function(err, retdata){
+          data.temp.bind = retdata;
+          callback(err, data);
+        });
+      },
+      // Save Orginal files
+      Original.loadToAnalysis([
+        {name: 'disopred.seq', path: seqFilePath},
+        {name: 'disopred.seq.diso', path: disoFilePath},
+        {name: 'disopred.seq.pbdat', path: bindFilePath},
+      ])
+    ], function (err, result) {
+      if(err){
+        return reject(err);
+      }else{
+        result = formatData(result);
+        return resolve(result);
+      }
+    });
   });
-
 }
