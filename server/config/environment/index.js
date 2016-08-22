@@ -25,7 +25,7 @@ var all = {
   ip: process.env.IP || '0.0.0.0',
 
   // Should we populate the DB with sample data?
-  seedDB: false,
+  seedDB: true,
 
   // Data location
   data: process.env.DATA_LOC || path.normalize(__dirname + '/../../data/'),
