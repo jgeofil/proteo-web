@@ -28,67 +28,89 @@ angular.module('proteoWebApp.admin')
     });
 
     $scope.addProject = Admin.addProject;
-    $scope.folderName = '';
-    $scope.projectList = '';
-    $scope.datasetList = '';
-    $scope.projectListFunc = undefined;
-    $scope.setFolderName = function(name){
-      $scope.folderName = name;
-    };
-    $scope.addProject = function(){
-      Admin.addProject($scope.folderName);
-      $scope.folderName = '';
-    };
-    $scope.asDataset = function(){
-      $scope.projectListFunc = $scope.addDataset;
-      Admin.listProjects().then(function(response){
-        $scope.projectList = response.data;
-      }, function(error){
-        console.log(error);
-        //TODO: Show message
-      });
-    };
-    $scope.asOrfStep1 = function(){
-      $scope.projectListFunc = $scope.asOrfStep2;
-      Admin.listProjects().then(function(response){
-        $scope.projectList = response.data;
-      }, function(error){
-        console.log(error);
-        //TODO: Show message
-      });
-    };
-    $scope.asOrfStep2 = function(projectId){
-      Admin.listDatasets(projectId).then(function(response){
-        $scope.datasetList = response.data;
-      }, function(error){
-        console.log(error);
-        //TODO: Show message
-      });
-    };
-    $scope.addDataset = function(projectId){
-      Admin.addDataset(projectId, $scope.folderName).then(function(){
-        $scope.folderName = '';
-        $scope.projectList = '';
-        $scope.datasetList = '';
-      }, function(error){
-        console.log(error);
-        //TODO: Show message
-      });
-    };
-    $scope.addOrf = function(datasetId){
-      Admin.addOrf(datasetId, $scope.folderName).then(function(){
-        $scope.folderName = '';
-        $scope.projectList = '';
-        $scope.datasetList = '';
-      }, function(error){
-        console.log(error);
-        //TODO: Show message
-      });
-    };
+
     $scope.resetAdding =  function(){
       $scope.folderName = '';
       $scope.projectList = '';
       $scope.datasetList = '';
+      $scope.asProject = false;
+      $scope.asDataset = false;
+      $scope.asOrf = false;
+      $scope.addLoading = false;
+    };
+    $scope.resetAdding();
+
+    function setLoading(){
+      $scope.addLoading = true;
+    }
+    function setDone(){
+      $scope.addLoading = false;
+    }
+
+    $scope.setFolderName = function(name){
+      $scope.folderName = name;
+    };
+
+    function displayError (error){
+      ngToast.create({
+        className: 'danger',
+        content: error.statusText+'<p><b>'+error.data.errmsg+'</b></p>',
+        timeout: 5000
+      });
+    }
+
+    function logError (error){
+      console.log(error);
+    }
+
+    function getProjectsList (){
+      Admin.listProjects()
+        .then(function(response){
+          $scope.projectList = response.data;
+        })
+        .catch(logError);
+    }
+
+    $scope.addProject = function(){
+      $scope.asProject = true;
+      setLoading();
+      Admin.addProject($scope.folderName)
+        .catch(displayError)
+        .finally($scope.resetAdding);
+    };
+
+    $scope.projectSelected = function(projectId){
+      if($scope.asDataset){
+        setLoading();
+        Admin.addDataset(projectId, $scope.folderName)
+          .catch(displayError)
+          .finally($scope.resetAdding);
+      }else if($scope.asOrf){
+        setLoading();
+        Admin.listDatasets(projectId)
+          .then(function(response){
+            $scope.datasetList = response.data;
+          })
+          .catch(logError)
+          .finally(setDone);
+      }
+    };
+
+    $scope.addAsDataset = function(){
+      $scope.asDataset = true;
+      getProjectsList();
+    };
+
+    $scope.addAsOrf = function(){
+      $scope.asOrf = true;
+      getProjectsList();
+    };
+
+    $scope.addOrf = function(datasetId){
+      setLoading();
+      Admin.addOrf(datasetId, $scope.folderName)
+        .catch($scope.displayError)
+        .finally($scope.resetAdding);
     };
 
     $scope.delete = function (user) {
