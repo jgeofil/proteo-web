@@ -7,8 +7,107 @@
       Data
     </div>
     <div class="panel-body">
-      <h4 class="small">After adding data files, click here to update database.</h4>
-      <button class="btn btn-primary" ng-click="updateData()">Update data  <i ng-class="{'fa fa-refresh fa-spin': updating}"></i></button>
+
+      <h4 class="small">
+        To add to the database, folders containing the data with the appropriate
+        structure must be placed on the server in <kbd>{SERVER_PATH}/data</kbd>.
+        Then follow the procedure below.
+      </h4>
+
+      <h3>Add a data folder</h3>
+      <h4>1. Choose an available folder to add</h4>
+      <div class="dropdown">
+        <button ng-disabled='folderName'
+                ng-class="{
+                  'btn-primary': !folderName,
+                  'btn-success': folderName
+                }"
+                class="btn dropdown-toggle"
+                type="button"
+                data-toggle="dropdown">
+          <span ng-if="!folderName">Select folder</span>
+          <span ng-if="folderName">{{folderName}}</span>
+          <span ng-if="!folderName" class="caret"></span>
+        </button>
+        <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+          <li ng-repeat="name in folderList" ng-click="setFolderName(name)">
+            <a href="#">{{name}}</a>
+          </li>
+        </ul>
+      </div>
+
+      <div ng-if="folderName">
+        <h4>2. Select the folder data type</h4>
+        <div class="btn-group" role="group">
+          <button ng-disabled='projectList'
+                  ng-class="{
+                    'btn-primary': !asProject && !(asDataset || asOrf),
+                    'btn-success': asProject,
+                    'btn-default': !asProject && (asDataset || asOrf)
+                  }"
+                  type="button"
+                  ng-click="addProject()"
+                  class="btn">As Project</button>
+          <button ng-disabled='projectList'
+                  ng-class="{
+                    'btn-primary': !asDataset && !(asProject || asOrf),
+                    'btn-success': asDataset,
+                    'btn-default': !asDataset && (asProject || asOrf)
+                  }"
+                  type="button"
+                  ng-click="addAsDataset()"
+                  class="btn btn-default">As Dataset</button>
+          <button ng-disabled='projectList'
+                  ng-class="{
+                    'btn-primary': !asOrf && !(asProject || asDataset),
+                    'btn-success': asOrf,
+                    'btn-default': !asOrf && (asProject || asDataset)
+                  }"
+                  type="button"
+                  ng-click="addAsOrf()"
+                  class="btn btn-default">As Orf</button>
+        </div>
+      </div>
+
+      <div ng-if="projectList">
+        <h4>3. Select a project in which to add the data</h4>
+        <div class="dropdown" >
+            <button ng-disabled='datasetList' class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+              Select project
+              <span class="caret"></span>
+            </button>
+          <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+            <li ng-repeat="project in projectList" ng-click="projectSelected(project._id)"><a href="#">{{project.name}}</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div ng-if="datasetList">
+        <h4>3. Select a Dataset in which to add the Orf</h4>
+        <div class="dropdown">
+            <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+              Select Dataset
+              <span class="caret"></span>
+            </button>
+          <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+            <li ng-repeat="dataset in datasetList" ng-click="addOrf(dataset._id)"><a href="#">{{dataset.name}}</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div>
+        <span us-spinner="{radius:5, width:2, length: 5}" spinner-on="addLoading"></span>
+      </div>
+
+
+
+      <br/>
+      <button ng-if="folderName" type="button" ng-click="resetAdding()" class="btn btn-warning">Reset</button>
+      <br/>
+      <br/>
+      <h4 class="small">Click here to empty database, folders will remain.</h4>
+      <button class="btn btn-danger" ng-click="updateData()">Clear all database<i ng-class="{'fa fa-refresh fa-spin': updating}"></i></button>
+
     </div>
   </div>
 

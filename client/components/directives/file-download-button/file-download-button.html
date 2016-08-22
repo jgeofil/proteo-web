@@ -3,7 +3,7 @@
   </span>
   <ul class="dropdown-menu" uib-dropdown-menu>
     <li ng-repeat="ch in fdbFiles">
-      <a href ng-click="downUrl(pathToFile(fdbAnalysisPath, ch.file),ch.type ,ch.file)">{{ch.title}}</a>
+      <a href ng-click="downUrl(ch)">{{ch.name}}</a>
     </li>
   </ul>
 </span>

@@ -65,6 +65,7 @@ angular.module('proteoWebApp')
             scope.state.itasserModels = true;
             $timeout(function(){
               scope.oflOrfItasserModels.forEach(function(model,i){
+                console.log(model)
                 var element = $(document.getElementsByClassName('itasser-model-box')[i]);
 
                 // Viewer config - properties 'defaultcolors' and 'callback'
@@ -80,12 +81,6 @@ angular.module('proteoWebApp')
               });
             });
           }
-        });
-
-        //**********************************************************************
-        //
-        scope.$watch('oflOrf', function(){
-          scope.config = Download.getAnalysisDownloadConfig(scope.oflBasePath);
         });
 
       }

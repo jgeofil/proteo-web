@@ -5,10 +5,6 @@ angular.module('proteoWebApp')
 
     var rp = $routeParams;
 
-    function getBp (pN, dN, oN){
-      return '/api/data/'+pN+'/dataset/'+dN+'/orf/'+oN;
-    }
-
     $scope.firstClosed = {
       disopred: true,
       topcons: true,
@@ -27,14 +23,11 @@ angular.module('proteoWebApp')
       };
     }
 
-    var paths = [];
+    var paths = [rp.oN1,rp.oN2];
     $scope.orfs = [];
 
-    // Base path for API
-    paths.push(getBp(rp.pN1, rp.dN1, rp.oN1));
-    paths.push(getBp(rp.pN2, rp.dN2, rp.oN2));
-    if(rp.pN3 && rp.dN3 && rp.oN3){paths.push(getBp(rp.pN3, rp.dN3, rp.oN3));}
-    if(rp.pN4 && rp.dN4 && rp.oN4){paths.push(getBp(rp.pN4, rp.dN4, rp.oN4));}
+    if(rp.oN3){paths.push(rp.oN3);}
+    if(rp.oN4){paths.push(rp.oN4);}
 
     $scope.cols = 12/paths.length;
 

@@ -33,7 +33,7 @@ angular.module('proteoWebApp')
      * @return {String} The path to the ORF.
      */
     function orfToPath (orf) {
-      return '/'+orf.project.name+'/'+orf.dataset.name+'/'+orf.name;
+      return '/'+orf._id;
     }
 
     /**

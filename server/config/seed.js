@@ -23,23 +23,7 @@ User.find({}).removeAsync()
     })
     .then((users) => {
 
-      Group.find({}).removeAsync()
-        .then(() => {
-          Group.createAsync({
-            name: 'general',
-            permissions: ['dataset-01', 'project-1'],
-            users: [users[0]._id, users[1]._id],
-            active: true
-          }, {
-            name: 'restricted',
-            permissions: ['dataset-01'],
-            users: [users[1]._id],
-            active: true
-          })
-          .then(() => {
-            console.log('finished populating groups');
-          });
-        });
+
       console.log('finished populating users');
     });
   });

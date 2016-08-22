@@ -1,12 +1,3 @@
-/**
- * Using Rails-like standard naming convention for endpoints.
- * GET     /api/groups              ->  index
- * POST    /api/groups              ->  create
- * GET     /api/groups/:id          ->  show
- * PUT     /api/groups/:id          ->  update
- * DELETE  /api/groups/:id          ->  destroy
- */
-
 'use strict';
 
 import _ from 'lodash';
@@ -72,6 +63,7 @@ export function index(req, res) {
 export function show(req, res) {
   Group.findById(req.params.id)
     .populate('users', 'name _id email')
+    .populate('permissions')
     .then(handleEntityNotFound(res))
     .then(responseWithResult(res))
     .catch(handleError(res));

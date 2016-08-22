@@ -4,35 +4,29 @@
 angular.module('proteoWebApp')
 .controller('OrfSingleCtrl', function ($scope, $http, $routeParams, $rootScope, $uibModal, Download, Orf) {
 
-  // Base path for API
-  $scope.abp = '/api/data/'+$routeParams.projectName+'/dataset/'+
-    $routeParams.datasetName+'/orf/'+$routeParams.orfName;
-
-  Orf.getFullOrf($scope.abp).then(function(resp){
-    $scope.oflOrf = resp;
+  Orf.getFullOrf($routeParams.orfName).then(function(resp){
     console.log(resp)
+    $scope.oflOrf = resp;
     $scope.images = resp.files.images;
     $scope.images.forEach(function(img){
-      Orf.getImageLink('/api/data', img);
+      Orf.getImageLink(img);
     });
     var count = 0;
     $scope.models = resp.files.models;
 
     // Get PDB files for each model
     $scope.models.forEach(function(model){
-      $http.get('/api/data/files/models/' + model._id)
+      Orf.getModelData(model._id)
       .then(function(md){
 
         model.data = md.data;
-        console.log(model)
         count +=1;
         if(count === $scope.models.length-1){
           $scope.modelsLoaded = true;
         }
       });
     });
-    Orf.getItasserModelsData($scope.oflOrf, $scope.abp).then(function(ms){
-      console.log(ms)
+    Orf.getItasserModelsData($scope.oflOrf).then(function(ms){
       $scope.oflOrfMs = ms;
     });
   });

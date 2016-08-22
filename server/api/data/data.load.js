@@ -6,7 +6,7 @@ var fs = require('fs');
 var path = require('path');
 var mongoose = require('bluebird').promisifyAll(require('mongoose'));
 var asy = require('async');
-
+var BPromise = require("bluebird");
 import Data from './data.model';
 import Disopred from './analysis/disopred/disopred.model';
 import Tmhmm from './analysis/tmhmm/tmhmm.model';
@@ -14,6 +14,8 @@ import Topcons from './analysis/topcons/topcons.model';
 import Itasser from './analysis/itasser/itasser.model';
 import Images from './files/images/images.model';
 import Models from './files/models/models.model';
+import User from './../user/user.model';
+import Group from './../group/group.model';
 
 var tmhmmLoad = require('./analysis/tmhmm/tmhmm.load');
 var disoLoad = require('./analysis/disopred/disopred.load');
@@ -32,34 +34,63 @@ var DATA_PATH = config.data;
  * @param {Object} dataset The Dataset for wich to load ORFs.
  * @return {null} ORFs are loaded.
  */
-function readOrfs(dataset){
-  // Read directories
-  var orfs = util.getDirectories(dataset.path)
-  var count = 0;
+export function loadNewOrf(isRoot, orfs, dataset){
+  if (typeof orfs === 'string' || orfs instanceof String){
+    orfs = [orfs];
+  }
+  console.log(dataset)
 
-  orfs.forEach(function(orf){
-    // Create record in database for ORF
-    Data.Orf.create({
+  return BPromise.each(orfs, function(orf){
+    return getAnalyses(path.join(isRoot?DATA_PATH:dataset.path, orf))
+      .then(createOrf(orf, isRoot, dataset))
+      .then(addOrfToDataset(dataset))
+      .then(loadAnalyses)
+  })
+  .then(function(what){
+    console.log(what)
+    return dataset.save();
+  })
+}
+
+function createOrf(orf, isRoot, dataset){
+  return function(analyses){
+    console.log(dataset._id)
+    return Data.Orf.create({
       name: orf,
-      meta: util.readMetaData(path.join(dataset.path, orf, 'meta.json')),
-      path: path.join(dataset.path, orf),
+      meta: util.readMetaData(path.join(isRoot?DATA_PATH:dataset.path, orf, 'meta.json')),
+      path: path.join(isRoot?DATA_PATH:dataset.path, orf),
       dataset: dataset._id,
       project: dataset.project,
-      analyses: getAnalyses(path.join(dataset.path, orf))
-    }, function(err, orfSaved){
-      count +=1
-      if (err) console.log("Error saving new ORF: " + err)
-      else{
-        dataset.orfs.push(orfSaved._id);
-        loadAnalyses(orfSaved);
-        if(count >= orfs.length){
-          dataset.save(function(err){
-            if(err) console.log("Error saving ORFs to dataset: " + err)
-          })
-        }
-      }
+      analyses: analyses
     })
-  })
+  }
+}
+
+function addOrfToDataset(dataset){
+  return function(orfSaved){
+    dataset.orfs.push(orfSaved._id);
+    return orfSaved
+  }
+}
+
+function addDatasetToProject(project){
+  return function(datasetSaved){
+    project.datasets.push(datasetSaved._id);
+    return datasetSaved
+  }
+}
+
+
+/**
+ * Loads all Datsets for a specified Project.
+ * @param {Object} project The Project for wich to load Datasets.
+ * @return {null} Projects are loaded.
+ */
+function loadChildOrfs(dataset){
+  return util.getDirectories(dataset.path)
+    .then(function(orfs){
+      return loadNewOrf(false, orfs, dataset);
+    })
 }
 
 /**
@@ -67,54 +98,52 @@ function readOrfs(dataset){
  * @param {Object} project The Project for wich to load Datasets.
  * @return {null} Projects are loaded.
  */
-function readDatasets(project){
-  // Read directories
-  var datasets = util.getDirectories(project.path)
-  var count = 0;
-
-  datasets.forEach(function(set){
-    // Create record in database for dataset
-    Data.Dataset.create({
-      name: set,
-      meta: util.readMetaData(path.join(project.path, set , 'meta.json')),
-      path: path.join(project.path, set),
-      project: project._id // Reference to parent Project
-    }, function(err, dataSaved){
-      count +=1;
-      if (err) console.log("Error saving new dataset: " + err)
-      else{
-        project.datasets.push(dataSaved._id); // Reference in parent Project
-        // When all datasets records a associated with project, save project
-        if(count >= datasets.length) {
-          project.save(function(err){
-            if(err) console.log("Error saving datasets to project: " + err)
-          });
-        }
-        readOrfs(dataSaved);
-      }
+function loadChildDatasets(project){
+  return util.getDirectories(project.path)
+    .then(function(datasets){
+      return loadNewDataset(false, datasets, project);
     })
-  })
 }
 
 /**
- * Loads all projects from DATA_PATH folder into database.
+ * Loads a project recursivly into the database.
  * @return {null} Data is loaded.
  */
-function readProjects() {
-  var projects = util.getDirectories(DATA_PATH); // Get all available project folders
+export function loadNewProject (proj) {
+  return Data.Project.create({
+    name: proj,
+    meta: util.readMetaData(path.join(DATA_PATH, proj, 'meta.json')),
+    path: path.join(DATA_PATH, proj)
+  })
+  .then(loadChildDatasets);
+}
 
-  projects.forEach(function(proj){
-    Data.Project.create({
-      name: proj,
-      meta: util.readMetaData(path.join(DATA_PATH, proj, 'meta.json')),
-      path: path.join(DATA_PATH, proj)
-    }, function (err, projSaved) {
-      if (err) console.log("Error saving new project: " + err)
-      else{
-        readDatasets(projSaved);
-      }
-    });
-  });
+function createDataset(isRoot, project){
+  return function(set){
+    return Data.Dataset.create({
+      name: set,
+      meta: util.readMetaData(path.join(isRoot?DATA_PATH:project.path, set , 'meta.json')),
+      path: path.join(isRoot?DATA_PATH:project.path, set),
+      project: project._id // Reference to parent Project
+    })
+  }
+}
+
+/**
+ * Loads a dataset recursivly into the database.
+ * @return {null} Data is loaded.
+ */
+export function loadNewDataset (isRoot, setListOrName, project) {
+  if (typeof setListOrName === 'string' || setListOrName instanceof String){
+    setListOrName = [setListOrName];
+  }
+
+  return BPromise.each(setListOrName, function(set){
+    return createDataset(isRoot, project)(set)
+      .then(addDatasetToProject(project))
+      .then(loadChildOrfs)
+  })
+  .then(function(){return project.save();})
 }
 
 /**
@@ -135,7 +164,7 @@ function updateData(){
   Itasser.find({}).removeAsync().then(function(){
   Models.find({}).removeAsync().then(function(){
     Images.find({}).removeAsync().then(function(){
-    readProjects();
+    //readProjects();
   })})})})})})})})})})});
 }
 
@@ -146,11 +175,17 @@ function updateData(){
  */
 function getAnalyses (path) {
   var analyses = {};
-  var dirs = util.getDirectories(path);
-  dirs.forEach(function(dir){
-    analyses[dir] = true;
-  })
-  return analyses;
+  return util.getDirectories(path)
+    .then(function(dirs){
+      dirs.forEach(function(dir){
+        analyses[dir] = true;
+      })
+      return analyses;
+    });
+}
+
+function saveObj (obj){
+  return obj.save();
 }
 
 /**
@@ -159,31 +194,14 @@ function getAnalyses (path) {
  * @return {null}
  */
 function loadAnalyses(orf){
-
-  asy.series([
-    function(cb){
-      loadAnalysis(orf, disoLoad.load, 'disopred', Disopred, cb);
-    },
-    function(cb){
-      loadAnalysis(orf, tmhmmLoad.load, 'tmhmm', Tmhmm, cb);
-    },
-    function(cb){
-      loadAnalysis(orf, topconsLoad.load, 'topcons', Topcons, cb);
-    },
-    function(cb){
-      loadFiles(orf, modelsLoad.load, 'models', Models, cb);
-    },
-    function(cb){
-      loadAnalysis(orf, itasserLoad.load, 'itasser', Itasser, cb);
-    },
-    function(cb){
-      loadFiles(orf, imagesLoad.load, 'images', Images, cb);
-    }
-  ], function(){
-    orf.save();
-  });
+  return loadAnalysisPromised(disoLoad.load, 'disopred', Disopred)(orf)
+    .then(loadAnalysisPromised(tmhmmLoad.load, 'tmhmm', Tmhmm))
+    .then(loadAnalysisPromised(topconsLoad.load, 'topcons', Topcons))
+    .then(loadAnalysisPromised(itasserLoad.load, 'itasser', Itasser))
+    .then(loadFilesPromised(modelsLoad.load, 'models', Models))
+    .then(loadFilesPromised(imagesLoad.load, 'images', Images))
+    .then(saveObj)
 }
-
 
  /**
   * Loads a file type into an Orf using its path.
@@ -194,68 +212,82 @@ function loadAnalyses(orf){
   * @param {Object} cb Callback on completion
   * @return {null}
   */
-function loadFiles(orf, lf, name, ac, cb){
-  if(orf.analyses.hasOwnProperty(name)){
-    lf(orf.path, function(result){
-      if(result !== null){
-        var count = 0;
-        var idList = [];
-        result.forEach(function(f){
-          f.project = orf.project;
-          ac.create(f, function(err, anaObj){
-            if(err){
-              console.log(err);
-            }else {
-              idList.push(anaObj._id)
-              count += 1;
-              if(count === result.length){
-                orf.files[name] = idList;
-                cb(null);
-              }
-            }
-
-          })
-        })
-      }else{
-        cb(null);
-      }
-    })
-  }else{
-    cb(null);
+function loadFilesPromised(lf, name, ac){
+  return function(orf){
+    if(orf.analyses[name]){
+      return lf(orf.path, orf.project)
+          .then(assignProjectIdMany(orf.project))
+          .then(createObjMany(ac,orf,name))
+    }else{
+      return orf;
+    }
   }
 }
 
-/**
- * Loads an analysis into an Orf using its path.
- * @param {Object} orf The Orf
- * @param {Object} lf The loading function for the analysis
- * @param {Object} name The name for the analysis
- * @param {Object} ac The analysis class
- * @param {Object} cb Callback on completion
- * @return {null}
- */
-function loadAnalysis(orf, lf, name, ac, cb){
-  if(orf.analyses.hasOwnProperty(name)){
-    lf(orf.path, function(result){
-      if(result !== null){
-        util.readMetaDataAsync(path.join(orf.path, name,'meta.json'), function(meta){
-          result.metadata = meta;
-          result.project = orf.project;
-          ac.create(result, function(err, anaObj){
-            if(err){
-              console.log(err);
-            }else {
-              orf.analysis[name] = anaObj._id;
-            }
-            cb(null);
-          })
-        })
-      }
-    })
-  }else{
-    cb(null);
+function loadAnalysisPromised(lf, name, ac){
+  return function(orf){
+    if(orf.analyses[name]){
+      return lf(orf.path, orf.project)
+        .then(util.readMeta)
+        .then(assignProjectId(orf.project))
+        .then(createObj(ac,orf,name));
+    }else{
+      return orf;
+    }
   }
 }
+
+function assignProjectId(project){
+  return function(obj){
+    obj.project = project;
+    return obj;
+  }
+}
+
+function assignProjectIdMany(project){
+  return function(obj){
+    obj.map(function(o){
+      o.project = project;
+    })
+    return obj;
+  }
+}
+
+function createObj(type, orf, name){
+  return function(obj){
+    return type.create(obj)
+      .then(function(created){
+        orf.analysis[name] = created._id;
+        return orf;
+      })
+  }
+}
+
+function createObjMany(type, orf, name){
+  return function(obj){
+
+    return new Promise(function(resolve, reject){
+      var count = 0;
+      var idList = [];
+      obj.forEach(function(f){
+        type.create(f, function(err, anaObj){
+          if(err){
+            reject(err);
+          }else {
+            idList.push(anaObj._id)
+            count += 1;
+            if(count === obj.length){
+              orf.files[name] = idList;
+              resolve(orf);
+            }
+          }
+        })
+      })
+    })
+  }
+}
+
+
 
 /**
  * Loads data into database.

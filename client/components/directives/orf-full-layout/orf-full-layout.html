@@ -3,8 +3,8 @@
                     oap-title="'Primary sequence and annotations'"
                     oap-is-open="state.primary"
                     oap-is-present="oflOrf.sequence.length > 0"
-                    oap-config="config.sequence"
-                    oap-scroll="scrollPos">
+                    oap-scroll="scrollPos"
+                    oap-files="[{name: 'Sequence', isSeq: true, _id: oflOrf._id}]">
     <primary-sequence-graph ng-if="state.primary" graph-data="oflOrf"></primary-sequence-graph>
 </orf-analysis-panel>
 
@@ -12,8 +12,8 @@
                     oap-title="'DISOPRED'"
                     oap-is-open="state.disopred"
                     oap-is-present="oflOrf.analysis.disopred"
-                    oap-config="config.disopred"
-                    oap-scroll="scrollPos">
+                    oap-scroll="scrollPos"
+                    oap-files="oflOrf.analysis.disopred.originals">
     <p class="orf-title-vertical orf-fade">Disorder pred.</p>
     <hr class="orf-hr">
     <diso-graph-line ng-if="oflOrf.analysis.disopred.data"
@@ -25,8 +25,8 @@
                     oap-title="'TMHMM'"
                     oap-is-open="state.tmhmm"
                     oap-is-present="oflOrf.analysis.tmhmm"
-                    oap-config="config.tmhmm"
-                    oap-scroll="scrollPos">
+                    oap-scroll="scrollPos"
+                    oap-files="oflOrf.analysis.tmhmm.originals">
     <p class="orf-title-vertical orf-fade">Transmembrane pred.</p>
     <hr class="orf-hr">
     <tmhmm-graph ng-if="oflOrf.analysis.tmhmm"
@@ -39,8 +39,8 @@
                     oap-title="'TOPCONS'"
                     oap-is-open="state.topcons"
                     oap-is-present="oflOrf.analysis.topcons"
-                    oap-config="config.topcons"
-                    oap-scroll="scrollPos">
+                    oap-scroll="scrollPos"
+                    oap-files="oflOrf.analysis.topcons.originals">
     <p class="orf-title-vertical orf-fade">Topcons predictions</p>
     <hr class="orf-hr">
     <topcons-graph ng-if="oflOrf.analysis.topcons"
@@ -52,8 +52,8 @@
                     oap-title="'I-TASSER'"
                     oap-is-open="state.itasser"
                     oap-is-present="oflOrf.analysis.itasser"
-                    oap-config="config.itasser"
-                    oap-scroll="scrollPos">
+                    oap-scroll="scrollPos"
+                    oap-files="oflOrf.analysis.itasser.originals">
     <p class="orf-title-vertical orf-fade">Secondary structure</p>
     <hr class="orf-hr">
     <itasser-ss-graph ng-if="oflOrf.analysis.itasser"

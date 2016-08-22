@@ -99,19 +99,20 @@ function createGridFiles(){
 export function load(orfpath, callback){
 
   var subPath = path.join(orfpath, 'images');
+  return new Promise(function(resolve, reject){
+    asy.waterfall([
 
-  asy.waterfall([
+      listModelFiles(subPath),
+      readCaptionFiles(subPath),
+      createGridFiles()
 
-    listModelFiles(subPath),
-    readCaptionFiles(subPath),
-    createGridFiles()
+    ], function (err, result) {
 
-  ], function (err, result) {
-
-    if(result && !err){
-      callback(result);
-    }else{
-      callback(null);
-    }
+      if(err){
+        return reject(err);
+      }else{
+        return resolve(result);
+      }
+    });
   });
 }

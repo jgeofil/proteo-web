@@ -5,81 +5,166 @@ import config from '../../config/environment';
 import Group from './../group/group.model';
 import User from './../user/user.model';
 import Data from './data.model';
-
+var util = require('./util');
 var os = require('os');
-
 var dl = require('./data.load');
-dl.load();
-
 var mongoose = require('bluebird').promisifyAll(require('mongoose'));
-var path = require('path');
+var Apu = require('./../api.util');
+
+//dl.load();
 
 // Location of data folder
 var DATA_PATH = config.data;
 
-// Gets a list of available
-export function index(req, res) {
-  Group.find({users: mongoose.Types.ObjectId(req.user._id)}, function(err,groups){
-    if(err){
-      res.status(500).send("Error reading groups..")
-    }else{
-      var permissions = [];
-      groups.forEach(function(d){
-        permissions = permissions.concat(d.permissions);
-      })
 
-      Data.Project.find({}, function(err, projects){
-        if(err){
-          res.status(500).send("Error reading datasets..")
-        }else{
-          projects.forEach(function(d){
-            if(permissions.indexOf(d.name) !== -1){
-              d.authorized = true;
-            }
-          })
-          res.status(200).json(projects);
-        }
-      })
-    }
-  });
+function setPermissionsOnProjects (req, permissions){
+  return function(projects){
+    projects.forEach(function(d){
+      if(permissions.indexOf(d.name) !== -1 || req.user.role === 'admin'){
+        d.authorized = true;
+      }
+    });
+    return projects;
+  }
 }
 
-// Gets a list of available orfs
-export function orfs(req, res) {
-  var subPath = path.join(DATA_PATH, req.params.projectId, req.params.dataId);
+function getProjectsAndSetPermissions  (req, res){
+  return function (permissions){
+    return Data.Project.find({})
+      .then(Apu.handleEntityNotFound(res))
+      .then(setPermissionsOnProjects(req, permissions))
+  }
+}
 
-  Data.Orf
-    .find({dirname: subPath})
+function populateOriginals(orf){
+  return Data.Orf.populate(orf, [
+    {
+      path: 'analysis.disopred.originals',
+      model: 'Originals'
+    },{
+      path: 'analysis.topcons.originals',
+      model: 'Originals'
+    },{
+      path: 'analysis.itasser.originals',
+      model: 'Originals'
+    },{
+      path: 'analysis.tmhmm.originals',
+      model: 'Originals'
+    },{
+      path: 'analysis.itasser.data.other.models',
+      model: 'Models'
+    }
+  ]);
+}
+
+function produceFasta (orf){
+  var fasta = '';
+  orf.sequence.forEach(function(s,i){
+    fasta = fasta + ">" + orf.name + '|v' + i + os.EOL;
+    var sp = s.match(/.{1,80}/g);
+    if(sp){
+      sp.forEach(function(p){
+        fasta = fasta + p + os.EOL
+      });
+    }
+  });
+  return fasta;
+}
+
+/**
+ * @return {List} Returns a list of folders available for loading.
+ */
+ export function listFolders(req, res) {
+   util.getDirectories(DATA_PATH)
+    .then(Apu.handleEntityNotFound(res))
+    .then(Apu.responseWithResult(res))
+    .catch(Apu.handleError(res));
+ }
+
+ /**
+  * @return {List} Returns a list of available projects.
+  */
+export function listProjects(req, res) {
+  Data.Project.find({})
+  .then(Apu.handleEntityNotFound(res))
+  .then(Apu.responseWithResult(res))
+  .catch(Apu.handleError(res));
+}
+
+/**
+ * @return {List} Returns a list of available Datasets for a Project.
+ */
+export function listDatasets(req, res) {
+ Data.Dataset.find({project: req.params.projectId})
+  .then(Apu.handleEntityNotFound(res))
+  .then(Apu.responseWithResult(res))
+  .catch(Apu.handleError(res))
+}
+
+ /**
+  * @return {List} Returns a list of folders available for loading.
+  */
+export function addProject(req, res) {
+  dl.loadNewProject(req.params.folderName)
+  .then(Apu.responseWithResult(res))
+  .catch(Apu.handleError(res));
+}
+
+/**
+ * @return {null} Dataset is added.
+ */
+export function addDataset(req, res) {
+  Data.Project.findOne({_id: req.params.projectId})
+    .then(Apu.handleEntityNotFound(res))
+    .then(function(project){
+      return dl.loadNewDataset(true, req.params.folderName, project);
+    })
+    .then(Apu.responseWithResult(res))
+    .catch(Apu.handleError(res));
+}
+
+/**
+ * @return {null} Dataset is added.
+ */
+export function addOrf(req, res) {
+  Data.Dataset.findOne({_id: req.params.datasetId})
+    .then(Apu.handleEntityNotFound(res))
+    .then(function(dataset){
+      return dl.loadNewOrf(true, req.params.folderName, dataset);
+    })
+    .then(Apu.responseWithResult(res))
+    .catch(Apu.handleError(res));
+}
+
+//******************************************************************************
+// Exports
+//******************************************************************************
+/**
+ * // Gets a list of available Projects.
+ * @return {null} request is answered.
+ */
+export function index(req, res) {
+  Group.find({users: mongoose.Types.ObjectId(req.user._id)})
+    .then(Apu.handleEntityNotFound(res))
+    .then(Apu.combineGroups)
+    .then(getProjectsAndSetPermissions(req, res))
+    .then(Apu.responseWithResult(res))
+    .catch(Apu.handleError(res))
+}
+
+/**
+ * Gets a list of available Orfs in a Dataset.
+ * @return {null} request is answered.
+ */
+export function orfs(req, res) {
+  Data.Orf.find({dataset: req.params.dataId})
     .populate('analysis.disopred', 'data.discrete sequence')
     .populate('analysis.tmhmm', 'data.discrete sequence')
     .populate('project', '_id name')
     .populate('dataset', '_id name')
-    .exec(function(err, orfs){
-      if(!err){
-        res.status(200).json(orfs);
-      }else{
-        res.status(500).send("Error reading ORFs.");
-      }
-    })
-}
-
-// Gets one ORF by name
-export function oneOrf(req, res) {
-  var subPath = path.join(DATA_PATH, req.params.projectId, req.params.dataId, req.params.orfId);
-
-  Data.Orf
-    .findOne({path: subPath})
-    .populate('analysis.disopred', 'stats sequence')
-    .populate('analysis.tmhmm', 'stats sequence')
-    .populate('project', '_id name')
-    .populate('dataset', '_id name')
-    .exec(function(err, orf){
-      if(!err && orf){
-        res.status(200).json(orf);
-      }else{
-        res.status(500).send("Error reading ORFs.");
-      }
-    })
+    .then(Apu.userIsAuthorizedAtProjectLevel(req,res))
+    .then(Apu.responseWithResult(res))
+    .catch(Apu.handleError(res))
 }
 
 /**
@@ -87,10 +172,8 @@ export function oneOrf(req, res) {
  * @return {null} request is answered.
  */
 export function fullOrf(req, res) {
-  var subPath = path.join(DATA_PATH, req.params.projectId, req.params.dataId, req.params.orfId);
-
   Data.Orf
-    .findOne({path: subPath})
+    .findOne({_id: req.params.orfId})
     .populate('analysis.disopred')
     .populate('analysis.tmhmm')
     .populate('analysis.itasser')
@@ -99,16 +182,10 @@ export function fullOrf(req, res) {
     .populate('files.images')
     .populate('project', '_id name')
     .populate('dataset', '_id name')
-    //TODO: populate other analyses when they will be preloaded.
-    .exec(function(err, orf){
-      if(!err && orf){
-
-
-        res.status(200).json(orf);
-      }else{
-        res.status(500).send("Error reading ORF.");
-      }
-    })
+    .then(populateOriginals)
+    .then(Apu.userIsAuthorizedAtProjectLevel(req,res))
+    .then(Apu.responseWithResult(res))
+    .catch(Apu.handleError(res))
 }
 
 /**
@@ -116,39 +193,24 @@ export function fullOrf(req, res) {
  * @return {null} request is answered.
  */
 export function oneOrfSequence(req, res) {
-  var subPath = path.join(DATA_PATH, req.params.projectId, req.params.dataId, req.params.orfId);
-
   Data.Orf
-    .findOne({path: subPath})
-    .exec(function(err, orf){
-      if(!err && orf){
-        var fasta = '';
-        orf.sequence.forEach(function(s,i){
-          fasta = fasta + ">" + req.params.orfId + '|v' + i + os.EOL;
-          var sp = s.match(/.{1,80}/g);
-          sp.forEach(function(p){
-            fasta = fasta + p + os.EOL
-          });
-        });
-
-        res.status(200).send(fasta);
-      }else{
-        res.status(500).send("Error reading ORFs.");
-      }
-    })
+    .findOne({_id: req.params.orfId})
+    .then(Apu.userIsAuthorizedAtProjectLevel(req,res))
+    .then(produceFasta)
+    .then(Apu.responseWithResult(res))
+    .catch(Apu.handleError(res))
 }
 
-
+/**
+ * Gets a list of available Datasets in a Project.
+ * @return {null} request is answered.
+ */
 export function datasets(req, res) {
-  var subPath = path.join(DATA_PATH, req.params.projectId);
-
-  Data.Dataset.find({dirname: subPath}).populate('orfs').exec(function(err, datasets){
-    if(!err){
-      res.status(200).json(datasets);
-    }else{
-      res.status(500).send("Error reading datasets.");
-    }
-  })
+  Data.Dataset.find()
+    .populate('orfs')
+    .then(Apu.userIsAuthorizedAtProjectLevel(req,res))
+    .then(Apu.responseWithResult(res))
+    .catch(Apu.handleError(res))
 }
 
 export function update(req, res){

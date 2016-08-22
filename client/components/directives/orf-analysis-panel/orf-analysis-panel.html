@@ -13,8 +13,7 @@
           ng-class="{'text-success': infoOpen}"
           ng-click="toggleInfo()"></span>
 
-    <file-download-button fdb-files="oapConfig.files"
-                          fdb-analysis-path="oapConfig.path"
+    <file-download-button fdb-files="oapFiles"
                           ng-if="oapIsPresent">
     </file-download-button>
   </div>

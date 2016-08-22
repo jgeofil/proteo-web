@@ -28,7 +28,6 @@ var DatasetSchema = new mongoose.Schema({
   name: String,
   active: { type: Boolean, default: true },
   path: { type: String, unique: true},
-  dirname: String,
   project: {type: mongoose.Schema.Types.ObjectId, ref: 'Project'},
   orfs: { type: [{type: mongoose.Schema.Types.ObjectId, ref: 'Orf'}], default: [] },
   meta: {}
@@ -38,7 +37,6 @@ var OrfSchema = new mongoose.Schema({
   name: String,
   active: { type: Boolean, default: true },
   path: { type: String, unique: true},
-  dirname: String,
   dataset: {type: mongoose.Schema.Types.ObjectId, ref: 'Dataset'},
   project: {type: mongoose.Schema.Types.ObjectId, ref: 'Project'},
   analyses: {},
@@ -57,15 +55,6 @@ var OrfSchema = new mongoose.Schema({
   sequence: [String],
   seqLength: Number,
   meta: {}
-});
-
-/**
- * Set the directory path for the ORF from it's full path.
- * TODO: This could also be a virtual
- */
-OrfSchema.pre('save', function(next) {
-  this.dirname = path.dirname(this.path);
-  next();
 });
 
 function getSeqFromAnalysis(schema, name, orf, seqs, cb){
