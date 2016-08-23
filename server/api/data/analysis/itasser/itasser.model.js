@@ -25,14 +25,17 @@ var ItasserSchema = new mongoose.Schema({
           //coverage: [String]
         }
       ],
-      models: [{type: mongoose.Schema.Types.ObjectId, ref: 'fs.files'}]
+      models: [{type: mongoose.Schema.Types.ObjectId, ref: 'Model', default: []}]
     }
   }
 });
 
 ItasserSchema.pre('save', function(next) {
-
-
+  var se = '';
+  this.data.sequential.forEach(function(a){
+    se += a.amino;
+  })
+  this.sequence = se;
   next();
 });
 

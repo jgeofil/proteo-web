@@ -18,7 +18,7 @@ import Bio from './bio.model';
 var ProjectSchema = new mongoose.Schema({
   name: String,
   active: { type: Boolean, default: true },
-  path: { type: String, unique: true},
+  path: { type: String},
   datasets: { type: [{type: mongoose.Schema.Types.ObjectId, ref: 'Dataset'}], default: [] },
   authorized: {type: Boolean, default: false},
   meta: {}
@@ -27,7 +27,7 @@ var ProjectSchema = new mongoose.Schema({
 var DatasetSchema = new mongoose.Schema({
   name: String,
   active: { type: Boolean, default: true },
-  path: { type: String, unique: true},
+  path: { type: String},
   project: {type: mongoose.Schema.Types.ObjectId, ref: 'Project'},
   orfs: { type: [{type: mongoose.Schema.Types.ObjectId, ref: 'Orf'}], default: [] },
   meta: {}
@@ -36,7 +36,7 @@ var DatasetSchema = new mongoose.Schema({
 var OrfSchema = new mongoose.Schema({
   name: String,
   active: { type: Boolean, default: true },
-  path: { type: String, unique: true},
+  path: { type: String},
   dataset: {type: mongoose.Schema.Types.ObjectId, ref: 'Dataset'},
   project: {type: mongoose.Schema.Types.ObjectId, ref: 'Project'},
   analyses: {},
@@ -75,6 +75,7 @@ function getSeqFromAnalysis(schema, name, orf, seqs, cb){
  */
 OrfSchema.pre('save', function(next) {
   var ORF = this;
+  console.log('ORF SAVING: ' + ORF.name);
 
   asy.waterfall([
     function(callback) {
@@ -107,7 +108,13 @@ OrfSchema.pre('save', function(next) {
  * TODO: This could also be a virtual
  */
 DatasetSchema.pre('save', function(next) {
+  console.log('DATASET SAVING: ' + this.name);
   this.dirname = path.dirname(this.path);
+  next();
+});
+
+ProjectSchema.pre('save', function(next) {
+  console.log('PROJECT SAVING: ' + this.name);
   next();
 });
 

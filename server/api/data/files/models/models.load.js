@@ -26,7 +26,7 @@ function listModelFiles(p, prefix){
       if(err) {
         return cb(err, null);
       }
-      if(!files || files.length < 0){
+      if(!files || files.length <= 0){
         return cb('No files available...', null);
       }
       files = files.map(function(str){
@@ -154,7 +154,7 @@ export function customLoad(subPath, prefix, metaFunc, project){
       if(result && !err){
         callback(null,result);
       }else{
-        callback(err, null);
+        callback(null, []);
       }
     });
   }
