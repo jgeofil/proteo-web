@@ -20,8 +20,14 @@ function readFiles (pathList){
     pathList.forEach(function(file){
 
       var writestream = gfs.createWriteStream({filename: file.name});
-      fs.createReadStream(file.path).pipe(writestream);
+      var readstream = fs.createReadStream(file.path)
 
+      readstream.on('error', function (err) {
+        console.log(err)
+        callback(err, null);
+      });
+
+      readstream.pipe(writestream);
       writestream.on('close', function (gfsfile) {
 
         file.gridFile = gfsfile._id;
@@ -79,7 +85,8 @@ export function loadToAnalysis(pathList){
       if(result && !err){
         callback(null,result);
       }else{
-        callback(null);
+        data.originals = [];
+        callback(null, data);
       }
     });
   }

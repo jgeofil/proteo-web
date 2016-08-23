@@ -35,7 +35,11 @@ function readCscoreFiles (p) {
       switch(pos){
         // Ignore header line
         case 0:
-          if(line.substring(0,3) === '---'){ pos+=1; }
+          if(line.substring(0,6) === 'Model#'){ pos=1; }
+          if(line.substring(0,6) === '#model'){ pos=2; }
+          break;
+        case 1:
+          if(line.substring(0,3) === '---'){ pos=2; }
           break;
         default:
           var colArray = line.split(' ')
@@ -128,7 +132,7 @@ export function load(orfpath, callback, projectId){
 
         rl
         .on('error', function (err) {
-          return callback(err, data);
+          return callback(null, data);
         })
         .on('line', function (line) {
           switch(pos){
@@ -182,6 +186,7 @@ export function load(orfpath, callback, projectId){
 
     ], function (err, result) {
       if(err){
+        console.log(err)
         return reject(err);
       }else{
         result.metadata = {};

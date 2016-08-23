@@ -38,7 +38,6 @@ export function loadNewOrf(isRoot, orfs, dataset){
   if (typeof orfs === 'string' || orfs instanceof String){
     orfs = [orfs];
   }
-  console.log(dataset)
 
   return BPromise.each(orfs, function(orf){
     return getAnalyses(path.join(isRoot?DATA_PATH:dataset.path, orf))
@@ -46,15 +45,17 @@ export function loadNewOrf(isRoot, orfs, dataset){
       .then(addOrfToDataset(dataset))
       .then(loadAnalyses)
   })
-  .then(function(what){
-    console.log(what)
-    return dataset.save();
+  .then(function(){
+    return dataset.save()
+      .then(function(dataset){
+        console.log('Dataset: ' + dataset.name + ' updated with new ORFs')
+        return dataset;
+      });
   })
 }
 
 function createOrf(orf, isRoot, dataset){
   return function(analyses){
-    console.log(dataset._id)
     return Data.Orf.create({
       name: orf,
       meta: util.readMetaData(path.join(isRoot?DATA_PATH:dataset.path, orf, 'meta.json')),
@@ -62,6 +63,10 @@ function createOrf(orf, isRoot, dataset){
       dataset: dataset._id,
       project: dataset.project,
       analyses: analyses
+    })
+    .then(function(orfSaved){
+      console.log('ORF: '+ orfSaved.name + ' created.')
+      return orfSaved
     })
   }
 }
@@ -115,6 +120,10 @@ export function loadNewProject (proj) {
     meta: util.readMetaData(path.join(DATA_PATH, proj, 'meta.json')),
     path: path.join(DATA_PATH, proj)
   })
+  .then(function(projectSaved){
+    console.log('Project: ' + projectSaved.name + ' created.');
+    return projectSaved;
+  })
   .then(loadChildDatasets);
 }
 
@@ -125,6 +134,10 @@ function createDataset(isRoot, project){
       meta: util.readMetaData(path.join(isRoot?DATA_PATH:project.path, set , 'meta.json')),
       path: path.join(isRoot?DATA_PATH:project.path, set),
       project: project._id // Reference to parent Project
+    })
+    .then(function(datasetSaved){
+      console.log('Dataset: ' + datasetSaved.name + ' created.')
+      return datasetSaved;
     })
   }
 }
@@ -143,7 +156,13 @@ export function loadNewDataset (isRoot, setListOrName, project) {
       .then(addDatasetToProject(project))
       .then(loadChildOrfs)
   })
-  .then(function(){return project.save();})
+  .then(function(){
+    return project.save()
+      .then(function(projectSaved){
+        console.log('Project: ' + projectSaved.name + ' updated with new Datasets.')
+        return projectSaved;
+      });
+  })
 }
 
 /**
@@ -185,7 +204,12 @@ function getAnalyses (path) {
 }
 
 function saveObj (obj){
-  return obj.save();
+  console.log('ORF: saving orf ' + obj.name)
+  return obj.save()
+    .then(function(objSaved){
+      console.log('ORF: ' + obj.name + 'updated with new analyses and files.')
+      return objSaved;
+    });
 }
 
 /**
@@ -194,7 +218,8 @@ function saveObj (obj){
  * @return {null}
  */
 function loadAnalyses(orf){
-  return loadAnalysisPromised(disoLoad.load, 'disopred', Disopred)(orf)
+  return Promise.resolve(orf)
+    .then(loadAnalysisPromised(disoLoad.load, 'disopred', Disopred))
     .then(loadAnalysisPromised(tmhmmLoad.load, 'tmhmm', Tmhmm))
     .then(loadAnalysisPromised(topconsLoad.load, 'topcons', Topcons))
     .then(loadAnalysisPromised(itasserLoad.load, 'itasser', Itasser))
@@ -227,6 +252,7 @@ function loadFilesPromised(lf, name, ac){
 function loadAnalysisPromised(lf, name, ac){
   return function(orf){
     if(orf.analyses[name]){
+      console.log("Analysis: initiating loading for "+name+" in ORF "+ orf.name)
       return lf(orf.path, orf.project)
         .then(util.readMeta)
         .then(assignProjectId(orf.project))
@@ -255,9 +281,11 @@ function assignProjectIdMany(project){
 
 function createObj(type, orf, name){
   return function(obj){
+    console.log('Analysis: saving new ' + name + ' in ORF ' + orf.name)
     return type.create(obj)
       .then(function(created){
         orf.analysis[name] = created._id;
+        console.log('Analysis: ' + name + created._id + ' created in ORF ' + orf.name)
         return orf;
       })
   }
@@ -265,7 +293,7 @@ function createObj(type, orf, name){
 
 function createObjMany(type, orf, name){
   return function(obj){
-
+    console.log('Files: saving new ' + name + 's in ORF ' + orf.name)
     return new Promise(function(resolve, reject){
       var count = 0;
       var idList = [];
@@ -274,6 +302,7 @@ function createObjMany(type, orf, name){
           if(err){
             reject(err);
           }else {
+            console.log('File: ' + name + anaObj._id + ' created in ORF ' + orf.name)
             idList.push(anaObj._id)
             count += 1;
             if(count === obj.length){

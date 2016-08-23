@@ -5,7 +5,6 @@ angular.module('proteoWebApp')
 .controller('OrfSingleCtrl', function ($scope, $http, $routeParams, $rootScope, $uibModal, Download, Orf) {
 
   Orf.getFullOrf($routeParams.orfName).then(function(resp){
-    console.log(resp)
     $scope.oflOrf = resp;
     $scope.images = resp.files.images;
     $scope.images.forEach(function(img){
@@ -30,8 +29,4 @@ angular.module('proteoWebApp')
       $scope.oflOrfMs = ms;
     });
   });
-
-  // Page title, aka ORF name
-  $scope.orfName = $routeParams.orfName;
-
 });

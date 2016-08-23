@@ -99,6 +99,7 @@ export function load(orfpath){
       ])
     ], function (err, result) {
       if(err){
+        console.log(err)
         return reject(err);
       }else{
         result = formatData(result);
