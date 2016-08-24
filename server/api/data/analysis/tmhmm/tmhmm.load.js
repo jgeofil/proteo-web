@@ -8,7 +8,7 @@ var asy = require('async');
 var glob = require("glob");
 var Original = require('./../../files/originals/originals.load');
 
-export function load(orfpath, callback){
+export function load(orfpath, projectId){
 
   var subPath = path.join(orfpath, 'tmhmm');
 
@@ -112,7 +112,7 @@ export function load(orfpath, callback){
         Original.loadToAnalysis([
           {name: 'tmhmm.long', path: longFilePath},
           {name: 'tmhmm.plp', path: plpFilePath}
-        ])
+        ], projectId)
       ], function (err, result) {
 
         if(err){

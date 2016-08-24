@@ -94,15 +94,16 @@ function saveModels (project){
     var idList = [];
     data.forEach(function(f){
       f.project = project;
+      console.log(project)
       Models.create(f, function(err, anaObj){
         if(err){
           console.log(err);
         }else {
           idList.push(anaObj._id)
-          count += 1;
-          if(count === data.length){
-            callback(null, idList);
-          }
+        }
+        count += 1;
+        if(count === data.length){
+          callback(null, idList);
         }
 
       })

@@ -16,7 +16,7 @@ import Models from './files/models/models.model';
 import Bio from './bio.model';
 
 var ProjectSchema = new mongoose.Schema({
-  name: String,
+  name: { type: String, required: true},
   active: { type: Boolean, default: true },
   path: { type: String},
   datasets: { type: [{type: mongoose.Schema.Types.ObjectId, ref: 'Dataset'}], default: [] },
@@ -25,20 +25,20 @@ var ProjectSchema = new mongoose.Schema({
 });
 
 var DatasetSchema = new mongoose.Schema({
-  name: String,
+  name: { type: String, required: true},
   active: { type: Boolean, default: true },
   path: { type: String},
-  project: {type: mongoose.Schema.Types.ObjectId, ref: 'Project'},
+  project: {type: mongoose.Schema.Types.ObjectId, ref: 'Project', required: true},
   orfs: { type: [{type: mongoose.Schema.Types.ObjectId, ref: 'Orf'}], default: [] },
   meta: {}
 });
 
 var OrfSchema = new mongoose.Schema({
-  name: String,
+  name: { type: String, required: true},
   active: { type: Boolean, default: true },
   path: { type: String},
-  dataset: {type: mongoose.Schema.Types.ObjectId, ref: 'Dataset'},
-  project: {type: mongoose.Schema.Types.ObjectId, ref: 'Project'},
+  dataset: {type: mongoose.Schema.Types.ObjectId, ref: 'Dataset', required: true},
+  project: {type: mongoose.Schema.Types.ObjectId, ref: 'Project', required: true},
   analyses: {},
   files: {
     images: [{type: mongoose.Schema.Types.ObjectId, ref: 'Images'}],

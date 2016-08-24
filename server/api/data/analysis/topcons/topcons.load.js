@@ -34,7 +34,13 @@ function addPrediction (data, arr, name){
   })
 }
 
-export function load(orfpath, callback){
+function addSequential (data, arr, name){
+  arr.forEach(function(d, i){
+    data.sequential[i].amino = d;
+  })
+}
+
+export function load(orfpath , projectId){
 
   var subPath = path.join(orfpath, 'topcons');
   var topFilePath = path.join(subPath, 'topcons.txt');
@@ -54,6 +60,7 @@ export function load(orfpath, callback){
           var pro = '';
           var octopus = '';
           var topcons = '';
+          var sequence = '';
 
           var data = {};
           data.sequential = [];
@@ -94,6 +101,9 @@ export function load(orfpath, callback){
               case 'Predicted T':
                 state = 9;
                 break;
+              case 'Sequence:':
+                state = 10;
+                break
               default:
                 switch (state) {
                   case 1:
@@ -132,6 +142,9 @@ export function load(orfpath, callback){
                       addValue(data.sequential, 'topRel', Number(line[0]), Number(line[1]));
                     }
                     break;
+                  case 10:
+                    sequence += line
+                    break;
                   default:
                     break;
                 }
@@ -147,13 +160,14 @@ export function load(orfpath, callback){
             addPrediction(data, pro.split('') ,'pro')
             addPrediction(data, octopus.split('') ,'octopus')
             addPrediction(data, topcons.split(''),'topcons')
+            addSequential(data, sequence.split(''),'amino')
 
             callback(null, data);
           });
         },
         Original.loadToAnalysis([
           {name: 'topcons.txt', path: topFilePath}
-        ])
+        ], projectId)
       ], function (err, result) {
 
         if(err){
@@ -164,6 +178,7 @@ export function load(orfpath, callback){
           }
           obj.metadata = {};
           obj.path = subPath;
+
           return resolve(obj);
         }
       });

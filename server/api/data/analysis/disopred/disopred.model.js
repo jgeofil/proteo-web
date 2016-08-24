@@ -9,8 +9,8 @@ var DisopredSchema = new mongoose.Schema({
   data: {
     sequential: [
       {
-        binding: Number,
-        disorder: Number
+        binding: {type: Number, required: true, min: 0, max: 1},
+        disorder: {type: Number, required: true, min: 0, max: 1}
       }
     ],
     discrete: {
@@ -22,9 +22,7 @@ var DisopredSchema = new mongoose.Schema({
 
 DisopredSchema.pre('save', function(next) {
   this.data.discrete.percentAboveThreshold = calculateAboveThreshold(this);
-  //Calculate sequence length
   this.data.discrete.sequenceLength = this.sequence.length;
-
   next();
 });
 

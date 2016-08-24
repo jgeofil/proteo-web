@@ -71,7 +71,7 @@ function readCscoreFiles (p) {
   }
 }
 
-export function load(orfpath, callback, projectId){
+export function load(orfpath, projectId){
 
   var subPath = path.join(orfpath, 'itasser');
 
@@ -182,7 +182,7 @@ export function load(orfpath, callback, projectId){
           {name: 'seq.ss', path: ssFilePath},
           {name: 'coverage', path: alignFilePath},
           {name: 'cscore', path: cscorePath},
-        ])
+        ], projectId)
 
       ], function (err, result) {
         if(err){

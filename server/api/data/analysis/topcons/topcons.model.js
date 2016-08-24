@@ -9,9 +9,9 @@ var TopconsSchema = new mongoose.Schema({
   data: {
     sequential: [
       {
-        deltaG: Number,
-        topRel: Number,
-        zCord: Number,
+        deltaG: {type: Number},
+        topRel: {type: Number, min: 0, max: 1},
+        zCord: {type: Number, required: true},
         predictions: {
           scampiSeq: String,
           scampiMsa: String,
@@ -23,7 +23,7 @@ var TopconsSchema = new mongoose.Schema({
       }
     ],
     other: {
-      methods: [String]
+      methods: {type: [String], required: true}
     }
   }
 });

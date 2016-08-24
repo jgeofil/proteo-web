@@ -55,9 +55,7 @@ angular.module('proteoWebApp.admin')
       console.log(error);
       ngToast.create({
         className: 'danger',
-        content: error.statusText +
-          '<p><b>ErrMsg: '+error.data.errmsg+'</b></p>' +
-          '<p><b>'+error.data.code + ' ' + error.data.path +'</b></p>',
+        content: error.statusText + '<p><b>Error adding data! See browser console for details.</b></p>',
         timeout: 5000
       });
     }

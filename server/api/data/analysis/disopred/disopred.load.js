@@ -48,7 +48,7 @@ function formatData(data){
 }
 
 // Get JSON formatted DISOPRED3 output
-export function load(orfpath){
+export function load(orfpath, projectId){
 
   var subPath = path.join(orfpath, 'disopred');
   var seqFilePath = path.join(subPath, 'disopred' + '.seq');
@@ -96,7 +96,7 @@ export function load(orfpath){
           {name: 'disopred.seq', path: seqFilePath},
           {name: 'disopred.seq.diso', path: disoFilePath},
           {name: 'disopred.seq.pbdat', path: bindFilePath},
-        ])
+        ], projectId)
       ], function (err, result) {
         if(err){
           return reject(err);

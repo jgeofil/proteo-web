@@ -9,17 +9,17 @@ var TmhmmSchema = new mongoose.Schema({
   data: {
     sequential: [
       {
-        inside: Number,
-        outside: Number,
-        membrane: Number
+        inside: {type: Number, required: true, min: 0, max:1},
+        outside: {type: Number, required: true, min: 0, max:1},
+        membrane: {type: Number, required: true, min: 0, max:1}
       }
     ],
     discrete:{
       sequenceLength: Number,
-      numberPredictedTMH: Number,
-      expectedNumberAAInTMH: Number,
-      expectedNumberAAFirst60: Number,
-      totalProbNin: Number
+      numberPredictedTMH: {type: Number, required: true, min: 0},
+      expectedNumberAAInTMH: {type: Number, required: true, min: 0},
+      expectedNumberAAFirst60: {type: Number, required: true, min: 0},
+      totalProbNin: {type: Number, required: true, min: 0},
     }
   }
 });

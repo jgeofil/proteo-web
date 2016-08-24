@@ -207,7 +207,7 @@ function saveObj (obj){
   console.log('ORF: saving orf ' + obj.name)
   return obj.save()
     .then(function(objSaved){
-      console.log('ORF: ' + obj.name + 'updated with new analyses and files.')
+      console.log('ORF: ' + obj.name + ' updated with new analyses and files.')
       return objSaved;
     });
 }
