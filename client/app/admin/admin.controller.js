@@ -52,9 +52,12 @@ angular.module('proteoWebApp.admin')
     };
 
     function displayError (error){
+      console.log(error);
       ngToast.create({
         className: 'danger',
-        content: error.statusText+'<p><b>'+error.data.errmsg+'</b></p>',
+        content: error.statusText +
+          '<p><b>ErrMsg: '+error.data.errmsg+'</b></p>' +
+          '<p><b>'+error.data.code + ' ' + error.data.path +'</b></p>',
         timeout: 5000
       });
     }

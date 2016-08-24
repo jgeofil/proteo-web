@@ -23,7 +23,6 @@ function readFiles (pathList){
       var readstream = fs.createReadStream(file.path)
 
       readstream.on('error', function (err) {
-        console.log(err)
         callback(err, null);
       });
 
