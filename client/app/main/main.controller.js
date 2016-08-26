@@ -83,18 +83,20 @@ angular.module('proteoWebApp')
       page: $location.search().page
     });
 
-    return $http.get('/api/data/'+project).then(function(response){
-      $timeout(function(){
-        setProperty(response.data, 'organism');
-        $scope.table = new NgTableParams(tableParameters, {data: response.data});
-        $scope.active = 'DATASET';
+    return Datatree.getListOfDatasets(project)
+      .then(function(data){
+        $timeout(function(){
+          setProperty(data, 'organism');
+          $scope.projectName = data[0].project.name;
+          $scope.table = new NgTableParams(tableParameters, {data: data});
+          $scope.active = 'DATASET';
+          $scope.dataIsLoading = false;
+        });
+      })
+      .catch(function(error){
         $scope.dataIsLoading = false;
+        console.log(error);
       });
-    }, function(error){
-      $scope.dataIsLoading = false;
-      console.log(error);
-      //TODO: Show message
-    });
   };
 
   /**
@@ -117,12 +119,13 @@ angular.module('proteoWebApp')
     });
 
 
-    $http.get('/api/data/dataset/'+dataset).then(function(response){
+    Datatree.getListOfOrfs(dataset).then(function(data){
 
       $timeout(function(){
-        dataSort(response.data);
-
-        $scope.table = new NgTableParams(tableParameters, {data: response.data});
+        dataSort(data);
+        $scope.projectName = data[0].project.name;
+        $scope.datasetName = data[0].dataset.name;
+        $scope.table = new NgTableParams(tableParameters, {data: data});
         $scope.active = 'ORF';
         $scope.dataIsLoading = false;
       });
@@ -130,7 +133,6 @@ angular.module('proteoWebApp')
     }, function(error){
       $scope.dataIsLoading = false;
       console.log(error);
-      //TODO: Show message
     });
   };
 
@@ -140,17 +142,16 @@ angular.module('proteoWebApp')
    * template is selected.
    */
   function getProjects() {
-    Datatree.getProjectList().then(function(response){
+    Datatree.getProjectList().then(function(data){
       $scope.dataIsLoading = true;
       $timeout(function(){
-        $scope.table = new NgTableParams(tableParameters, {data: response.data});
+        $scope.table = new NgTableParams(tableParameters, {data: data});
         $scope.active = 'PROJECT';
         $scope.dataIsLoading = false;
       });
     }, function(error){
       $scope.dataIsLoading = false;
       console.log(error);
-      //TODO: Show message
     });
   }
 

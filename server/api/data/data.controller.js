@@ -208,6 +208,7 @@ export function oneOrfSequence(req, res) {
 export function datasets(req, res) {
   Data.Dataset.find()
     .populate('orfs')
+    .populate('project', '_id name')
     .then(Apu.userIsAuthorizedAtProjectLevel(req,res))
     .then(Apu.responseWithResult(res))
     .catch(Apu.handleError(res))

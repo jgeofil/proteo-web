@@ -23,11 +23,11 @@
               <span ng-if="!selectedProject">Projects</span>
             </li>
             <li class="active" ng-if="selectedProject">
-              <a ng-if="selectedDataset" ng-click="resetToProject()">{{selectedProject}}</a>
-              <span ng-if="!selectedDataset">{{selectedProject}}</span>
+              <a ng-if="selectedDataset" ng-click="resetToProject()">{{projectName}}</a>
+              <span ng-if="!selectedDataset">{{projectName}}</span>
             </li>
             <li class="active" ng-if="selectedDataset">
-              {{selectedDataset}}
+              {{datasetName}}
             </li>
           </ol>
 
