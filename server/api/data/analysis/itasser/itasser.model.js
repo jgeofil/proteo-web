@@ -28,14 +28,27 @@ var ItasserSchema = new mongoose.Schema({
       models: [{type: mongoose.Schema.Types.ObjectId, ref: 'Model', default: []}]
     }
   }
+}, {
+  toObject: {
+  virtuals: true
+  },
+  toJSON: {
+  virtuals: true
+  }
+});
+
+ItasserSchema
+.virtual('sequence')
+.get(function () {
+  var se = '';
+  this.data.sequential.forEach(function(a){
+    se = se + a.amino;
+  })
+  return se;
 });
 
 ItasserSchema.pre('save', function(next) {
-  var se = '';
-  this.data.sequential.forEach(function(a){
-    se += a.amino;
-  })
-  this.sequence = se;
+
   next();
 });
 
