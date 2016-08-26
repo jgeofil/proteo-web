@@ -12,7 +12,8 @@ var ItasserSchema = new mongoose.Schema({
         beta: {type: Number, required: true, min: 0, max:1},
         coil: {type: Number, required: true, min: 0, max:1},
         helix: {type: Number, required: true, min: 0, max:1},
-        symbol: {type: String, required: true, enum: ['C', 'H', 'E']}
+        symbol: {type: String, required: true, enum: ['C', 'H', 'E']},
+        amino: {type: Bio.Amino, required: true}
       }
     ],
     other: {
@@ -28,29 +29,22 @@ var ItasserSchema = new mongoose.Schema({
       models: [{type: mongoose.Schema.Types.ObjectId, ref: 'Model', default: []}]
     }
   }
-}, {
-  toObject: {
-  virtuals: true
-  },
-  toJSON: {
-  virtuals: true
-  }
 });
+
 
 ItasserSchema
 .virtual('sequence')
 .get(function () {
-  var se = '';
-  this.data.sequential.forEach(function(a){
-    se = se + a.amino;
-  })
-  return se;
+  if(Array.isArray(this.data.sequential)){
+    var se = '';
+    this.data.sequential.forEach(function(a){
+      se = se + a.amino;
+    })
+    return se;
+  }
+  return null;
 });
 
-ItasserSchema.pre('save', function(next) {
-
-  next();
-});
 
 var Itasser = Analysis.discriminator('Itasser', ItasserSchema);
 

@@ -23,11 +23,18 @@ var AnalysisSchema = new mongoose.Schema({
   },
   metadata: {},
   originals: [{type: mongoose.Schema.Types.ObjectId, ref: 'Originals'}],
-  sequence: String,
   path: String,
   stats: {},
   project: {type: mongoose.Schema.Types.ObjectId, ref: 'Project', required: true},
+}, {
+  toObject: {
+  virtuals: true
+  },
+  toJSON: {
+  virtuals: true
+  }
 });
+
 
 AnalysisSchema.pre('validate', function(next) {
   var ANA = this;

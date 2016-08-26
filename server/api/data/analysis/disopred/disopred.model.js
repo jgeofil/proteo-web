@@ -10,7 +10,8 @@ var DisopredSchema = new mongoose.Schema({
     sequential: [
       {
         binding: {type: Number, required: true, min: 0, max: 1},
-        disorder: {type: Number, required: true, min: 0, max: 1}
+        disorder: {type: Number, required: true, min: 0, max: 1},
+        amino: {type: Bio.Amino, required: true}
       }
     ],
     discrete: {
@@ -20,9 +21,23 @@ var DisopredSchema = new mongoose.Schema({
   }
 });
 
+DisopredSchema
+.virtual('sequence')
+.get(function () {
+  if(Array.isArray(this.data.sequential)){
+    var se = '';
+    this.data.sequential.forEach(function(a){
+      se = se + a.amino;
+    })
+    return se;
+  }
+  return null;
+});
+
+
 DisopredSchema.pre('save', function(next) {
   this.data.discrete.percentAboveThreshold = calculateAboveThreshold(this);
-  this.data.discrete.sequenceLength = this.sequence.length;
+  this.data.discrete.sequenceLength = this.data.sequential.length;
   next();
 });
 

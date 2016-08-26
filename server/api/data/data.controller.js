@@ -158,8 +158,8 @@ export function index(req, res) {
  */
 export function orfs(req, res) {
   Data.Orf.find({dataset: req.params.dataId})
-    .populate('analysis.disopred', 'data.discrete sequence')
-    .populate('analysis.tmhmm', 'data.discrete sequence')
+    .populate('analysis.disopred', 'data.discrete')
+    .populate('analysis.tmhmm', 'data.discrete')
     .populate('project', '_id name')
     .populate('dataset', '_id name')
     .then(Apu.userIsAuthorizedAtProjectLevel(req,res))

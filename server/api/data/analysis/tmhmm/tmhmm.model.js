@@ -11,7 +11,8 @@ var TmhmmSchema = new mongoose.Schema({
       {
         inside: {type: Number, required: true, min: 0, max:1},
         outside: {type: Number, required: true, min: 0, max:1},
-        membrane: {type: Number, required: true, min: 0, max:1}
+        membrane: {type: Number, required: true, min: 0, max:1},
+        amino: {type: Bio.Amino, required: true}
       }
     ],
     discrete:{
@@ -24,18 +25,20 @@ var TmhmmSchema = new mongoose.Schema({
   }
 });
 
-TmhmmSchema.pre('save', function(next) {
-  //Producde sequence string
-  var s = this.data.sequential.map(function (a) {
-    return a.amino;
-  });
-  this.sequence = s.join('');
 
-  //Calculate sequence length
-  this.data.discrete.sequenceLength = this.sequence.length;
-
-  next();
+TmhmmSchema
+.virtual('sequence')
+.get(function () {
+  if(Array.isArray(this.data.sequential)){
+    var se = '';
+    this.data.sequential.forEach(function(a){
+      se = se + a.amino;
+    })
+    return se;
+  }
+  return null;
 });
+
 
 var Tmhmm = Analysis.discriminator('Tmhmm', TmhmmSchema);
 

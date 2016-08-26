@@ -19,13 +19,27 @@ var TopconsSchema = new mongoose.Schema({
           pro: String,
           octopus: String,
           topcons: String
-        }
+        },
+        amino: {type: Bio.Amino, required: true}
       }
     ],
     other: {
       methods: {type: [String], required: true}
     }
   }
+});
+
+TopconsSchema
+.virtual('sequence')
+.get(function () {
+  if(Array.isArray(this.data.sequential)){
+    var se = '';
+    this.data.sequential.forEach(function(a){
+      se = se + a.amino;
+    })
+    return se;
+  }
+  return null;
 });
 
 var Topcons = Analysis.discriminator('Topcons', TopconsSchema);
