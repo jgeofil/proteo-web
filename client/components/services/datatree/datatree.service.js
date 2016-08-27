@@ -25,4 +25,8 @@ angular.module('proteoWebApp')
         });
     };
 
+    this.removeAllData = function(){
+      return $http.post('/api/data/update', {});
+    };
+
   });
