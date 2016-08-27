@@ -20,11 +20,15 @@ var DATA_PATH = config.data;
 function setPermissionsOnProjects (req, permissions){
   return function(projects){
     projects.forEach(function(d){
-      permissions.forEach(function(perm){
-        if(perm.equals(d._id) || req.user.role === 'admin'){
-          d.authorized = true;
-        }
-      })
+      if(req.user.role === 'admin'){
+        d.authorized = true;
+      }else{
+        permissions.forEach(function(perm){
+          if(perm.equals(d._id)){
+            d.authorized = true;
+          }
+        })
+      }
     });
     return projects;
   }
