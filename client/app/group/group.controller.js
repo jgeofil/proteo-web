@@ -9,8 +9,8 @@ angular.module('proteoWebApp')
     //**************************************************************************
     // List of existing projects for autocomplete
     $scope.projects = [];
-    Datatree.getProjectList().then(function(success){
-      $scope.projects = success.data;
+    Datatree.getProjectList().then(function(data){
+      $scope.projects = data;
     });
 
     //**************************************************************************
