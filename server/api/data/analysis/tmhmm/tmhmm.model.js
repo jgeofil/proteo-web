@@ -1,6 +1,7 @@
 'use strict';
 
 var mongoose = require('bluebird').promisifyAll(require('mongoose'));
+var AnaUtil = require('./../analysis.util');
 
 import Bio from './../../bio.model';
 import Analysis from './../analysis.model'
@@ -25,20 +26,7 @@ var TmhmmSchema = new mongoose.Schema({
   }
 });
 
-
-TmhmmSchema
-.virtual('sequence')
-.get(function () {
-  if(Array.isArray(this.data.sequential)){
-    var se = '';
-    this.data.sequential.forEach(function(a){
-      se = se + a.amino;
-    })
-    return se;
-  }
-  return null;
-});
-
+AnaUtil.addSequenceVirtualToSchema(TmhmmSchema);
 
 var Tmhmm = Analysis.discriminator('Tmhmm', TmhmmSchema);
 

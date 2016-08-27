@@ -87,6 +87,9 @@ OrfSchema.pre('save', function(next) {
     },
     function(seqs, callback) {
       getSeqFromAnalysis(Itasser, 'itasser', ORF, seqs, callback);
+    },
+    function(seqs, callback) {
+      getSeqFromAnalysis(Topcons, 'topcons', ORF, seqs, callback);
     }
   ], function (err, result) {
     //Eliminiate doubles
@@ -122,17 +125,8 @@ var Dataset = mongoose.model('Dataset', DatasetSchema);
 var Project = mongoose.model('Project', ProjectSchema);
 var Orf = mongoose.model('Orf', OrfSchema);
 
-
-var gridfileSchema = new mongoose.Schema({},{ strict: false });
-var gridchunkSchema = new mongoose.Schema({},{ strict: false });
-
-var Gridfile = mongoose.model("Gridfile", gridfileSchema, "fs.files" );
-var Gridchunk = mongoose.model("Gridchunk", gridchunkSchema, "fs.chunks" );
-
 export default {
   Project: Project,
   Dataset: Dataset,
-  Orf: Orf,
-  Gridfile: Gridfile,
-  Gridchunk: Gridchunk
+  Orf: Orf
 }

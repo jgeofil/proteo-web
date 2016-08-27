@@ -1,7 +1,7 @@
 'use strict';
 
 var mongoose = require('bluebird').promisifyAll(require('mongoose'));
-var extend = require('mongoose-schema-extend');
+var AnaUtil = require('./../analysis.util')
 import Bio from './../../bio.model';
 import Analysis from './../analysis.model'
 
@@ -21,19 +21,7 @@ var DisopredSchema = new mongoose.Schema({
   }
 });
 
-DisopredSchema
-.virtual('sequence')
-.get(function () {
-  if(Array.isArray(this.data.sequential)){
-    var se = '';
-    this.data.sequential.forEach(function(a){
-      se = se + a.amino;
-    })
-    return se;
-  }
-  return null;
-});
-
+AnaUtil.addSequenceVirtualToSchema(DisopredSchema);
 
 DisopredSchema.pre('save', function(next) {
   this.data.discrete.percentAboveThreshold = calculateAboveThreshold(this);
@@ -48,7 +36,6 @@ function calculateAboveThreshold (obj){
   })
   return total*100.0/obj.data.sequential.length;
 }
-
 
 var Disopred = Analysis.discriminator('Disopred', DisopredSchema);
 

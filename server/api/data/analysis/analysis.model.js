@@ -35,7 +35,6 @@ var AnalysisSchema = new mongoose.Schema({
   }
 });
 
-
 AnalysisSchema.pre('validate', function(next) {
   var ANA = this;
   if(!ANA.data) next(new Error('Analysis data is required.'));
