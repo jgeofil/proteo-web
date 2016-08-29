@@ -18,9 +18,9 @@ angular.module('proteoWebApp')
       return $http.get('/api/data/list/datasets/'+projectId).then(respData);
     };
     this.addDataset = function(projectId, datasetName){
-      return $http.post('/api/data//add/dataset/'+datasetName+'/to/'+projectId);
+      return $http.post('/api/data/add/dataset/'+datasetName+'/to/'+projectId);
     };
     this.addOrf = function(datasetId, orfName){
-      return $http.post('/api/data//add/orf/'+orfName+'/to/'+datasetId);
+      return $http.post('/api/data/add/orf/'+orfName+'/to/'+datasetId);
     };
   });
