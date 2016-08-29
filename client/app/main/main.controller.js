@@ -3,7 +3,7 @@
 /* jshint undef: false*/
 angular.module('proteoWebApp')
 .controller('MainController', function ($scope, $http, $location, $routeParams,
-  $timeout , $rootScope, NgTableParams, Datatree, Comparison) {
+  $timeout , $rootScope, NgTableParams, Datatree, Comparison, Popup) {
   // State of the coparison selection, kept in the comparison service
   $scope.comparison = Comparison;
   // If data is being loaded from server
@@ -31,6 +31,15 @@ angular.module('proteoWebApp')
   //****************************************************************************
   // Funcs
   //****************************************************************************
+  function getAnalysisCount(orf){
+    var count = 0;
+    for(var analysis in orf.analysis){
+      if(orf.analysis[analysis] !== null && analysis !== 'models' && analysis !== 'images'){
+        count += 1;
+      }
+    }
+    return count;
+  }
 
   /**
    * Sort datasets by number of available analyses
@@ -39,12 +48,7 @@ angular.module('proteoWebApp')
    */
   var dataSort = function(data){
     data.sort(function(a,b){
-      if(a.analyses && b.analyses){
-        return ((b.analyses.disopred?1:0) + (b.analyses.itasser?1:0) + (b.analyses.tmhmm?1:0) +
-        (b.analyses.topcons?1:0))-((a.analyses.disopred?1:0) + (a.analyses.itasser?1:0) + (a.analyses.tmhmm?1:0) + (a.analyses.topcons?1:0));
-      }else{
-        return 0;
-      }
+      return (a.analyses && b.analyses) ? getAnalysisCount(b)-getAnalysisCount(a):0;
     });
   };
 
@@ -95,7 +99,7 @@ angular.module('proteoWebApp')
       })
       .catch(function(error){
         $scope.dataIsLoading = false;
-        console.log(error);
+        Popup.failure('Error getting Datasets')(error);
       });
   };
 
@@ -118,7 +122,6 @@ angular.module('proteoWebApp')
       page: $location.search().page
     });
 
-
     Datatree.getListOfOrfs(dataset).then(function(data){
 
       $timeout(function(){
@@ -132,7 +135,7 @@ angular.module('proteoWebApp')
 
     }, function(error){
       $scope.dataIsLoading = false;
-      console.log(error);
+      Popup.failure('Error getting Orfs')(error);
     });
   };
 
@@ -151,7 +154,7 @@ angular.module('proteoWebApp')
       });
     }, function(error){
       $scope.dataIsLoading = false;
-      console.log(error);
+      Popup.failure('Error getting Projects')(error);
     });
   }
 
