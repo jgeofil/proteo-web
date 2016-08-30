@@ -5,6 +5,6 @@ angular.module('proteoWebApp')
     // AngularJS will instantiate a singleton by calling "new" on this function
 
     this.getVersion = function(){
-      return '0.8';
+      return '1.0.0';
     };
   });
