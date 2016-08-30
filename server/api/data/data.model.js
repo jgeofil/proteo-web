@@ -48,9 +48,7 @@ var OrfSchema = new mongoose.Schema({
     disopred: {type: mongoose.Schema.Types.ObjectId, ref: 'Disopred', default: null},
     tmhmm: {type: mongoose.Schema.Types.ObjectId, ref: 'Tmhmm', default: null},
     topcons: {type: mongoose.Schema.Types.ObjectId, ref: 'Topcons', default: null},
-    itasser: {type: mongoose.Schema.Types.ObjectId, ref: 'Itasser', default: null},
-    models: {type: mongoose.Schema.Types.ObjectId, ref: 'Model', default: null},
-    images: {type: mongoose.Schema.Types.ObjectId, ref: 'Images', default: null}
+    itasser: {type: mongoose.Schema.Types.ObjectId, ref: 'Itasser', default: null}
   },
   sequence: [String],
   seqLength: Number,

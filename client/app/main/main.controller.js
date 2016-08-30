@@ -3,7 +3,7 @@
 /* jshint undef: false*/
 angular.module('proteoWebApp')
 .controller('MainController', function ($scope, $http, $location, $routeParams,
-  $timeout , $rootScope, NgTableParams, Datatree, Comparison, Popup) {
+  $timeout , $rootScope, NgTableParams, Datatree, Comparison, Popup, Auth) {
   // State of the coparison selection, kept in the comparison service
   $scope.comparison = Comparison;
   // If data is being loaded from server
@@ -17,6 +17,10 @@ angular.module('proteoWebApp')
     project: undefined,
     dataset: undefined
   };
+
+  $scope.isAdmin = Auth.isAdmin;
+
+  $scope.datatree = Datatree;
   // If it is the first time the controller loads.
   var pageLoad = true;
 
@@ -31,6 +35,15 @@ angular.module('proteoWebApp')
   //****************************************************************************
   // Funcs
   //****************************************************************************
+
+  $scope.hoverIn = function(){
+    this.hoverEdit = 'delete';
+  };
+
+  $scope.hoverOut = function(){
+    this.hoverEdit = null;
+  };
+
   function getAnalysisCount(orf){
     var count = 0;
     for(var analysis in orf.analysis){
@@ -91,7 +104,11 @@ angular.module('proteoWebApp')
       .then(function(data){
         $timeout(function(){
           setProperty(data, 'organism');
-          $scope.projectName = data[0].project.name;
+          if(data.length>0){
+            $scope.projectName = data[0].project.name;
+          }else{
+            $scope.projectName = 'Empty project..';
+          }
           $scope.table = new NgTableParams(tableParameters, {data: data});
           $scope.active = 'DATASET';
           $scope.dataIsLoading = false;
@@ -126,8 +143,13 @@ angular.module('proteoWebApp')
 
       $timeout(function(){
         dataSort(data);
-        $scope.projectName = data[0].project.name;
-        $scope.datasetName = data[0].dataset.name;
+        if(data.length>0){
+          $scope.projectName = data[0].project.name;
+          $scope.datasetName = data[0].dataset.name;
+        }else{
+          $scope.datasetName = 'Empty dataset..';
+          $scope.projectName = '...';
+        }
         $scope.table = new NgTableParams(tableParameters, {data: data});
         $scope.active = 'ORF';
         $scope.dataIsLoading = false;

@@ -8,6 +8,7 @@ import Data from './data.model';
 var util = require('./util');
 var os = require('os');
 var dl = require('./data.load');
+var dd = require('./data.delete');
 var mongoose = require('bluebird').promisifyAll(require('mongoose'));
 var Apu = require('./../api.util');
 
@@ -142,9 +143,23 @@ export function addOrf(req, res) {
     .catch(Apu.handleError(res));
 }
 
-//******************************************************************************
-// Exports
-//******************************************************************************
+export function removeOrf(req, res){
+  dd.removeOrf(req.params.orfId)
+    .then(Apu.responseWithResult(res))
+    .catch(Apu.handleError(res))
+}
+
+export function removeDataset(req, res){
+  dd.removeDataset(req.params.datasetId)
+    .then(Apu.responseWithResult(res))
+    .catch(Apu.handleError(res))
+}
+
+export function removeProject(req, res){
+  dd.removeProject(req.params.projectId)
+    .then(Apu.responseWithResult(res))
+    .catch(Apu.handleError(res))
+}
 /**
  * // Gets a list of available Projects.
  * @return {null} request is answered.
