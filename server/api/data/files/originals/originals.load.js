@@ -23,7 +23,6 @@ function readFiles (pathList){
       var readstream = fs.createReadStream(file.path)
 
       readstream.on('error', function (err) {
-        console.log(err)
         callback(err, null);
       });
 
@@ -49,24 +48,25 @@ function addIdsToAnalysis (analysis){
   }
 }
 
-function saveToOriginalModel (files, callback){
-
-  var count = 0;
-  var idList = [];
-  files.forEach(function (file){
-    Original.create(file, function(err, saved){
-      if(err){
-        console.log(err);
-      }else {
-        idList.push(saved._id)
+function saveToOriginalModel (projectId){
+  return function (files, callback){
+    var count = 0;
+    var idList = [];
+    files.forEach(function (file){
+      file.project = projectId;
+      Original.create(file, function(err, saved){
+        if(err){
+          console.log(err);
+        }else {
+          idList.push(saved._id)
+        }
         count += 1;
         if(count === files.length){
-
           callback(null, idList);
         }
-      }
+      })
     })
-  })
+  }
 }
 
 /**
@@ -75,11 +75,11 @@ function saveToOriginalModel (files, callback){
  * @param {String} callback Callback for the data.
  * @return {null} Data is passed to callback.
  */
-export function loadToAnalysis(pathList){
+export function loadToAnalysis(pathList, projectId){
   return function (data, callback){
     asy.waterfall([
       readFiles(pathList),
-      saveToOriginalModel,
+      saveToOriginalModel(projectId),
       addIdsToAnalysis(data)
     ], function (err, result) {
       if(result && !err){

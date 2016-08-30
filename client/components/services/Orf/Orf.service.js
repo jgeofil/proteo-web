@@ -12,6 +12,7 @@ angular.module('proteoWebApp')
      */
     this.getFullOrf = function(orfId){
       return $http.get('/api/data/orf/'+orfId+'/full').then(function(response){
+        console.log(response.data)
         return response.data;
       });
     };

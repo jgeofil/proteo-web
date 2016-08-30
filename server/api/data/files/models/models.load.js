@@ -94,15 +94,16 @@ function saveModels (project){
     var idList = [];
     data.forEach(function(f){
       f.project = project;
+      console.log(project)
       Models.create(f, function(err, anaObj){
         if(err){
           console.log(err);
         }else {
           idList.push(anaObj._id)
-          count += 1;
-          if(count === data.length){
-            callback(null, idList);
-          }
+        }
+        count += 1;
+        if(count === data.length){
+          callback(null, idList);
         }
 
       })
@@ -120,20 +121,24 @@ export function load(orfpath, callback){
 
   var subPath = path.join(orfpath, 'models');
   return new Promise(function(resolve, reject){
-    asy.waterfall([
+    try{
+      asy.waterfall([
 
-      listModelFiles(subPath),
-      readCaptionFiles(subPath),
-      createGridFiles()
+        listModelFiles(subPath),
+        readCaptionFiles(subPath),
+        createGridFiles()
 
-    ], function (err, result) {
+      ], function (err, result) {
 
-      if(err){
-        return reject(err);
-      }else{
-        return resolve(result);
-      }
-    });
+        if(err){
+          return reject(err);
+        }else{
+          return resolve(result);
+        }
+      });
+    }catch(err){
+      return reject(err);
+    }
   });
 }
 

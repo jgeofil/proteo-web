@@ -3,7 +3,7 @@
 /* jshint undef: false*/
 angular.module('proteoWebApp')
 .controller('MainController', function ($scope, $http, $location, $routeParams,
-  $timeout , $rootScope, NgTableParams, Datatree, Comparison) {
+  $timeout , $rootScope, NgTableParams, Datatree, Comparison, Popup, Auth) {
   // State of the coparison selection, kept in the comparison service
   $scope.comparison = Comparison;
   // If data is being loaded from server
@@ -17,6 +17,10 @@ angular.module('proteoWebApp')
     project: undefined,
     dataset: undefined
   };
+
+  $scope.isAdmin = Auth.isAdmin;
+
+  $scope.datatree = Datatree;
   // If it is the first time the controller loads.
   var pageLoad = true;
 
@@ -32,6 +36,24 @@ angular.module('proteoWebApp')
   // Funcs
   //****************************************************************************
 
+  $scope.hoverIn = function(){
+    this.hoverEdit = 'delete';
+  };
+
+  $scope.hoverOut = function(){
+    this.hoverEdit = null;
+  };
+
+  function getAnalysisCount(orf){
+    var count = 0;
+    for(var analysis in orf.analysis){
+      if(orf.analysis[analysis] !== null && analysis !== 'models' && analysis !== 'images'){
+        count += 1;
+      }
+    }
+    return count;
+  }
+
   /**
    * Sort datasets by number of available analyses
    * @param {Object} data List of ORFs.
@@ -39,12 +61,7 @@ angular.module('proteoWebApp')
    */
   var dataSort = function(data){
     data.sort(function(a,b){
-      if(a.analyses && b.analyses){
-        return ((b.analyses.disopred?1:0) + (b.analyses.itasser?1:0) + (b.analyses.tmhmm?1:0) +
-        (b.analyses.topcons?1:0))-((a.analyses.disopred?1:0) + (a.analyses.itasser?1:0) + (a.analyses.tmhmm?1:0) + (a.analyses.topcons?1:0));
-      }else{
-        return 0;
-      }
+      return (a.analyses && b.analyses) ? getAnalysisCount(b)-getAnalysisCount(a):0;
     });
   };
 
@@ -83,18 +100,24 @@ angular.module('proteoWebApp')
       page: $location.search().page
     });
 
-    return $http.get('/api/data/'+project).then(function(response){
-      $timeout(function(){
-        setProperty(response.data, 'organism');
-        $scope.table = new NgTableParams(tableParameters, {data: response.data});
-        $scope.active = 'DATASET';
+    return Datatree.getListOfDatasets(project)
+      .then(function(data){
+        $timeout(function(){
+          setProperty(data, 'organism');
+          if(data.length>0){
+            $scope.projectName = data[0].project.name;
+          }else{
+            $scope.projectName = 'Empty project..';
+          }
+          $scope.table = new NgTableParams(tableParameters, {data: data});
+          $scope.active = 'DATASET';
+          $scope.dataIsLoading = false;
+        });
+      })
+      .catch(function(error){
         $scope.dataIsLoading = false;
+        Popup.failure('Error getting Datasets')(error);
       });
-    }, function(error){
-      $scope.dataIsLoading = false;
-      console.log(error);
-      //TODO: Show message
-    });
   };
 
   /**
@@ -116,21 +139,25 @@ angular.module('proteoWebApp')
       page: $location.search().page
     });
 
-
-    $http.get('/api/data/dataset/'+dataset).then(function(response){
+    Datatree.getListOfOrfs(dataset).then(function(data){
 
       $timeout(function(){
-        dataSort(response.data);
-
-        $scope.table = new NgTableParams(tableParameters, {data: response.data});
+        dataSort(data);
+        if(data.length>0){
+          $scope.projectName = data[0].project.name;
+          $scope.datasetName = data[0].dataset.name;
+        }else{
+          $scope.datasetName = 'Empty dataset..';
+          $scope.projectName = '...';
+        }
+        $scope.table = new NgTableParams(tableParameters, {data: data});
         $scope.active = 'ORF';
         $scope.dataIsLoading = false;
       });
 
     }, function(error){
       $scope.dataIsLoading = false;
-      console.log(error);
-      //TODO: Show message
+      Popup.failure('Error getting Orfs')(error);
     });
   };
 
@@ -140,17 +167,16 @@ angular.module('proteoWebApp')
    * template is selected.
    */
   function getProjects() {
-    Datatree.getProjectList().then(function(response){
+    Datatree.getProjectList().then(function(data){
       $scope.dataIsLoading = true;
       $timeout(function(){
-        $scope.table = new NgTableParams(tableParameters, {data: response.data});
+        $scope.table = new NgTableParams(tableParameters, {data: data});
         $scope.active = 'PROJECT';
         $scope.dataIsLoading = false;
       });
     }, function(error){
       $scope.dataIsLoading = false;
-      console.log(error);
-      //TODO: Show message
+      Popup.failure('Error getting Projects')(error);
     });
   }
 

@@ -16,7 +16,7 @@ import Models from './files/models/models.model';
 import Bio from './bio.model';
 
 var ProjectSchema = new mongoose.Schema({
-  name: String,
+  name: { type: String, required: true},
   active: { type: Boolean, default: true },
   path: { type: String},
   datasets: { type: [{type: mongoose.Schema.Types.ObjectId, ref: 'Dataset'}], default: [] },
@@ -25,20 +25,20 @@ var ProjectSchema = new mongoose.Schema({
 });
 
 var DatasetSchema = new mongoose.Schema({
-  name: String,
+  name: { type: String, required: true},
   active: { type: Boolean, default: true },
   path: { type: String},
-  project: {type: mongoose.Schema.Types.ObjectId, ref: 'Project'},
+  project: {type: mongoose.Schema.Types.ObjectId, ref: 'Project', required: true},
   orfs: { type: [{type: mongoose.Schema.Types.ObjectId, ref: 'Orf'}], default: [] },
   meta: {}
 });
 
 var OrfSchema = new mongoose.Schema({
-  name: String,
+  name: { type: String, required: true},
   active: { type: Boolean, default: true },
   path: { type: String},
-  dataset: {type: mongoose.Schema.Types.ObjectId, ref: 'Dataset'},
-  project: {type: mongoose.Schema.Types.ObjectId, ref: 'Project'},
+  dataset: {type: mongoose.Schema.Types.ObjectId, ref: 'Dataset', required: true},
+  project: {type: mongoose.Schema.Types.ObjectId, ref: 'Project', required: true},
   analyses: {},
   files: {
     images: [{type: mongoose.Schema.Types.ObjectId, ref: 'Images'}],
@@ -48,9 +48,7 @@ var OrfSchema = new mongoose.Schema({
     disopred: {type: mongoose.Schema.Types.ObjectId, ref: 'Disopred', default: null},
     tmhmm: {type: mongoose.Schema.Types.ObjectId, ref: 'Tmhmm', default: null},
     topcons: {type: mongoose.Schema.Types.ObjectId, ref: 'Topcons', default: null},
-    itasser: {type: mongoose.Schema.Types.ObjectId, ref: 'Itasser', default: null},
-    models: {type: mongoose.Schema.Types.ObjectId, ref: 'Model', default: null},
-    images: {type: mongoose.Schema.Types.ObjectId, ref: 'Images', default: null}
+    itasser: {type: mongoose.Schema.Types.ObjectId, ref: 'Itasser', default: null}
   },
   sequence: [String],
   seqLength: Number,
@@ -87,6 +85,9 @@ OrfSchema.pre('save', function(next) {
     },
     function(seqs, callback) {
       getSeqFromAnalysis(Itasser, 'itasser', ORF, seqs, callback);
+    },
+    function(seqs, callback) {
+      getSeqFromAnalysis(Topcons, 'topcons', ORF, seqs, callback);
     }
   ], function (err, result) {
     //Eliminiate doubles
@@ -122,17 +123,8 @@ var Dataset = mongoose.model('Dataset', DatasetSchema);
 var Project = mongoose.model('Project', ProjectSchema);
 var Orf = mongoose.model('Orf', OrfSchema);
 
-
-var gridfileSchema = new mongoose.Schema({},{ strict: false });
-var gridchunkSchema = new mongoose.Schema({},{ strict: false });
-
-var Gridfile = mongoose.model("Gridfile", gridfileSchema, "fs.files" );
-var Gridchunk = mongoose.model("Gridchunk", gridchunkSchema, "fs.chunks" );
-
 export default {
   Project: Project,
   Dataset: Dataset,
-  Orf: Orf,
-  Gridfile: Gridfile,
-  Gridchunk: Gridchunk
+  Orf: Orf
 }

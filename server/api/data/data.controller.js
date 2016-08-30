@@ -8,6 +8,7 @@ import Data from './data.model';
 var util = require('./util');
 var os = require('os');
 var dl = require('./data.load');
+var dd = require('./data.delete');
 var mongoose = require('bluebird').promisifyAll(require('mongoose'));
 var Apu = require('./../api.util');
 
@@ -20,8 +21,14 @@ var DATA_PATH = config.data;
 function setPermissionsOnProjects (req, permissions){
   return function(projects){
     projects.forEach(function(d){
-      if(permissions.indexOf(d.name) !== -1 || req.user.role === 'admin'){
+      if(req.user.role === 'admin'){
         d.authorized = true;
+      }else{
+        permissions.forEach(function(perm){
+          if(perm.equals(d._id)){
+            d.authorized = true;
+          }
+        })
       }
     });
     return projects;
@@ -136,9 +143,23 @@ export function addOrf(req, res) {
     .catch(Apu.handleError(res));
 }
 
-//******************************************************************************
-// Exports
-//******************************************************************************
+export function removeOrf(req, res){
+  dd.removeOrf(req.params.orfId)
+    .then(Apu.responseWithResult(res))
+    .catch(Apu.handleError(res))
+}
+
+export function removeDataset(req, res){
+  dd.removeDataset(req.params.datasetId)
+    .then(Apu.responseWithResult(res))
+    .catch(Apu.handleError(res))
+}
+
+export function removeProject(req, res){
+  dd.removeProject(req.params.projectId)
+    .then(Apu.responseWithResult(res))
+    .catch(Apu.handleError(res))
+}
 /**
  * // Gets a list of available Projects.
  * @return {null} request is answered.
@@ -158,8 +179,8 @@ export function index(req, res) {
  */
 export function orfs(req, res) {
   Data.Orf.find({dataset: req.params.dataId})
-    .populate('analysis.disopred', 'data.discrete sequence')
-    .populate('analysis.tmhmm', 'data.discrete sequence')
+    .populate('analysis.disopred', 'data.discrete')
+    .populate('analysis.tmhmm', 'data.discrete')
     .populate('project', '_id name')
     .populate('dataset', '_id name')
     .then(Apu.userIsAuthorizedAtProjectLevel(req,res))
@@ -208,6 +229,7 @@ export function oneOrfSequence(req, res) {
 export function datasets(req, res) {
   Data.Dataset.find()
     .populate('orfs')
+    .populate('project', '_id name')
     .then(Apu.userIsAuthorizedAtProjectLevel(req,res))
     .then(Apu.responseWithResult(res))
     .catch(Apu.handleError(res))

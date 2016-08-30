@@ -175,16 +175,13 @@ function updateData(){
   Data.Project.find({}).removeAsync().then(function(){
   Data.Dataset.find({}).removeAsync().then(function(){
   Data.Orf.find({}).removeAsync().then(function(){
-  Data.Gridchunk.find({}).removeAsync().then(function(){
-  Data.Gridfile.find({}).removeAsync().then(function(){
   Disopred.find({}).removeAsync().then(function(){
   Tmhmm.find({}).removeAsync().then(function(){
   Topcons.find({}).removeAsync().then(function(){
   Itasser.find({}).removeAsync().then(function(){
   Models.find({}).removeAsync().then(function(){
-    Images.find({}).removeAsync().then(function(){
-    //readProjects();
-  })})})})})})})})})})});
+  Images.find({}).removeAsync().then(function(){
+  })})})})})})})})});
 }
 
 /**
@@ -207,7 +204,7 @@ function saveObj (obj){
   console.log('ORF: saving orf ' + obj.name)
   return obj.save()
     .then(function(objSaved){
-      console.log('ORF: ' + obj.name + 'updated with new analyses and files.')
+      console.log('ORF: ' + obj.name + ' updated with new analyses and files.')
       return objSaved;
     });
 }

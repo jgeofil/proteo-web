@@ -48,7 +48,7 @@ function formatData(data){
 }
 
 // Get JSON formatted DISOPRED3 output
-export function load(orfpath){
+export function load(orfpath, projectId){
 
   var subPath = path.join(orfpath, 'disopred');
   var seqFilePath = path.join(subPath, 'disopred' + '.seq');
@@ -56,55 +56,57 @@ export function load(orfpath){
   var bindFilePath = path.join(subPath, 'disopred' + '.seq.pbdat');
 
   return new Promise(function(resolve, reject){
-
-    asy.waterfall([
-      function(callback){
-        return callback(null, {
-          data: {},
-          metadata: {},
-          temp: {},
-          path: subPath
-        });
-      },
-      // Read fasta file
-      function(data, callback) {
-        fasta.obj(seqFilePath)
-        .on('data', function(f){
-          data.sequence = f.seq;
-          callback(null, data);
-        })
-        .on('error', function(err) {
-          return callback(err);
-        });
-      },
-      // Read Disopred file
-      function(data, callback) {
-        readDisoFile(disoFilePath, function(err, retdata){
-          data.temp.diso = retdata;
-          callback(err, data);
-        });
-      },
-      // Read Binding file
-      function(data, callback) {
-        readDisoFile(bindFilePath, function(err, retdata){
-          data.temp.bind = retdata;
-          callback(err, data);
-        });
-      },
-      // Save Orginal files
-      Original.loadToAnalysis([
-        {name: 'disopred.seq', path: seqFilePath},
-        {name: 'disopred.seq.diso', path: disoFilePath},
-        {name: 'disopred.seq.pbdat', path: bindFilePath},
-      ])
-    ], function (err, result) {
-      if(err){
-        console.log(err)
-        return reject(err);
-      }else{
-        result = formatData(result);
-        return resolve(result);
-      }
-    });
+    try{
+      asy.waterfall([
+        function(callback){
+          return callback(null, {
+            data: {},
+            metadata: {},
+            temp: {},
+            path: subPath
+          });
+        },
+        // Read fasta file
+        function(data, callback) {
+          fasta.obj(seqFilePath)
+          .on('data', function(f){
+            data.sequence = f.seq;
+            callback(null, data);
+          })
+          .on('error', function(err) {
+            return callback(err, null);
+          });
+        },
+        // Read Disopred file
+        function(data, callback) {
+          readDisoFile(disoFilePath, function(err, retdata){
+            data.temp.diso = retdata;
+            callback(err, data);
+          });
+        },
+        // Read Binding file
+        function(data, callback) {
+          readDisoFile(bindFilePath, function(err, retdata){
+            data.temp.bind = retdata;
+            callback(err, data);
+          });
+        },
+        // Save Orginal files
+        Original.loadToAnalysis([
+          {name: 'disopred.seq', path: seqFilePath},
+          {name: 'disopred.seq.diso', path: disoFilePath},
+          {name: 'disopred.seq.pbdat', path: bindFilePath},
+        ], projectId)
+      ], function (err, result) {
+        if(err){
+          return reject(err);
+        }else{
+          result = formatData(result);
+          return resolve(result);
+        }
+      });
+    }catch(err){
+      return reject(err);
+    }
   });
 }
